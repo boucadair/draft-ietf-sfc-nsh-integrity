@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-latest"
+<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-02"
      ipr="trust200902">
   <front>
     <title abbrev="Integrity Protection for the NSH">Integrity Protection for
@@ -1110,15 +1110,11 @@
             instances to discard duplicate sequence numbers is required.
             Because the coordination mechanism to comply with this requirement
             is service-specific, this document does not include this
-            protection. </t>
+            protection.</t>
           </list></t>
 
         <t>All SFC data plane elements must be synchronized among themselves.
         These elements may be synchronized to a global reference time.</t>
-      </section>
-
-      <section title="new section">
-        <t></t>
       </section>
 
       <section title="NSH Data Validation">
@@ -1158,8 +1154,8 @@
           <t>Identify SFPs: this is typically the NSH Base Header and Service
           Path Header.</t>
 
-          <t>Carry metadata such those defined in Section <xref
-          format="default" target="new"></xref>.</t>
+          <t>Carry metadata such those defined in <xref format="default"
+          target="new"></xref>.</t>
 
           <t>Steer the traffic along the SFPs: transport encapsulation.</t>
         </list></t>
