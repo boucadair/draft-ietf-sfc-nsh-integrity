@@ -111,9 +111,10 @@
     <keyword>Attack mitigation</keyword>
 
     <abstract>
-      <t>This specification adds integrity protection and optional encryption
-      of sensitive metadata directly to the Network Service Header (NSH) used
-      for Service Function Chaining (SFC).</t>
+      <t>This specification adds integrity protection directly to the Network
+      Service Header (NSH) used for Service Function Chaining (SFC). Also,
+      this specification allows to encrypt sensitive metadata that is carried
+      in the NSH.</t>
     </abstract>
   </front>
 
@@ -175,7 +176,7 @@
       target="RFC8300"></xref>). MTU considerations are discussed in <xref
       target="MTU"></xref>.</t>
 
-      <t>This specification limits thus access to an information within an SFP
+      <t>This specification limits thus access to an information along an SFP
       to entities that have a need to interpret it.</t>
     </section>
 
@@ -537,7 +538,7 @@
         <t>SFFs MAY implement the aforementioned cipher suites and HMAC
         algorithms.</t>
 
-        <t><list style="symbols">
+        <t><list style="empty">
             <t>Note: The use of AES-GCM + HMAC may have CPU and packet size
             implications (need for a second 128-bit authentication tag).</t>
           </list></t>
@@ -1082,12 +1083,12 @@
 ]]></artwork>
           </figure></t>
 
-        <t>The Delta interval is a configurable parameter. The RECOMMENDED
-        value for the allowed Delta is 2 seconds. Special care should be taken
-        when setting very low Delta values as this may lead to dropping
-        legitimate traffic. If the timestamp is not within the boundaries,
-        then the SFC data plane element receiving such packet MUST discard the
-        NSH message.</t>
+        <t>The Delta interval is a configurable parameter. The default value
+        for the allowed Delta is 2 seconds. Special care should be taken when
+        setting very low Delta values as this may lead to dropping legitimate
+        traffic. If the timestamp is not within the boundaries, then the SFC
+        data plane element receiving such packet MUST discard the NSH
+        message.</t>
 
         <t>Replay attacks within the Delta window may be detected by an
         NSH-aware node by recording a unique value derived, for example, from
@@ -1095,8 +1096,8 @@
         node will detect and reject duplicates. If for legitimate service
         reasons, some flows have to be duplicated but still share portion of
         an SFP with the original flow, legitimate duplicate packets will be
-        tagged by NSH-aware nodes involed in that segment as replay packets
-        unless sufficient entropy is added to the duplicate packet. </t>
+        tagged by NSH-aware nodes involved in that segment as replay packets
+        unless sufficient entropy is added to the duplicate packet.</t>
 
         <t><list style="empty">
             <t>Note: Within the timestamp delta window, defining a sequence
