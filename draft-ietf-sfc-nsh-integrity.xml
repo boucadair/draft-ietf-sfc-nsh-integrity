@@ -668,6 +668,10 @@
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+]]></artwork>
         </figure></t>
 
+      <t>The "MAC and Encrypted Metadata" Context Headers are always padded
+      out to a multiple of 4 bytes as per Section 2.2 of <xref
+      target="RFC8300"></xref>.</t>
+
       <section anchor="enc1" title="MAC#1 Context Header">
         <t>MAC#1 Context Header is a variable-length TLV that carries the
         Message Authentication Code (MAC) for the Service Path Header, Context
@@ -727,7 +731,8 @@
             <t>U: Unassigned bit (Section 2.5.1 of <xref
             target="RFC8300"></xref>).</t>
 
-            <t>Length: Variable.</t>
+            <t>Length: Variable. Padding considerations are discussed in
+            Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
 
             <t>Key Length: Variable. Carries the length of the key
             identifier.</t>
@@ -744,7 +749,7 @@
 
             <t>IV Length: Carries the length of the IV (Section 5.2 of <xref
             target="RFC7518"></xref>). If encryption is not used, IV length is
-            set to zero.</t>
+            set to zero (that is, no "Initialization Vector" is included. </t>
 
             <t>Initialization Vector: Carries the IV for authenticated
             encryption algorithm as discussed in Section 5.2 of <xref
@@ -813,7 +818,8 @@
             <t>U: Unassigned bit (Section 2.5.1 of <xref
             target="RFC8300"></xref>).</t>
 
-            <t>Length: Variable.</t>
+            <t>Length: Variable. Padding considerations are discussed in
+            Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
 
             <t>Key Length: See <xref target="enc1"></xref>.</t>
 

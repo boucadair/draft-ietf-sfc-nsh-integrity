@@ -5,10 +5,10 @@
 SFC                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: July 18, 2021                                            McAfee
+Expires: July 26, 2021                                            McAfee
                                                                  D. Wing
                                                                   Citrix
-                                                        January 14, 2021
+                                                        January 22, 2021
 
 
 Integrity Protection for the Network Service Header (NSH) and Encryption
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 18, 2021.
+   This Internet-Draft will expire on July 26, 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 1]
+Boucadair, et al.         Expires July 26, 2021                 [Page 1]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 2]
+Boucadair, et al.         Expires July 26, 2021                 [Page 2]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -165,7 +165,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 3]
+Boucadair, et al.         Expires July 26, 2021                 [Page 3]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -221,7 +221,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 4]
+Boucadair, et al.         Expires July 26, 2021                 [Page 4]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -277,7 +277,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 5]
+Boucadair, et al.         Expires July 26, 2021                 [Page 5]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -333,7 +333,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 6]
+Boucadair, et al.         Expires July 26, 2021                 [Page 6]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -389,7 +389,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 7]
+Boucadair, et al.         Expires July 26, 2021                 [Page 7]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -445,7 +445,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 8]
+Boucadair, et al.         Expires July 26, 2021                 [Page 8]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -501,7 +501,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                 [Page 9]
+Boucadair, et al.         Expires July 26, 2021                 [Page 9]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -557,7 +557,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 10]
+Boucadair, et al.         Expires July 26, 2021                [Page 10]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -613,7 +613,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 11]
+Boucadair, et al.         Expires July 26, 2021                [Page 11]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -669,7 +669,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 12]
+Boucadair, et al.         Expires July 26, 2021                [Page 12]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -692,6 +692,9 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
             Figure 5: MAC and Encrypted Metadata Context Header
+
+   The "MAC and Encrypted Metadata" Context Headers are always padded
+   out to a multiple of 4 bytes as per Section 2.2 of [RFC8300].
 
 5.1.  MAC#1 Context Header
 
@@ -722,10 +725,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-
-
-
-Boucadair, et al.         Expires July 18, 2021                [Page 13]
+Boucadair, et al.         Expires July 26, 2021                [Page 13]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -772,20 +772,22 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
    o  U: Unassigned bit (Section 2.5.1 of [RFC8300]).
 
-   o  Length: Variable.
+   o  Length: Variable.  Padding considerations are discussed in
+      Section 2.5.1 of [RFC8300].
 
    o  Key Length: Variable.  Carries the length of the key identifier.
 
-   o  Key Identifier: Carries a variable length Key Identifier object
-      used to identify and deliver keys to SFC data plane elements.
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 14]
+
+Boucadair, et al.         Expires July 26, 2021                [Page 14]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
+   o  Key Identifier: Carries a variable length Key Identifier object
+      used to identify and deliver keys to SFC data plane elements.
       This identifier is helpful to accommodate deployments relying upon
       keying material per SFC/SFP.  The key identifier helps in
       resolving the problem of synchronization of keying material.
@@ -795,7 +797,8 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
       See Section 6 for more details.
 
    o  IV Length: Carries the length of the IV (Section 5.2 of
-      [RFC7518]).  If encryption is not used, IV length is set to zero.
+      [RFC7518]).  If encryption is not used, IV length is set to zero
+      (that is, no "Initialization Vector" is included.
 
    o  Initialization Vector: Carries the IV for authenticated encryption
       algorithm as discussed in Section 5.2 of [RFC7518].
@@ -834,10 +837,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-
-
-
-Boucadair, et al.         Expires July 18, 2021                [Page 15]
+Boucadair, et al.         Expires July 26, 2021                [Page 15]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -884,7 +884,8 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
    o  U: Unassigned bit (Section 2.5.1 of [RFC8300]).
 
-   o  Length: Variable.
+   o  Length: Variable.  Padding considerations are discussed in
+      Section 2.5.1 of [RFC8300].
 
    o  Key Length: See Section 5.1.
 
@@ -892,8 +893,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-
-Boucadair, et al.         Expires July 18, 2021                [Page 16]
+Boucadair, et al.         Expires July 26, 2021                [Page 16]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -949,7 +949,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 17]
+Boucadair, et al.         Expires July 26, 2021                [Page 17]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1005,7 +1005,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 18]
+Boucadair, et al.         Expires July 26, 2021                [Page 18]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1061,7 +1061,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 19]
+Boucadair, et al.         Expires July 26, 2021                [Page 19]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1117,7 +1117,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 20]
+Boucadair, et al.         Expires July 26, 2021                [Page 20]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1173,7 +1173,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 21]
+Boucadair, et al.         Expires July 26, 2021                [Page 21]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1229,7 +1229,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 22]
+Boucadair, et al.         Expires July 26, 2021                [Page 22]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1285,7 +1285,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 23]
+Boucadair, et al.         Expires July 26, 2021                [Page 23]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1341,7 +1341,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 24]
+Boucadair, et al.         Expires July 26, 2021                [Page 24]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1397,7 +1397,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 25]
+Boucadair, et al.         Expires July 26, 2021                [Page 25]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1453,7 +1453,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 26]
+Boucadair, et al.         Expires July 26, 2021                [Page 26]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1509,7 +1509,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 27]
+Boucadair, et al.         Expires July 26, 2021                [Page 27]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1565,7 +1565,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 28]
+Boucadair, et al.         Expires July 26, 2021                [Page 28]
 
 Internet-Draft      Integrity Protection for the NSH        January 2021
 
@@ -1621,4 +1621,4 @@ Authors' Addresses
 
 
 
-Boucadair, et al.         Expires July 18, 2021                [Page 29]
+Boucadair, et al.         Expires July 26, 2021                [Page 29]
