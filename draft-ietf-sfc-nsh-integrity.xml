@@ -271,8 +271,8 @@
           encrypt and decrypt a given Context Header.</t>
 
           <t>Both encrypted and unencrypted Context Headers MAY be included in
-          the same NSH. That is, some Context Headers (TLVs) may be protected
-          while others do not need to be protected.</t>
+          the same NSH. That is, some Context Headers may be protected while
+          others do not need to be protected.</t>
 
           <t>The solution MUST provide integrity protection for the Service
           Path Header.</t>
@@ -668,17 +668,17 @@
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+]]></artwork>
         </figure></t>
 
-      <t>The "MAC and Encrypted Metadata" Context Headers are always padded
-      out to a multiple of 4 bytes as per Section 2.2 of <xref
+      <t>The "MAC and Encrypted Metadata" Context Headers are padded out to a
+      multiple of 4 bytes as per Section 2.2 of <xref
       target="RFC8300"></xref>.</t>
 
       <section anchor="enc1" title="MAC#1 Context Header">
-        <t>MAC#1 Context Header is a variable-length TLV that carries the
-        Message Authentication Code (MAC) for the Service Path Header, Context
-        Headers, and the inner packet on which NSH is imposed, calculated
-        using MAC_KEY and optionally Context Headers encrypted using ENC_KEY.
-        The scope of the integrity protection provided by this TLV is depicted
-        in <xref target="scope1"></xref>.</t>
+        <t>MAC#1 Context Header is a variable-length Context Header that
+        carries the Message Authentication Code (MAC) for the Service Path
+        Header, Context Headers, and the inner packet on which NSH is imposed,
+        calculated using MAC_KEY and optionally Context Headers encrypted
+        using ENC_KEY. The scope of the integrity protection provided by this
+        Context Header is depicted in <xref target="scope1"></xref>.</t>
 
         <t>This MAC scheme does not require sharing MAC_KEY with SFFs. It does
         not require to re-compute the MAC by each SFF because of TTL
@@ -705,7 +705,7 @@
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length   |           Initialization Vector                 ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  ~             Context Header TLVs to encrypt (opt.)             ~   |
+|  ~                 Context Headers to encrypt (opt.)             ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   | 
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
@@ -766,11 +766,11 @@
       </section>
 
       <section anchor="enc2" title="MAC#2 Context Header">
-        <t>MAC#2 Context Header is a variable-length TLV that carries the MAC
-        for the entire NSH data calculated using MAC_KEY and optionally
-        Context Headers encrypted using ENC_KEY. The scope of the integrity
-        protection provided by this TLV is depicted in <xref
-        target="scope2"></xref>.</t>
+        <t>MAC#2 Context Header is a variable-length Context Header that
+        carries the MAC for the entire NSH data calculated using MAC_KEY and
+        optionally Context Headers encrypted using ENC_KEY. The scope of the
+        integrity protection provided by this Context Header is depicted in
+        <xref target="scope2"></xref>.</t>
 
         <figure align="center" anchor="scope2" title="Scope of MAC#2">
           <artwork><![CDATA[    0                   1                   2                   3
@@ -792,7 +792,7 @@
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length   |           Initialization Vector                 |   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  ~             Context Header TLVs to encrypt (opt.)             ~   |
+|  ~                 Context Headers to encrypt (opt.)             ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   | 
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
@@ -1026,10 +1026,10 @@
         encrypts the Context Headers (as set by the control plane <xref
         target="req"></xref>), computes the message integrity for the target
         NSH data, and inserts the resulting payload in the "MAC and Encrypted
-        Metadata" Context Header (<xref target="new"></xref>). The entire TLV
-        carrying a privacy-sensitive metadata is encrypted (that is, including
-        the MD Class, Type, Length, and associated metadata of each Context
-        Header).</t>
+        Metadata" Context Header (<xref target="new"></xref>). The entire
+        Context Header carrying a privacy-sensitive metadata is encrypted
+        (that is, including the MD Class, Type, Length, and associated
+        metadata of each Context Header).</t>
 
         <t>The message Authentication Tag (T) and ciphertext (E) computation
         process can be illustrated as follows:</t>
@@ -1322,7 +1322,8 @@
       (slide 7).</t>
 
       <t>Thanks to Joel Halpern, Christian Jacquenet, Dirk von Hugo, Tal
-      Mizrahi, Daniel Migault, and Diego Lopez for the comments.</t>
+      Mizrahi, Daniel Migault, Diego Lopez, and Greg Mirsky for the
+      comments.</t>
 
       <t>Many thanks to Steve Hanna for the valuable secdir review.</t>
     </section>

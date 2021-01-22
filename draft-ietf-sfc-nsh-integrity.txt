@@ -286,8 +286,8 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
       encrypt and decrypt a given Context Header.
 
    o  Both encrypted and unencrypted Context Headers MAY be included in
-      the same NSH.  That is, some Context Headers (TLVs) may be
-      protected while others do not need to be protected.
+      the same NSH.  That is, some Context Headers may be protected
+      while others do not need to be protected.
 
    o  The solution MUST provide integrity protection for the Service
       Path Header.
@@ -693,17 +693,17 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
             Figure 5: MAC and Encrypted Metadata Context Header
 
-   The "MAC and Encrypted Metadata" Context Headers are always padded
-   out to a multiple of 4 bytes as per Section 2.2 of [RFC8300].
+   The "MAC and Encrypted Metadata" Context Headers are padded out to a
+   multiple of 4 bytes as per Section 2.2 of [RFC8300].
 
 5.1.  MAC#1 Context Header
 
-   MAC#1 Context Header is a variable-length TLV that carries the
-   Message Authentication Code (MAC) for the Service Path Header,
+   MAC#1 Context Header is a variable-length Context Header that carries
+   the Message Authentication Code (MAC) for the Service Path Header,
    Context Headers, and the inner packet on which NSH is imposed,
    calculated using MAC_KEY and optionally Context Headers encrypted
    using ENC_KEY.  The scope of the integrity protection provided by
-   this TLV is depicted in Figure 6.
+   this Context Header is depicted in Figure 6.
 
    This MAC scheme does not require sharing MAC_KEY with SFFs.  It does
    not require to re-compute the MAC by each SFF because of TTL
@@ -749,7 +749,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length   |           Initialization Vector                 ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  ~             Context Header TLVs to encrypt (opt.)             ~   |
+|  ~                 Context Headers to encrypt (opt.)             ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
@@ -812,11 +812,11 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
 
 5.2.  MAC#2 Context Header
 
-   MAC#2 Context Header is a variable-length TLV that carries the MAC
-   for the entire NSH data calculated using MAC_KEY and optionally
-   Context Headers encrypted using ENC_KEY.  The scope of the integrity
-   protection provided by this TLV is depicted in Figure 7.
-
+   MAC#2 Context Header is a variable-length Context Header that carries
+   the MAC for the entire NSH data calculated using MAC_KEY and
+   optionally Context Headers encrypted using ENC_KEY.  The scope of the
+   integrity protection provided by this Context Header is depicted in
+   Figure 7.
 
 
 
@@ -861,7 +861,7 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length   |           Initialization Vector                 |   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  ~             Context Header TLVs to encrypt (opt.)             ~   |
+|  ~                 Context Headers to encrypt (opt.)             ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
@@ -1110,9 +1110,9 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
    encrypts the Context Headers (as set by the control plane Section 3),
    computes the message integrity for the target NSH data, and inserts
    the resulting payload in the "MAC and Encrypted Metadata" Context
-   Header (Section 5).  The entire TLV carrying a privacy-sensitive
-   metadata is encrypted (that is, including the MD Class, Type, Length,
-   and associated metadata of each Context Header).
+   Header (Section 5).  The entire Context Header carrying a privacy-
+   sensitive metadata is encrypted (that is, including the MD Class,
+   Type, Length, and associated metadata of each Context Header).
 
 
 
@@ -1433,7 +1433,8 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
    104-sfc-sfc-chair-slides-01 (slide 7).
 
    Thanks to Joel Halpern, Christian Jacquenet, Dirk von Hugo, Tal
-   Mizrahi, Daniel Migault, and Diego Lopez for the comments.
+   Mizrahi, Daniel Migault, Diego Lopez, and Greg Mirsky for the
+   comments.
 
    Many thanks to Steve Hanna for the valuable secdir review.
 
@@ -1449,7 +1450,6 @@ Internet-Draft      Integrity Protection for the NSH        January 2021
    [RFC4107]  Bellovin, S. and R. Housley, "Guidelines for Cryptographic
               Key Management", BCP 107, RFC 4107, DOI 10.17487/RFC4107,
               June 2005, <https://www.rfc-editor.org/info/rfc4107>.
-
 
 
 
