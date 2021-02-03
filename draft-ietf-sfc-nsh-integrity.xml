@@ -705,10 +705,10 @@
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length   |           Initialization Vector                 ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  |     Message Authentication Code and optional Encrypted        |   |
-|  ~                     Context Headers                           ~   |
-|  |                                                               |   |  
-+->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   | 
+|  ~                Encrypted Context Headers (opt.)               ~   |
++->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
+|  ~                 Message Authentication Code                   ~   |
+|  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
 |  |                                                               |   |
@@ -790,10 +790,10 @@
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length   |           Initialization Vector                 |   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  |     Message Authentication Code and optional Encrypted        |   |
-|  ~                     Context Headers                           ~   |
-|  |                                                               |   |  
-+->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |  
+|  ~                Encrypted Context Headers (opt.)               ~   |
++->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
+|  ~                 Message Authentication Code                   ~   |
+|  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
 |  |                                                               |   |
@@ -985,7 +985,7 @@
       <section title="Encrypted NSH Metadata Generation">
         <t>An NSH imposer can encrypt Context Headers carrying
         privacy-sensitive metadata, i.e., encrypted and unencrypted metadata
-        may be carried simultaneously in the same NSH packet (Figures <xref
+        may be carried simultaneously in the same NSH packet (Sections <xref
         format="counter" target="mac1"></xref> and <xref format="counter"
         target="mac2"></xref>).</t>
 
