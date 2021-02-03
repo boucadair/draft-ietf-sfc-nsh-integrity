@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-02"
+<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-03"
      ipr="trust200902">
   <front>
     <title abbrev="Integrity Protection for the NSH">Integrity Protection for
@@ -705,14 +705,14 @@
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length   |           Initialization Vector                 ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  ~                 Context Headers to encrypt (opt.)             ~   |
+|  |     Message Authentication Code and optional Encrypted        |   |
+|  ~                     Context Headers                           ~   |
+|  |                                                               |   |  
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   | 
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
 |  |                                                               |   |
 |  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+<--|
-|                                                                      |
-|                                                                      |
 |                                                                      | 
 |                                       Integrity Protection Scope ----+
 +----Encrypted Data                                                
@@ -749,19 +749,17 @@
 
             <t>IV Length: Carries the length of the IV (Section 5.2 of <xref
             target="RFC7518"></xref>). If encryption is not used, IV length is
-            set to zero (that is, no "Initialization Vector" is included. </t>
+            set to zero (that is, no "Initialization Vector" is included).</t>
 
             <t>Initialization Vector: Carries the IV for authenticated
             encryption algorithm as discussed in Section 5.2 of <xref
             target="RFC7518"></xref>.</t>
 
-            <t>The Additional Authenticated Data (defined in <xref
-            target="RFC7518"></xref>) MUST be the Service Path header, the
-            unencrypted Context headers, and the inner packet on which the NSH
-            is imposed .</t>
-
             <t>Message Authentication Code covering the entire NSH data
-            excluding the Base header.</t>
+            excluding the Base header. The Additional Authenticated Data
+            (defined in <xref target="RFC7518"></xref>) MUST be the Service
+            Path header, the unencrypted Context headers, and the inner packet
+            on which the NSH is imposed .</t>
           </list></t>
       </section>
 
@@ -792,14 +790,14 @@
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length   |           Initialization Vector                 |   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  ~                 Context Headers to encrypt (opt.)             ~   |
-+->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   | 
+|  |     Message Authentication Code and optional Encrypted        |   |
+|  ~                     Context Headers                           ~   |
+|  |                                                               |   |  
++->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |  
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
 |  |                                                               |   |
 |  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+<--|
-|                                                                      |
-|                                                                      |
 |                                                                      | 
 |                                       Integrity Protection Scope ----+
 +----Encrypted Data                     
@@ -831,13 +829,11 @@
 
             <t>Initialization Vector: See <xref target="enc1"></xref>.</t>
 
-            <t>The Additional Authenticated Data (defined in <xref
-            target="RFC7518"></xref>) MUST be the entire NSH data (i.e.,
-            including the Base Header) excluding the Context Headers to be
-            encrypted.</t>
-
             <t>Message Authentication Code covering the entire NSH data and
-            optional encrypted Context Headers.</t>
+            optional encrypted Context Headers. The Additional Authenticated
+            Data (defined in <xref target="RFC7518"></xref>) MUST be the
+            entire NSH data (i.e., including the Base Header) excluding the
+            Context Headers to be encrypted.</t>
           </list></t>
       </section>
     </section>
@@ -989,31 +985,9 @@
       <section title="Encrypted NSH Metadata Generation">
         <t>An NSH imposer can encrypt Context Headers carrying
         privacy-sensitive metadata, i.e., encrypted and unencrypted metadata
-        may be carried simultaneously in the same NSH packet (<xref
-        target="up"></xref>).</t>
-
-        <figure align="center" anchor="up"
-                title="NSH with Encrypted and Unencrypted Metadata">
-          <artwork><![CDATA[      0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |Ver|O|U|    TTL    |   Length  |U|U|U|U|MD Type| Next Protocol |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |          Service Path Identifier              | Service Index |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
-     |                                                               |
-     ~       Variable-Length Unencrypted Context Headers  (opt.)     ~
-     |                                                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     ~                      Key Identifier                           ~
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     ~                      Timestamp                                ~
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                                                               |
-     ~                   MAC and Encrypted Context Headers           ~
-     |                                                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+]]></artwork>
-        </figure>
+        may be carried simultaneously in the same NSH packet (Figures <xref
+        format="counter" target="mac1"></xref> and <xref format="counter"
+        target="mac2"></xref>).</t>
 
         <t>In an SFC-enabled domain where pervasive monitoring <xref
         target="RFC7258"></xref> is possible, all Context Headers carrying
@@ -1045,6 +1019,8 @@
         </figure>
 
         <t></t>
+
+        <t>Note that "||" denotes the concatenation of two values.</t>
 
         <t>As specified in <xref target="RFC7518"></xref>, the octet string
         (AL) is equal to the number of bits in the Additional Authenticated
