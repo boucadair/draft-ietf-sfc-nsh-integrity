@@ -145,16 +145,16 @@
       <t>The NSH data is unauthenticated and unencrypted <xref
       target="RFC8300"></xref>, forcing a service topology that requires
       security and privacy to use a transport encapsulation that supports such
-      features. Note that some transport encapsulation (e.g., IPsec) only
+      features. Note that some transport encapsulations (e.g., IPsec) only
       provide hop-by-hop security between two SFC data plane elements (e.g.,
       two Service Function Forwarders (SFFs), SFF to SF) and do not provide
       SF-to-SF security of NSH metadata. For example, if IPsec is used, SFFs
-      or SFs within a Service Function Path (SFP) not authorized to access the
-      privacy-sensitive metadata will have access to the metadata. As a
-      reminder, the metadata referred to is an information that is inserted by
-      Classifiers or intermediate SFs and shared with downstream SFs; such
-      information is not visible to the communication endpoints (Section 4.9
-      of <xref target="RFC7665"></xref>).</t>
+      or SFs within a Service Function Path (SFP) that are not authorized to
+      access the privacy-sensitive metadata will have access to the metadata.
+      As a reminder, the metadata referred to is an information that is
+      inserted by Classifiers or intermediate SFs and shared with downstream
+      SFs; such information is not visible to the communication endpoints
+      (Section 4.9 of <xref target="RFC7665"></xref>).</t>
 
       <t>The lack of such capability was reported during the development of
       <xref target="RFC8300"></xref> and <xref target="RFC8459"></xref>. The
@@ -190,28 +190,28 @@
       <t>This document makes use of the terms defined in <xref
       target="RFC7665"></xref> and <xref target="RFC8300"></xref>.</t>
 
-      <t>The document defines the following terms:<list style="symbols">
-          <t>SFC data plane element: Refers to NSH-aware SF, SFF, SFC Proxy,
-          or Classifier as defined in the SFC data plane architecture <xref
-          target="RFC7665"></xref> and further refined in <xref
-          target="RFC8300"></xref>.</t>
+      <t>The document defines the following terms:<list style="hanging">
+          <t hangText="SFC data plane element:">Refers to NSH-aware SF, SFF,
+          SFC Proxy, or Classifier as defined in the SFC data plane
+          architecture <xref target="RFC7665"></xref> and further refined in
+          <xref target="RFC8300"></xref>.</t>
 
-          <t>SFC control element: A logical entity that instructs one or more
-          SFC data plane elements on how to process NSH packets within an
-          SFC-enabled domain.</t>
+          <t hangText="SFC control element:">A logical entity that instructs
+          one or more SFC data plane elements on how to process NSH packets
+          within an SFC-enabled domain.</t>
 
-          <t>Key Identifier: A key identifier used to identify and deliver
-          keys to authorized entities. See for example, 'kid' usage in <xref
-          target="RFC7635"></xref>.</t>
+          <t hangText="Key Identifier:">A key identifier used to identify and
+          deliver keys to authorized entities. See for example, 'kid' usage in
+          <xref target="RFC7635"></xref>.</t>
 
-          <t>NSH data: The NSH is composed of a Base Header, a Service Path
-          Header, and optional Context Headers. NSH data refers to all the
-          above headers and the packet or frame on which the NSH is imposed to
-          realize an SFP.</t>
+          <t hangText="NSH data:">The NSH is composed of a Base Header, a
+          Service Path Header, and optional Context Headers. NSH data refers
+          to all the above headers and the packet or frame on which the NSH is
+          imposed to realize an SFP.</t>
 
-          <t>NSH imposer: Refers to an SFC data plane element that is entitled
-          to impose the NSH with the Context Headers defined in this
-          document.</t>
+          <t hangText="NSH imposer:">Refers to an SFC data plane element that
+          is entitled to impose the NSH with the Context Headers defined in
+          this document.</t>
         </list></t>
     </section>
 
@@ -261,7 +261,7 @@
           <t>Only NSH-aware SFs and SFC proxies are entitled to update the
           Service Path Header.</t>
 
-          <t>SFFs are entitled to modify the Base Path header (TTL value, for
+          <t>SFFs are entitled to modify the Base Header (TTL value, for
           example). Nevertheless, SFFs are not supposed to act on the Context
           Headers or look into the content of the Context Headers.</t>
         </list></t>
@@ -368,7 +368,7 @@
           <t>The SFC control plane is assumed to instruct the Classifier(s),
           NSH-aware SFs, and SFC proxies with the set of Context Headers
           (privacy-sensitive metadata, typically) that must be encrypted.
-          Encryption keying material is only provided to these SFC data
+          Encryption keying material is only provided to these SFC data plane
           elements.</t>
 
           <t>The control plane may also indicate the set of SFC data plane
@@ -396,7 +396,7 @@
           material. Further details are discussed in <xref
           target="enc1"></xref>.<figure align="center" anchor="first"
               title="First Level of Assurance">
-              <artwork><![CDATA[   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
+              <artwork align="center"><![CDATA[   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
    |                Transport Encapsulation                |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+...
    |                Base Header                            |  |
@@ -420,7 +420,7 @@
 
           <t><figure align="center" anchor="sec"
               title="Second Level of Assurance">
-              <artwork><![CDATA[   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
+              <artwork align="center"><![CDATA[   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
    |                Transport Encapsulation                |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+...
 |  |                Base Header                            |  |
@@ -539,7 +539,8 @@
         algorithms.</t>
 
         <t><list style="empty">
-            <t>Note: The use of AES-GCM + HMAC may have CPU and packet size
+            <t>Note: The use of Advanced Encryption Standard (AES) in
+            Galois/Counter Mode (GCM) + HMAC may have CPU and packet size
             implications (need for a second 128-bit authentication tag).</t>
           </list></t>
       </section>
@@ -564,7 +565,7 @@
 
         <t>In order to accommodate deployments relying upon keying material
         per SFC/SFP and also the need to update keys after encrypting NSH data
-        for certain amount of time, this document uses key identifier (kid) to
+        for certain amount of time, this document uses key identifiers to
         unambiguously identify the appropriate keying material. Doing so
         allows to address the problem of synchronization of keying
         material.</t>
@@ -613,7 +614,7 @@
 
         <t><figure align="center" anchor="nest"
             title="Encapsulation of NSH within NSH">
-            <artwork><![CDATA[                    +---------------------------------+
+            <artwork align="center"><![CDATA[                    +---------------------------------+
                     |     Transport Encapsulation     |
                  +->+---------------------------------+
                  |  |        Lower-NSH Header         |
@@ -629,7 +630,7 @@
 ]]></artwork>
           </figure></t>
 
-        <t>SFC data plane elements of a lower-level domain includes the
+        <t>SFC data plane elements of a lower-level domain include the
         Upper-NSH when computing the MAC.</t>
 
         <t>Keying material used at the upper-level domain SHOULD NOT be the
@@ -646,11 +647,11 @@
       Context Headers; each having specific deployment constraints. Unlike
       <xref target="enc1"></xref>, the level of assurance provided in <xref
       target="enc2"></xref> requires sharing MAC_KEY with SFFs. Both Context
-      headers have the same format as shown in <xref target="new"></xref>.</t>
+      headers have the same format as shown in <xref target="mac"></xref>.</t>
 
       <t><figure align="center" anchor="mac"
           title="MAC and Encrypted Metadata Context Header">
-          <artwork><![CDATA[        0                   1                   2                   3
+          <artwork align="center"><![CDATA[        0                   1                   2                   3
         0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
        |          Metadata Class       |      Type     |U|    Length   |
@@ -685,7 +686,7 @@
         associated with this level of assurance.</t>
 
         <figure align="center" anchor="scope1" title="Scope of MAC#1">
-          <artwork><![CDATA[    0                   1                   2                   3
+          <artwork align="center"><![CDATA[    0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |Ver|O|U|    TTL    |   Length  |U|U|U|U|MD Type| Next Protocol |    
@@ -719,44 +720,49 @@
         <t></t>
 
         <t>In reference to <xref target="mac"></xref>, the description of the
-        fields is as follows:<list style="symbols">
-            <t>Metadata Class: MUST be set to 0x0 (Section 2.5.1 of <xref
+        fields is as follows:<list style="hanging">
+            <t hangText="Metadata Class:">MUST be set to 0x0 (Section 2.5.1 of
+            <xref target="RFC8300"></xref>).</t>
+
+            <t hangText="Type:">TBD1 (See <xref target="IANA"></xref>)</t>
+
+            <t hangText="U:">Unassigned bit (Section 2.5.1 of <xref
             target="RFC8300"></xref>).</t>
 
-            <t>Type: TBD1 (See <xref target="IANA"></xref>)</t>
+            <t hangText="Length:">Variable. Padding considerations are
+            discussed in Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
 
-            <t>U: Unassigned bit (Section 2.5.1 of <xref
-            target="RFC8300"></xref>).</t>
-
-            <t>Length: Variable. Padding considerations are discussed in
-            Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
-
-            <t>Key Length: Variable. Carries the length of the key
+            <t hangText="Key Length:">Variable. Carries the length of the key
             identifier.</t>
 
-            <t>Key Identifier: Carries a variable length Key Identifier object
-            used to identify and deliver keys to SFC data plane elements. This
-            identifier is helpful to accommodate deployments relying upon
-            keying material per SFC/SFP. The key identifier helps in resolving
-            the problem of synchronization of keying material.</t>
+            <t hangText="Key Identifier:">Carries a variable length Key
+            Identifier object used to identify and deliver keys to SFC data
+            plane elements. This identifier is helpful to accommodate
+            deployments relying upon keying material per SFC/SFP. The key
+            identifier helps in resolving the problem of synchronization of
+            keying material.</t>
 
-            <t>Timestamp: Carries an unsigned 64-bit integer value that is
-            expressed in seconds relative to 1970-01-01T00:00Z in UTC time.
-            See <xref target="timef"></xref> for more details.</t>
+            <t hangText="Timestamp:">Carries an unsigned 64-bit integer value
+            that is expressed in seconds relative to 1970-01-01T00:00Z in UTC
+            time. See <xref target="timef"></xref> for more details.</t>
 
-            <t>IV Length: Carries the length of the IV (Section 5.2 of <xref
-            target="RFC7518"></xref>). If encryption is not used, IV length is
-            set to zero (that is, no "Initialization Vector" is included).</t>
+            <t hangText="IV Length:">Carries the length of the IV (Section 5.2
+            of <xref target="RFC7518"></xref>). If encryption is not used, IV
+            length is set to zero (that is, no "Initialization Vector" is
+            included).</t>
 
-            <t>Initialization Vector: Carries the IV for authenticated
-            encryption algorithm as discussed in Section 5.2 of <xref
-            target="RFC7518"></xref>.</t>
+            <t hangText="Initialization Vector:">Carries the IV for
+            authenticated encryption algorithm as discussed in Section 5.2 of
+            <xref target="RFC7518"></xref>.</t>
 
-            <t>Message Authentication Code covering the entire NSH data
-            excluding the Base header. The Additional Authenticated Data
+            <t hangText="Encrypted Context Headers:">Carries the optional
+            encrypted Context Headers.</t>
+
+            <t hangText="Message Authentication Code: ">Covers the entire NSH
+            data excluding the Base header. The Additional Authenticated Data
             (defined in <xref target="RFC7518"></xref>) MUST be the Service
             Path header, the unencrypted Context headers, and the inner packet
-            on which the NSH is imposed .</t>
+            on which the NSH is imposed.</t>
           </list></t>
       </section>
 
@@ -768,7 +774,7 @@
         <xref target="scope2"></xref>.</t>
 
         <figure align="center" anchor="scope2" title="Scope of MAC#2">
-          <artwork><![CDATA[    0                   1                   2                   3
+          <artwork align="center"><![CDATA[    0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+<--+
    |Ver|O|U|    TTL    |   Length  |U|U|U|U|MD Type| Next Protocol |   |
@@ -802,33 +808,37 @@
         <t></t>
 
         <t>In reference to <xref target="mac"></xref>, the description of the
-        fields is as follows:<list style="symbols">
-            <t>Metadata Class: MUST be set to 0x0 (Section 2.5.1 of <xref
+        fields is as follows:<list style="hanging">
+            <t hangText="Metadata Class:">MUST be set to 0x0 (Section 2.5.1 of
+            <xref target="RFC8300"></xref>).</t>
+
+            <t hangText="Type:">TBD2 (See <xref target="IANA"></xref>)</t>
+
+            <t hangText="U:">Unassigned bit (Section 2.5.1 of <xref
             target="RFC8300"></xref>).</t>
 
-            <t>Type: TBD2 (See <xref target="IANA"></xref>)</t>
+            <t hangText="Length:">Variable. Padding considerations are
+            discussed in Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
 
-            <t>U: Unassigned bit (Section 2.5.1 of <xref
-            target="RFC8300"></xref>).</t>
+            <t hangText="Key Length:">See <xref target="enc1"></xref>.</t>
 
-            <t>Length: Variable. Padding considerations are discussed in
-            Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
+            <t hangText="Key Identifier:">See <xref target="enc1"></xref>.</t>
 
-            <t>Key Length: See <xref target="enc1"></xref>.</t>
+            <t hangText="Timestamp:">See <xref target="timef"></xref>.</t>
 
-            <t>Key Identifier: See <xref target="enc1"></xref>.</t>
+            <t hangText="IV Length:">See <xref target="enc1"></xref>.</t>
 
-            <t>Timestamp: See <xref target="timef"></xref>.</t>
+            <t hangText="Initialization Vector:">See <xref
+            target="enc1"></xref>.</t>
 
-            <t>IV Length: See <xref target="enc1"></xref>.</t>
+            <t hangText="Encrypted Context Headers:">Carries the optional
+            encrypted Context Headers.</t>
 
-            <t>Initialization Vector: See <xref target="enc1"></xref>.</t>
-
-            <t>Message Authentication Code covering the entire NSH data and
-            optional encrypted Context Headers. The Additional Authenticated
-            Data (defined in <xref target="RFC7518"></xref>) MUST be the
-            entire NSH data (i.e., including the Base Header) excluding the
-            Context Headers to be encrypted.</t>
+            <t hangText="Message Authentication Code:">Coves the entire NSH
+            data. The Additional Authenticated Data (defined in <xref
+            target="RFC7518"></xref>) MUST be the entire NSH data (i.e.,
+            including the Base Header) excluding the Context Headers to be
+            encrypted.</t>
           </list></t>
       </section>
     </section>
@@ -841,7 +851,7 @@
       target="new"></xref> is depicted in <xref target="tf"></xref>.</t>
 
       <t><figure anchor="tf" title="Timestamp Field Format">
-          <artwork><![CDATA[        0                   1                   2                   3
+          <artwork align="center"><![CDATA[        0                   1                   2                   3
         0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
        |                            Seconds                            |
@@ -1277,7 +1287,7 @@
       https://www.iana.org/assignments/nsh/nsh.xhtml#optional-variable-length-metadata-types.</t>
 
       <t><figure>
-          <artwork><![CDATA[+-------+-------------------------------+----------------+
+          <artwork align="center"><![CDATA[+-------+-------------------------------+----------------+
 | Value | Description                   | Reference      |
 +=======+===============================+================+
 | TBD1  | MAC and Encrypted Metadata #1 | [ThisDocument] |
