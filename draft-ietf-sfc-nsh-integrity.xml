@@ -981,8 +981,8 @@
         <t>An NSH imposer can encrypt Context Headers carrying
         privacy-sensitive metadata, i.e., encrypted and unencrypted metadata
         may be carried simultaneously in the same NSH packet (Sections <xref
-        format="counter" target="mac1"></xref> and <xref format="counter"
-        target="mac2"></xref>).</t>
+        format="counter" target="scope1"></xref> and <xref format="counter"
+        target="scope2"></xref>).</t>
 
         <t>In an SFC-enabled domain where pervasive monitoring <xref
         target="RFC7258"></xref> is possible, all Context Headers carrying

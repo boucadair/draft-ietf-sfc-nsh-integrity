@@ -1076,7 +1076,7 @@ Internet-Draft      Integrity Protection for the NSH       February 2021
 
    An NSH imposer can encrypt Context Headers carrying privacy-sensitive
    metadata, i.e., encrypted and unencrypted metadata may be carried
-   simultaneously in the same NSH packet (Sections 9.1 and 9.2).
+   simultaneously in the same NSH packet (Sections 6 and 7).
 
    In an SFC-enabled domain where pervasive monitoring [RFC7258] is
    possible, all Context Headers carrying privacy-sensitive metadata
