@@ -229,7 +229,7 @@
         </list></t>
 
       <t>The NSH allows to share context information (a.k.a., metadata) with
-      downstream NSH-aware data elements on a per SFC/SFP basis. To that
+      downstream NSH-aware data plane elements on a per SFC/SFP basis. To that
       aim:<list style="empty">
           <t>The control plane is used to instruct the Classifier about the
           set of context information to be supplied for a given service
@@ -614,19 +614,19 @@
 
         <t><figure align="center" anchor="nest"
             title="Encapsulation of NSH within NSH">
-            <artwork align="center"><![CDATA[                    +---------------------------------+
-                    |     Transport Encapsulation     |
-                 +->+---------------------------------+
-                 |  |        Lower-NSH Header         |
-                 |  +---------------------------------+
-                 |  |        Upper-NSH Header         |
-                 |  +---------------------------------+
-                 |  |          Original Packet        |
-                 +->+---------------------------------+
-                 |
-                 |                                          
-                 +----Scope of NSH security protection 
-                      provided by a lower-level domain                                           
+            <artwork align="center"><![CDATA[   +---------------------------------+
+   |     Transport Encapsulation     |
++->+---------------------------------+
+|  |        Lower-NSH Header         |
+|  +---------------------------------+
+|  |        Upper-NSH Header         |
+|  +---------------------------------+
+|  |          Original Packet        |
++->+---------------------------------+
+|
+|                                          
++----Scope of NSH security protection 
+     provided by a lower-level domain                                           
 ]]></artwork>
           </figure></t>
 
@@ -950,7 +950,7 @@
         <t>Only one instance of "MAC and Encrypted Metadata" Context Header
         (<xref target="new"></xref>) is allowed. If multiple instances of "MAC
         and Encrypted Metadata" Context Header are included in an NSH packet,
-        the SFC data element MUST process the first instance and ignore
+        the SFC data plane element MUST process the first instance and ignore
         subsequent instances, and MAY log or increase a counter for this event
         as per Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
 

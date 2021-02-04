@@ -233,8 +233,8 @@ Internet-Draft      Integrity Protection for the NSH       February 2021
       service path.
 
    The NSH allows to share context information (a.k.a., metadata) with
-   downstream NSH-aware data elements on a per SFC/SFP basis.  To that
-   aim:
+   downstream NSH-aware data plane elements on a per SFC/SFP basis.  To
+   that aim:
 
       The control plane is used to instruct the Classifier about the set
       of context information to be supplied for a given service function
@@ -618,19 +618,19 @@ Boucadair, et al.        Expires August 8, 2021                [Page 11]
 Internet-Draft      Integrity Protection for the NSH       February 2021
 
 
-                              +---------------------------------+
-                              |     Transport Encapsulation     |
-                           +->+---------------------------------+
-                           |  |        Lower-NSH Header         |
-                           |  +---------------------------------+
-                           |  |        Upper-NSH Header         |
-                           |  +---------------------------------+
-                           |  |          Original Packet        |
-                           +->+---------------------------------+
-                           |
-                           |
-                           +----Scope of NSH security protection
-                                provided by a lower-level domain
+                     +---------------------------------+
+                     |     Transport Encapsulation     |
+                  +->+---------------------------------+
+                  |  |        Lower-NSH Header         |
+                  |  +---------------------------------+
+                  |  |        Upper-NSH Header         |
+                  |  +---------------------------------+
+                  |  |          Original Packet        |
+                  +->+---------------------------------+
+                  |
+                  |
+                  +----Scope of NSH security protection
+                       provided by a lower-level domain
 
                  Figure 4: Encapsulation of NSH within NSH
 
@@ -1036,7 +1036,7 @@ Internet-Draft      Integrity Protection for the NSH       February 2021
    Only one instance of "MAC and Encrypted Metadata" Context Header
    (Section 5) is allowed.  If multiple instances of "MAC and Encrypted
    Metadata" Context Header are included in an NSH packet, the SFC data
-   element MUST process the first instance and ignore subsequent
+   plane element MUST process the first instance and ignore subsequent
    instances, and MAY log or increase a counter for this event as per
    Section 2.5.1 of [RFC8300].
 
