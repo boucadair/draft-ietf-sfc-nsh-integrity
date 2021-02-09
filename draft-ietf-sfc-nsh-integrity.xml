@@ -178,6 +178,9 @@
 
       <t>This specification limits thus access to an information along an SFP
       to entities that have a need to interpret it.</t>
+
+      <t>It is out of the scope of this document to specify an NSH-aware
+      control plane solution.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -196,13 +199,13 @@
           architecture <xref target="RFC7665"></xref> and further refined in
           <xref target="RFC8300"></xref>.</t>
 
-          <t hangText="SFC control element:">A logical entity that instructs
-          one or more SFC data plane elements on how to process NSH packets
-          within an SFC-enabled domain.</t>
+          <t hangText="SFC control element:">Is a logical entity that
+          instructs one or more SFC data plane elements on how to process NSH
+          packets within an SFC-enabled domain.</t>
 
-          <t hangText="Key Identifier:">A key identifier used to identify and
-          deliver keys to authorized entities. See for example, 'kid' usage in
-          <xref target="RFC7635"></xref>.</t>
+          <t hangText="Key Identifier:">Is used to identify and deliver keys
+          to authorized entities. See for example, 'kid' usage in <xref
+          target="RFC7635"></xref>.</t>
 
           <t hangText="NSH data:">The NSH is composed of a Base Header, a
           Service Path Header, and optional Context Headers. NSH data refers
@@ -231,27 +234,27 @@
       <t>The NSH allows to share context information (a.k.a., metadata) with
       downstream NSH-aware data plane elements on a per SFC/SFP basis. To that
       aim:<list style="empty">
-          <t>The control plane is used to instruct the Classifier about the
-          set of context information to be supplied for a given service
-          function chain.</t>
+          <t>The Classifier is instructed about the set of context information
+          to be supplied for a given service function chain.</t>
 
-          <t>The control plane is also used to instruct an NSH-aware SF about
-          any metadata it needs to attach to packets for a given service
-          function chain. This instruction may occur any time during the
-          validity lifetime of an SFC/SFP. The control plane may indicate, for
-          a given service function chain, an order for consuming a set of
-          contexts supplied in a packet.</t>
+          <t>An NSH-aware SF is instructed about any metadata it needs to
+          attach to packets for a given service function chain. This
+          instruction may occur any time during the validity lifetime of an
+          SFC/SFP. For a given service function chain, the NSH-aware SF is
+          also provided with an order for consuming a set of contexts supplied
+          in a packet.</t>
 
           <t>An NSH-aware SF can also be instructed about the behavior it
           should adopt after consuming a context information that was supplied
-          in the NSH. For example, the context can be maintained, updated, or
-          stripped.</t>
+          in the NSH. For example, the context information can be maintained,
+          updated, or stripped.</t>
 
           <t>An SFC Proxy may be instructed about the behavior it should adopt
           to process the context information that was supplied in the NSH on
-          behalf of an NSH-unaware SF (e.g., the context can be maintained or
-          stripped). The SFC Proxy may also be instructed to add some new
-          context information into the NSH on behalf of an NSH-unaware SF.</t>
+          behalf of an NSH-unaware SF (e.g., the context information can be
+          maintained or stripped). The SFC Proxy may also be instructed to add
+          some new context information into the NSH on behalf of an
+          NSH-unaware SF.</t>
         </list></t>
 
       <t>In reference to <xref target="op"></xref>, <list style="symbols">
@@ -365,15 +368,14 @@
             <c>No</c>
           </texttable>
 
-          <t>The SFC control plane is assumed to instruct the Classifier(s),
-          NSH-aware SFs, and SFC proxies with the set of Context Headers
-          (privacy-sensitive metadata, typically) that must be encrypted.
-          Encryption keying material is only provided to these SFC data plane
-          elements.</t>
+          <t>Classifier(s), NSH-aware SFs, and SFC proxies are instructed with
+          the set of Context Headers (privacy-sensitive metadata, typically)
+          that must be encrypted. Encryption keying material is only provided
+          to these SFC data plane elements.</t>
 
-          <t>The control plane may also indicate the set of SFC data plane
-          elements that are entitled to supply a given Context Header (e.g.,
-          in reference to their identifiers as assigned within the SFC-enabled
+          <t>The control plane may indicate the set of SFC data plane elements
+          that are entitled to supply a given Context Header (e.g., in
+          reference to their identifiers as assigned within the SFC-enabled
           domain). It is out of the scope of this document to elaborate on how
           such instructions are provided to the appropriate SFC data plane
           elements, nor to detail the structure used to store the
@@ -925,8 +927,7 @@
         element. The details of sending notification alarms (i.e., the
         parameters affecting the transmission of the notification alarms
         depend on the information in the context header such as frequency,
-        thresholds, and content in the alarm) SHOULD be configurable by the
-        SFC control plane.</t>
+        thresholds, and content in the alarm) SHOULD be configurable.</t>
 
         <t>NSH-aware SFs and SFC proxies MAY be instructed to strip some
         encrypted Context Headers from the packet or to pass the data to the
@@ -1002,7 +1003,7 @@
         target="RFC6973"></xref>.</t>
 
         <t>Using K and authenticated encryption algorithm, the NSH imposer
-        encrypts the Context Headers (as set by the control plane <xref
+        encrypts the Context Headers (as set, for example, in <xref
         target="req"></xref>), computes the message integrity for the target
         NSH data, and inserts the resulting payload in the "MAC and Encrypted
         Metadata" Context Header (<xref target="new"></xref>). The entire
@@ -1303,8 +1304,8 @@
       (slide 7).</t>
 
       <t>Thanks to Joel Halpern, Christian Jacquenet, Dirk von Hugo, Tal
-      Mizrahi, Daniel Migault, Diego Lopez, and Greg Mirsky for the
-      comments.</t>
+      Mizrahi, Daniel Migault, Diego Lopez, Greg Mirsky, and Dhruv Dhody for
+      the comments.</t>
 
       <t>Many thanks to Steve Hanna for the valuable secdir review.</t>
     </section>
