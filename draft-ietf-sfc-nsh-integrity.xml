@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-03"
+<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-04"
      ipr="trust200902">
   <front>
     <title abbrev="Integrity Protection for the NSH">Integrity Protection for
@@ -170,14 +170,14 @@
       underlying transport encapsulation for security and confidentiality.</t>
 
       <t>This specification introduces new Variable-Length Context Headers to
-      carry fields necessary for integrity protected NSH headers and encrypted
+      carry fields necessary for integrity-protected NSH headers and encrypted
       Context Headers (<xref target="new"></xref>). This specification is only
       applicable to NSH MD Type 0x02 (Section 2.5 of <xref
       target="RFC8300"></xref>). MTU considerations are discussed in <xref
       target="MTU"></xref>.</t>
 
-      <t>This specification limits thus access to an information along an SFP
-      to entities that have a need to interpret it.</t>
+      <t>This specification limits thus access to NSH-supplied information
+      along an SFP to entities that have a need to interpret it.</t>
 
       <t>It is out of the scope of this document to specify an NSH-aware
       control plane solution.</t>
@@ -204,7 +204,7 @@
           packets within an SFC-enabled domain.</t>
 
           <t hangText="Key Identifier:">Is used to identify and deliver keys
-          to authorized entities. See for example, 'kid' usage in <xref
+          to authorized entities. See, for example, 'kid' usage in <xref
           target="RFC7635"></xref>.</t>
 
           <t hangText="NSH data:">The NSH is composed of a Base Header, a
@@ -245,7 +245,7 @@
           in a packet.</t>
 
           <t>An NSH-aware SF can also be instructed about the behavior it
-          should adopt after consuming a context information that was supplied
+          should adopt after consuming context information that was supplied
           in the NSH. For example, the context information can be maintained,
           updated, or stripped.</t>
 
@@ -391,7 +391,7 @@
           <t>The solution provides integrity protection for the NSH data. Two
           levels of assurance (LoAs) are supported.</t>
 
-          <t>A first level of assurance where all NSH data except the Base
+          <t>The first level of assurance where all NSH data except the Base
           Header are integrity protected (<xref target="first"></xref>). In
           this case, the NSH imposer may be a Classifier, an NSH-aware SF, or
           an SFC Proxy. SFFs are not thus provided with authentication
@@ -414,7 +414,7 @@
 ]]></artwork>
             </figure></t>
 
-          <t>A second level of assurance where all NSH data, including the
+          <t>The second level of assurance where all NSH data, including the
           Base Header, are integrity protected (<xref target="sec"></xref>).
           In this case, the NSH imposer may be a Classifier, an NSH-aware SF,
           an SFF, or an SFC Proxy. Further details are provided in <xref
@@ -496,8 +496,8 @@
 
             <t>If the Context Headers are not encrypted, the Hashed Message
             Authentication Mode (HMAC) algorithm discussed in <xref
-            target="RFC4868"></xref> is used to integrity protect the NSH
-            data.</t>
+            target="RFC4868"></xref> is used to protect the integrity of the
+            NSH data.</t>
           </list></t>
 
         <t>The advantage of using the authenticated encryption algorithm is
@@ -515,7 +515,7 @@
         control plane. Mandatory to implement authenticated encryption and
         HMAC algorithms are listed in <xref target="mti"></xref>.</t>
 
-        <t>The authenticated encryption process takes as input four octet
+        <t>The authenticated encryption process takes as input four-octet
         strings: a secret key (K), a plaintext (P), Additional Authenticated
         Data (A) (which contains the data to be authenticated, but not
         encrypted), and an Initialization Vector (IV). The ciphertext value
@@ -554,7 +554,7 @@
         specification does not mandate the support of any specific
         mechanism.</t>
 
-        <t>The documents does not assume nor preclude the following:<list
+        <t>The document does not assume nor preclude the following:<list
             style="symbols">
             <t>The same keying material is used for all the service functions
             used within an SFC-enabled domain.</t>
@@ -567,7 +567,7 @@
 
         <t>In order to accommodate deployments relying upon keying material
         per SFC/SFP and also the need to update keys after encrypting NSH data
-        for certain amount of time, this document uses key identifiers to
+        for a certain amount of time, this document uses key identifiers to
         unambiguously identify the appropriate keying material. Doing so
         allows to address the problem of synchronization of keying
         material.</t>
@@ -737,7 +737,7 @@
             <t hangText="Key Length:">Variable. Carries the length of the key
             identifier.</t>
 
-            <t hangText="Key Identifier:">Carries a variable length Key
+            <t hangText="Key Identifier:">Carries a variable-length Key
             Identifier object used to identify and deliver keys to SFC data
             plane elements. This identifier is helpful to accommodate
             deployments relying upon keying material per SFC/SFP. The key
@@ -761,7 +761,7 @@
             encrypted Context Headers.</t>
 
             <t hangText="Message Authentication Code: ">Covers the entire NSH
-            data excluding the Base header. The Additional Authenticated Data
+            data, excluding the Base header. The Additional Authenticated Data
             (defined in <xref target="RFC7518"></xref>) MUST be the Service
             Path header, the unencrypted Context headers, and the inner packet
             on which the NSH is imposed.</t>
@@ -898,7 +898,7 @@
         </list>Synchronization aspects:<list style="empty">
           <t>It is assumed that SFC data plane elements are synchronized to
           UTC using a synchronization mechanism that is outside the scope of
-          this document. In typical deployments SFC data plane elements use
+          this document. In typical deployments, SFC data plane elements use
           NTP <xref target="RFC5905"></xref> for synchronization. Thus, the
           timestamp may be derived from the NTP-synchronized clock, allowing
           the timestamp to be measured with respect to the clock of an NTP
@@ -1113,7 +1113,7 @@
         Header is missing.</t>
 
         <t>If the timestamp check is successfully passed, the SFC data plane
-        element proceeds then with NSH data integrity validation. The SFC data
+        element proceeds with NSH data integrity validation. The SFC data
         plane element computes the message integrity for the target NSH data
         (depending on the integrity protection scope discussed in <xref
         target="new"></xref>) using the MAC_KEY and HMAC algorithm for the key
@@ -1141,7 +1141,7 @@
           <t>Identify SFPs: this is typically the NSH Base Header and Service
           Path Header.</t>
 
-          <t>Carry metadata such those defined in <xref format="default"
+          <t>Carry metadata such as those defined in <xref format="default"
           target="new"></xref>.</t>
 
           <t>Steer the traffic along the SFPs: transport encapsulation.</t>
@@ -1228,14 +1228,14 @@
       target="I-D.nguyen-sfc-security-architecture"></xref> are handled owing
       to the solution specified in this document, except for attacks dropping
       packets. Such attacks can be detected relying upon statistical analysis;
-      such analysis is out of scope of this document. Also, if SFFs are not
-      involved in the integrity checks, a misbehaving SFF which decrements SI
-      while this should be done by an SF (SF bypass attack) will be detected
-      by an upstream SF because the integrity check will fail.</t>
+      such analysis is out of the scope of this document. Also, if SFFs are
+      not involved in the integrity checks, a misbehaving SFF which decrements
+      SI while this should be done by an SF (SF bypass attack) will be
+      detected by an upstream SF because the integrity check will fail.</t>
 
       <t>Some events are logged locally with notification alerts sent by
-      NSH-aware nodes to a Control Element. These events SHOULD be rate
-      limited.</t>
+      NSH-aware nodes to a Control Element. These events SHOULD be
+      rate-limited.</t>
 
       <t>The solution specified in this document does not provide data origin
       authentication.</t>
@@ -1307,7 +1307,10 @@
       Mizrahi, Daniel Migault, Diego Lopez, Greg Mirsky, and Dhruv Dhody for
       the comments.</t>
 
-      <t>Many thanks to Steve Hanna for the valuable secdir review.</t>
+      <t>Many thanks to Steve Hanna for the valuable security directorate
+      review.</t>
+
+      <t>Thanks to Greg Mirsky for the Shepherd review. </t>
     </section>
   </middle>
 
