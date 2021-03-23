@@ -13,7 +13,7 @@ Expires: September 24, 2021                                       McAfee
 
 Integrity Protection for the Network Service Header (NSH) and Encryption
                       of Sensitive Context Headers
-                    draft-ietf-sfc-nsh-integrity-04
+                    draft-ietf-sfc-nsh-integrity-05
 
 Abstract
 
@@ -1463,11 +1463,6 @@ Internet-Draft      Integrity Protection for the NSH          March 2021
               DOI 10.17487/RFC8300, January 2018,
               <https://www.rfc-editor.org/info/rfc8300>.
 
-   [RFC8877]  Mizrahi, T., Fabini, J., and A. Morton, "Guidelines for
-              Defining Packet Timestamps", RFC 8877,
-              DOI 10.17487/RFC8877, September 2020,
-              <https://www.rfc-editor.org/info/rfc8877>.
-
 12.2.  Informative References
 
    [I-D.arkko-farrell-arch-model-t]
@@ -1506,6 +1501,11 @@ Internet-Draft      Integrity Protection for the NSH          March 2021
               DOI 10.17487/RFC7498, April 2015,
               <https://www.rfc-editor.org/info/rfc7498>.
 
+   [RFC7635]  Reddy, T., Patil, P., Ravindranath, R., and J. Uberti,
+              "Session Traversal Utilities for NAT (STUN) Extension for
+              Third-Party Authorization", RFC 7635,
+              DOI 10.17487/RFC7635, August 2015,
+              <https://www.rfc-editor.org/info/rfc7635>.
 
 
 
@@ -1513,12 +1513,6 @@ Boucadair, et al.      Expires September 24, 2021              [Page 27]
 
 Internet-Draft      Integrity Protection for the NSH          March 2021
 
-
-   [RFC7635]  Reddy, T., Patil, P., Ravindranath, R., and J. Uberti,
-              "Session Traversal Utilities for NAT (STUN) Extension for
-              Third-Party Authorization", RFC 7635,
-              DOI 10.17487/RFC7635, August 2015,
-              <https://www.rfc-editor.org/info/rfc7635>.
 
    [RFC8165]  Hardie, T., "Design Considerations for Metadata
               Insertion", RFC 8165, DOI 10.17487/RFC8165, May 2017,
@@ -1533,6 +1527,11 @@ Internet-Draft      Integrity Protection for the NSH          March 2021
               Protocol Best Current Practices", BCP 223, RFC 8633,
               DOI 10.17487/RFC8633, July 2019,
               <https://www.rfc-editor.org/info/rfc8633>.
+
+   [RFC8877]  Mizrahi, T., Fabini, J., and A. Morton, "Guidelines for
+              Defining Packet Timestamps", RFC 8877,
+              DOI 10.17487/RFC8877, September 2020,
+              <https://www.rfc-editor.org/info/rfc8877>.
 
    [RFC8915]  Franke, D., Sibold, D., Teichel, K., Dansarie, M., and R.
               Sundblad, "Network Time Security for the Network Time
@@ -1558,18 +1557,6 @@ Authors' Addresses
    Email: TirumaleswarReddy_Konda@McAfee.com
 
 
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 24, 2021              [Page 28]
-
-Internet-Draft      Integrity Protection for the NSH          March 2021
-
-
    Dan Wing
    Citrix Systems, Inc.
    USA
@@ -1578,47 +1565,4 @@ Internet-Draft      Integrity Protection for the NSH          March 2021
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Boucadair, et al.      Expires September 24, 2021              [Page 29]
+Boucadair, et al.      Expires September 24, 2021              [Page 28]
