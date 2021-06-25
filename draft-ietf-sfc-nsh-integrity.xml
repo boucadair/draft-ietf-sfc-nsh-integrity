@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-05"
+<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-06"
      ipr="trust200902">
   <front>
     <title abbrev="Integrity Protection for the NSH">Integrity Protection for
@@ -324,10 +324,7 @@
           Headers by Classifiers, NSH-aware SFs, and SFC proxies.</t>
 
           <t>As depicted in <xref target="eroles"></xref>, SFFs are not
-          involved in data encryption. This document enforces this design
-          approach by encrypting Context Headers with keys that are not
-          supplied to SFFs, thus enforcing this limitation by protocol (rather
-          than requirements language).</t>
+          involved in data encryption. </t>
 
           <texttable align="center" anchor="eroles"
                      title="Encryption Function Supported by SFC Data Plane Elements">
@@ -878,7 +875,9 @@
         </list></t>
 
       <t>Epoch:<list style="empty">
-          <t>The epoch is 1970-01-01T00:00Z in UTC time.</t>
+          <t>The epoch is 1970-01-01T00:00Z in UTC time. Note this epoch value
+          is different from the one used in Section 6 of <xref
+          target="RFC5905"></xref>. </t>
         </list></t>
 
       <t>Leap seconds:<list style="empty">
@@ -1002,14 +1001,14 @@
         specific threats are discussed in Section 5.2 of <xref
         target="RFC6973"></xref>.</t>
 
-        <t>Using K and authenticated encryption algorithm, the NSH imposer
-        encrypts the Context Headers (as set, for example, in <xref
-        target="req"></xref>), computes the message integrity for the target
-        NSH data, and inserts the resulting payload in the "MAC and Encrypted
-        Metadata" Context Header (<xref target="new"></xref>). The entire
-        Context Header carrying a privacy-sensitive metadata is encrypted
-        (that is, including the MD Class, Type, Length, and associated
-        metadata of each Context Header).</t>
+        <t>Using the secret key (K) and authenticated encryption algorithm,
+        the NSH imposer encrypts the Context Headers (as set, for example, in
+        <xref target="req"></xref>), computes the message integrity for the
+        target NSH data, and inserts the resulting payload in the "MAC and
+        Encrypted Metadata" Context Header (<xref target="new"></xref>). The
+        entire Context Header carrying a privacy-sensitive metadata is
+        encrypted (that is, including the MD Class, Type, Length, and
+        associated metadata of each Context Header).</t>
 
         <t>The message Authentication Tag (T) and ciphertext (E) computation
         process can be illustrated as follows:</t>
@@ -1308,9 +1307,9 @@
       the comments.</t>
 
       <t>Many thanks to Steve Hanna for the valuable security directorate
-      review.</t>
+      review and J&uuml;rgen Sch&ouml;nw&auml;lder for the opsdir review.</t>
 
-      <t>Thanks to Greg Mirsky for the Shepherd review. </t>
+      <t>Thanks to Greg Mirsky for the Shepherd review.</t>
     </section>
   </middle>
 
