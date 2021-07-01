@@ -324,7 +324,7 @@
           Headers by Classifiers, NSH-aware SFs, and SFC proxies.</t>
 
           <t>As depicted in <xref target="eroles"></xref>, SFFs are not
-          involved in data encryption. </t>
+          involved in data encryption.</t>
 
           <texttable align="center" anchor="eroles"
                      title="Encryption Function Supported by SFC Data Plane Elements">
@@ -877,7 +877,7 @@
       <t>Epoch:<list style="empty">
           <t>The epoch is 1970-01-01T00:00Z in UTC time. Note this epoch value
           is different from the one used in Section 6 of <xref
-          target="RFC5905"></xref>. </t>
+          target="RFC5905"></xref>.</t>
         </list></t>
 
       <t>Leap seconds:<list style="empty">
