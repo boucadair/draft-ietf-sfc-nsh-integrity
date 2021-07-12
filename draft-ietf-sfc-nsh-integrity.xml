@@ -270,19 +270,19 @@
         </list></t>
 
       <t>Thus, the following requirements:<list style="symbols">
-          <t>Only Classifiers, NSH-aware SFs, and SFC proxies MUST be able to
+          <t>Only Classifiers, NSH-aware SFs, and SFC proxies must be able to
           encrypt and decrypt a given Context Header.</t>
 
-          <t>Both encrypted and unencrypted Context Headers MAY be included in
+          <t>Both encrypted and unencrypted Context Headers may be included in
           the same NSH. That is, some Context Headers may be protected while
           others do not need to be protected.</t>
 
-          <t>The solution MUST provide integrity protection for the Service
+          <t>The solution must provide integrity protection for the Service
           Path Header.</t>
 
-          <t>The solution MAY provide integrity protection for the Base
-          Header. The implications of disabling such checks are discussed in
-          <xref target="mac1"></xref>.</t>
+          <t>The solution must provide optional integrity protection for the
+          Base Header. The implications of disabling such checks are discussed
+          in <xref target="mac1"></xref>.</t>
         </list></t>
 
       <t><figure align="center" anchor="op" title="Summary of NSH Actions">
@@ -1306,10 +1306,12 @@
       Mizrahi, Daniel Migault, Diego Lopez, Greg Mirsky, and Dhruv Dhody for
       the comments.</t>
 
-      <t>Many thanks to Steve Hanna for the valuable security directorate
-      review and J&uuml;rgen Sch&ouml;nw&auml;lder for the opsdir review.</t>
+      <t>Many thanks to Steve Hanna for the valuable secdir review and
+      J&uuml;rgen Sch&ouml;nw&auml;lder for the opsdir review.</t>
 
       <t>Thanks to Greg Mirsky for the Shepherd review.</t>
+
+      <t>Thanks to Alvaro Retana for the IESG review. </t>
     </section>
   </middle>
 
