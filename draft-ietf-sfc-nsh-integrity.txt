@@ -239,27 +239,28 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    downstream NSH-aware data plane elements on a per SFC/SFP basis.  To
    that aim:
 
-      The Classifier is instructed about the set of context information
-      to be supplied for a given service function chain.
+      The Classifier is instructed by an SFC control element about the
+      set of context information to be supplied for a given service
+      function chain.
 
-      An NSH-aware SF is instructed about any metadata it needs to
-      attach to packets for a given service function chain.  This
-      instruction may occur any time during the validity lifetime of an
-      SFC/SFP.  For a given service function chain, the NSH-aware SF is
-      also provided with an order for consuming a set of contexts
-      supplied in a packet.
+      An NSH-aware SF is instructed by an SFC control element about any
+      metadata it needs to attach to packets for a given service
+      function chain.  This instruction may occur any time during the
+      validity lifetime of an SFC/SFP.  For a given service function
+      chain, the NSH-aware SF is also provided with an order for
+      consuming a set of contexts supplied in a packet.
 
-      An NSH-aware SF can also be instructed about the behavior it
-      should adopt after consuming context information that was supplied
-      in the NSH.  For example, the context information can be
-      maintained, updated, or stripped.
+      An NSH-aware SF can also be instructed by an SFC control element
+      about the behavior it should adopt after consuming context
+      information that was supplied in the NSH.  For example, the
+      context information can be maintained, updated, or stripped.
 
-      An SFC Proxy may be instructed about the behavior it should adopt
-      to process the context information that was supplied in the NSH on
-      behalf of an NSH-unaware SF (e.g., the context information can be
-      maintained or stripped).  The SFC Proxy may also be instructed to
-      add some new context information into the NSH on behalf of an NSH-
-      unaware SF.
+      An SFC Proxy may be instructed by an SFC control element about the
+      behavior it should adopt to process the context information that
+      was supplied in the NSH on behalf of an NSH-unaware SF (e.g., the
+      context information can be maintained or stripped).  The SFC Proxy
+      may also be instructed to add some new context information into
+      the NSH on behalf of an NSH-unaware SF.
 
    In reference to Figure 1,
 
@@ -273,7 +274,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       example).  Nevertheless, SFFs are not supposed to act on the
       Context Headers or look into the content of the Context Headers.
 
-   Thus, the following requirements:
 
 
 
@@ -281,6 +281,8 @@ Boucadair, et al.       Expires January 13, 2022                [Page 5]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   Thus, the following requirements:
 
    o  Only Classifiers, NSH-aware SFs, and SFC proxies must be able to
       encrypt and decrypt a given Context Header.
@@ -326,8 +328,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    This specification provides the functions described in the following
    subsections.
-
-
 
 
 
@@ -1417,7 +1417,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Thanks to Greg Mirsky for the Shepherd review.
 
-   Thanks to Alvaro Retana and Lars Eggert for the IESG review.
+   Thanks to Alvaro Retana, Lars Eggert, and Martin Duke for the IESG
+   review.
 
 12.  References
 
@@ -1449,7 +1450,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
 
 
 

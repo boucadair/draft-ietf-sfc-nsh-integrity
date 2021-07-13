@@ -237,27 +237,28 @@
       <t>The NSH allows sharing context information (a.k.a., metadata) with
       downstream NSH-aware data plane elements on a per SFC/SFP basis. To that
       aim:<list style="empty">
-          <t>The Classifier is instructed about the set of context information
-          to be supplied for a given service function chain.</t>
+          <t>The Classifier is instructed by an SFC control element about the
+          set of context information to be supplied for a given service
+          function chain.</t>
 
-          <t>An NSH-aware SF is instructed about any metadata it needs to
-          attach to packets for a given service function chain. This
-          instruction may occur any time during the validity lifetime of an
-          SFC/SFP. For a given service function chain, the NSH-aware SF is
-          also provided with an order for consuming a set of contexts supplied
-          in a packet.</t>
+          <t>An NSH-aware SF is instructed by an SFC control element about any
+          metadata it needs to attach to packets for a given service function
+          chain. This instruction may occur any time during the validity
+          lifetime of an SFC/SFP. For a given service function chain, the
+          NSH-aware SF is also provided with an order for consuming a set of
+          contexts supplied in a packet.</t>
 
-          <t>An NSH-aware SF can also be instructed about the behavior it
-          should adopt after consuming context information that was supplied
-          in the NSH. For example, the context information can be maintained,
-          updated, or stripped.</t>
+          <t>An NSH-aware SF can also be instructed by an SFC control element
+          about the behavior it should adopt after consuming context
+          information that was supplied in the NSH. For example, the context
+          information can be maintained, updated, or stripped.</t>
 
-          <t>An SFC Proxy may be instructed about the behavior it should adopt
-          to process the context information that was supplied in the NSH on
-          behalf of an NSH-unaware SF (e.g., the context information can be
-          maintained or stripped). The SFC Proxy may also be instructed to add
-          some new context information into the NSH on behalf of an
-          NSH-unaware SF.</t>
+          <t>An SFC Proxy may be instructed by an SFC control element about
+          the behavior it should adopt to process the context information that
+          was supplied in the NSH on behalf of an NSH-unaware SF (e.g., the
+          context information can be maintained or stripped). The SFC Proxy
+          may also be instructed to add some new context information into the
+          NSH on behalf of an NSH-unaware SF.</t>
         </list></t>
 
       <t>In reference to <xref target="op"></xref>, <list style="symbols">
@@ -1314,7 +1315,8 @@
 
       <t>Thanks to Greg Mirsky for the Shepherd review.</t>
 
-      <t>Thanks to Alvaro Retana and Lars Eggert for the IESG review.</t>
+      <t>Thanks to Alvaro Retana, Lars Eggert, and Martin Duke for the IESG
+      review.</t>
     </section>
   </middle>
 
