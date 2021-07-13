@@ -19,7 +19,7 @@ Abstract
 
    This specification adds integrity protection directly to the Network
    Service Header (NSH) used for Service Function Chaining (SFC).  Also,
-   this specification allows to encrypt sensitive metadata that is
+   this specification allows encrypting sensitive metadata that is
    carried in the NSH.
 
 Status of This Memo
@@ -69,7 +69,7 @@ Table of Contents
    3.  Assumptions and Basic Requirements  . . . . . . . . . . . . .   4
    4.  Design Overview . . . . . . . . . . . . . . . . . . . . . . .   6
      4.1.  Supported Security Services . . . . . . . . . . . . . . .   6
-       4.1.1.  Encrypt All or a Subset of Context Headers  . . . . .   6
+       4.1.1.  Encrypt All or a Subset of Context Headers  . . . . .   7
        4.1.2.  Integrity Protection  . . . . . . . . . . . . . . . .   7
      4.2.  One Secret Key, Two Security Services . . . . . . . . . .   9
      4.3.  Mandatory-to-Implement Authenticated Encryption and HMAC
@@ -132,15 +132,15 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    classification.  [RFC8300] specifies the SFC encapsulation: Network
    Service Header (NSH).
 
-   The NSH data is unauthenticated and unencrypted [RFC8300], forcing a
-   service topology that requires security and privacy to use a
-   transport encapsulation that supports such features.  Note that some
-   transport encapsulations (e.g., IPsec) only provide hop-by-hop
-   security between two SFC data plane elements (e.g., two Service
-   Function Forwarders (SFFs), SFF to SF) and do not provide SF-to-SF
-   security of NSH metadata.  For example, if IPsec is used, SFFs or SFs
-   within a Service Function Path (SFP) that are not authorized to
-   access the privacy-sensitive metadata will have access to the
+   The NSH data is unauthenticated and unencrypted, forcing a service
+   topology that requires security and privacy to use a transport
+   encapsulation that supports such features (Section 8.2 of [RFC8300]).
+   Note that some transport encapsulations (e.g., IPsec) only provide
+   hop-by-hop security between two SFC data plane elements (e.g., two
+   Service Function Forwarders (SFFs), SFF to SF) and do not provide SF-
+   to-SF security of NSH metadata.  For example, if IPsec is used, SFFs
+   or SFs within a Service Function Path (SFP) that are not authorized
+   to access the privacy-sensitive metadata will have access to the
    metadata.  As a reminder, the metadata referred to is an information
    that is inserted by Classifiers or intermediate SFs and shared with
    downstream SFs; such information is not visible to the communication
@@ -151,17 +151,17 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    [I-D.arkko-farrell-arch-model-t] for a discussion on the need for
    more awareness about attacks from within closed domains.
 
-   This specification fills that gap.  Concretely, this document adds
-   integrity protection and optional encryption of sensitive metadata
-   directly to the NSH (Section 4); integrity protects the packet
-   payload and provides replay protection (Section 7.4).  Thus, the NSH
-   does not have to rely upon an underlying transport encapsulation for
-   security and confidentiality.
+   This specification fills that gap (that is, define the "NSH Variable
+   Header-Based Integrity" option mentioned in Section 8.2.1 of
+   [RFC8300]).  Concretely, this document adds integrity protection and
+   optional encryption of sensitive metadata directly to the NSH
+   (Section 4); integrity protects the packet payload and provides
+   replay protection (Section 7.4).  Thus, the NSH does not have to rely
+   upon an underlying transport encapsulation for security and
+   confidentiality.
 
    This specification introduces new Variable-Length Context Headers to
    carry fields necessary for integrity-protected NSH headers and
-   encrypted Context Headers (Section 5).  This specification is only
-
 
 
 
@@ -170,6 +170,7 @@ Boucadair, et al.       Expires January 13, 2022                [Page 3]
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
+   encrypted Context Headers (Section 5).  This specification is only
    applicable to NSH MD Type 0x02 (Section 2.5 of [RFC8300]).  MTU
    considerations are discussed in Section 8.
 
@@ -216,8 +217,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Section 2 of [RFC8300] specifies that the NSH data can be spread over
    three headers:
 
-   o  Base Header: Provides information about the service header and the
-      payload protocol.
+
 
 
 
@@ -226,13 +226,16 @@ Boucadair, et al.       Expires January 13, 2022                [Page 4]
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
+   o  Base Header: Provides information about the service header and the
+      payload protocol.
+
    o  Service Path Header: Provides path identification and location
       within an SFP.
 
    o  Context Header(s): Carries metadata (i.e., context data) along a
       service path.
 
-   The NSH allows to share context information (a.k.a., metadata) with
+   The NSH allows sharing context information (a.k.a., metadata) with
    downstream NSH-aware data plane elements on a per SFC/SFP basis.  To
    that aim:
 
@@ -272,15 +275,15 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Thus, the following requirements:
 
-   o  Only Classifiers, NSH-aware SFs, and SFC proxies must be able to
-      encrypt and decrypt a given Context Header.
-
 
 
 Boucadair, et al.       Expires January 13, 2022                [Page 5]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   o  Only Classifiers, NSH-aware SFs, and SFC proxies must be able to
+      encrypt and decrypt a given Context Header.
 
    o  Both encrypted and unencrypted Context Headers may be included in
       the same NSH.  That is, some Context Headers may be protected
@@ -324,12 +327,9 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    This specification provides the functions described in the following
    subsections.
 
-4.1.1.  Encrypt All or a Subset of Context Headers
 
-   The solution allows to encrypt all or a subset of NSH Context Headers
-   by Classifiers, NSH-aware SFs, and SFC proxies.
 
-   As depicted in Table 1, SFFs are not involved in data encryption.
+
 
 
 
@@ -337,6 +337,13 @@ Boucadair, et al.       Expires January 13, 2022                [Page 6]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+4.1.1.  Encrypt All or a Subset of Context Headers
+
+   The solution allows encrypting all or a subset of NSH Context Headers
+   by Classifiers, NSH-aware SFs, and SFC proxies.
+
+   As depicted in Table 1, SFFs are not involved in data encryption.
 
    +-----------------+------------------------------+------------------+
    | Data Plane      | Base and Service Headers     | Metadata         |
@@ -377,13 +384,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    imposer may be a Classifier, an NSH-aware SF, or an SFC Proxy.  SFFs
    are not thus provided with authentication material.  Further details
    are discussed in Section 5.1.
-
-
-
-
-
-
-
 
 
 
@@ -563,7 +563,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
    unambiguously identify the appropriate keying material.  Doing so
-   allows to address the problem of synchronization of keying material.
+   allows addressing the problem of synchronization of keying material.
 
    Additional information on manual vs. automated key management and
    when one should be used over the other can be found in [RFC4107].
@@ -1292,7 +1292,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    NSH data are exposed to several threats:
 
-   o  A man-in-the-middle attacker modifying the NSH data.
+   o  A on-path attacker modifying the NSH data.
 
    o  Attacker spoofing the NSH data.
 
@@ -1404,7 +1404,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 11.  Acknowledgements
 
-   This document was edited as a follow up to the discussion in
+   This document was edited as a follow-up to the discussion in
    IETF#104: https://datatracker.ietf.org/meeting/104/materials/slides-
    104-sfc-sfc-chair-slides-01 (slide 7).
 
@@ -1417,7 +1417,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Thanks to Greg Mirsky for the Shepherd review.
 
-   Thanks to Alvaro Retana for the IESG review.
+   Thanks to Alvaro Retana and Lars Eggert for the IESG review.
 
 12.  References
 

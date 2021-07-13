@@ -113,7 +113,7 @@
     <abstract>
       <t>This specification adds integrity protection directly to the Network
       Service Header (NSH) used for Service Function Chaining (SFC). Also,
-      this specification allows to encrypt sensitive metadata that is carried
+      this specification allows encrypting sensitive metadata that is carried
       in the NSH.</t>
     </abstract>
   </front>
@@ -142,19 +142,20 @@
       classification. <xref target="RFC8300"></xref> specifies the SFC
       encapsulation: Network Service Header (NSH).</t>
 
-      <t>The NSH data is unauthenticated and unencrypted <xref
-      target="RFC8300"></xref>, forcing a service topology that requires
-      security and privacy to use a transport encapsulation that supports such
-      features. Note that some transport encapsulations (e.g., IPsec) only
-      provide hop-by-hop security between two SFC data plane elements (e.g.,
-      two Service Function Forwarders (SFFs), SFF to SF) and do not provide
-      SF-to-SF security of NSH metadata. For example, if IPsec is used, SFFs
-      or SFs within a Service Function Path (SFP) that are not authorized to
-      access the privacy-sensitive metadata will have access to the metadata.
-      As a reminder, the metadata referred to is an information that is
-      inserted by Classifiers or intermediate SFs and shared with downstream
-      SFs; such information is not visible to the communication endpoints
-      (Section 4.9 of <xref target="RFC7665"></xref>).</t>
+      <t>The NSH data is unauthenticated and unencrypted, forcing a service
+      topology that requires security and privacy to use a transport
+      encapsulation that supports such features (Section 8.2 of <xref
+      target="RFC8300"></xref>). Note that some transport encapsulations
+      (e.g., IPsec) only provide hop-by-hop security between two SFC data
+      plane elements (e.g., two Service Function Forwarders (SFFs), SFF to SF)
+      and do not provide SF-to-SF security of NSH metadata. For example, if
+      IPsec is used, SFFs or SFs within a Service Function Path (SFP) that are
+      not authorized to access the privacy-sensitive metadata will have access
+      to the metadata. As a reminder, the metadata referred to is an
+      information that is inserted by Classifiers or intermediate SFs and
+      shared with downstream SFs; such information is not visible to the
+      communication endpoints (Section 4.9 of <xref
+      target="RFC7665"></xref>).</t>
 
       <t>The lack of such capability was reported during the development of
       <xref target="RFC8300"></xref> and <xref target="RFC8459"></xref>. The
@@ -162,12 +163,14 @@
       target="I-D.arkko-farrell-arch-model-t"></xref> for a discussion on the
       need for more awareness about attacks from within closed domains.</t>
 
-      <t>This specification fills that gap. Concretely, this document adds
-      integrity protection and optional encryption of sensitive metadata
-      directly to the NSH (<xref target="overview"></xref>); integrity
-      protects the packet payload and provides replay protection (<xref
-      target="time"></xref>). Thus, the NSH does not have to rely upon an
-      underlying transport encapsulation for security and confidentiality.</t>
+      <t>This specification fills that gap (that is, define the "NSH Variable
+      Header-Based Integrity" option mentioned in Section 8.2.1 of <xref
+      target="RFC8300"></xref>). Concretely, this document adds integrity
+      protection and optional encryption of sensitive metadata directly to the
+      NSH (<xref target="overview"></xref>); integrity protects the packet
+      payload and provides replay protection (<xref target="time"></xref>).
+      Thus, the NSH does not have to rely upon an underlying transport
+      encapsulation for security and confidentiality. </t>
 
       <t>This specification introduces new Variable-Length Context Headers to
       carry fields necessary for integrity-protected NSH headers and encrypted
@@ -231,7 +234,7 @@
           service path.</t>
         </list></t>
 
-      <t>The NSH allows to share context information (a.k.a., metadata) with
+      <t>The NSH allows sharing context information (a.k.a., metadata) with
       downstream NSH-aware data plane elements on a per SFC/SFP basis. To that
       aim:<list style="empty">
           <t>The Classifier is instructed about the set of context information
@@ -320,7 +323,7 @@
         following subsections.</t>
 
         <section title="Encrypt All or a Subset of Context Headers">
-          <t>The solution allows to encrypt all or a subset of NSH Context
+          <t>The solution allows encrypting all or a subset of NSH Context
           Headers by Classifiers, NSH-aware SFs, and SFC proxies.</t>
 
           <t>As depicted in <xref target="eroles"></xref>, SFFs are not
@@ -566,7 +569,7 @@
         per SFC/SFP and also the need to update keys after encrypting NSH data
         for a certain amount of time, this document uses key identifiers to
         unambiguously identify the appropriate keying material. Doing so
-        allows to address the problem of synchronization of keying
+        allows addressing the problem of synchronization of keying
         material.</t>
 
         <t>Additional information on manual vs. automated key management and
@@ -1199,7 +1202,7 @@
       <t>NSH data are exposed to several threats:</t>
 
       <t><list style="symbols">
-          <t>A man-in-the-middle attacker modifying the NSH data.</t>
+          <t>A on-path attacker modifying the NSH data.</t>
 
           <t>Attacker spoofing the NSH data.</t>
 
@@ -1297,7 +1300,7 @@
     </section>
 
     <section title="Acknowledgements">
-      <t>This document was edited as a follow up to the discussion in
+      <t>This document was edited as a follow-up to the discussion in
       IETF#104:
       https://datatracker.ietf.org/meeting/104/materials/slides-104-sfc-sfc-chair-slides-01
       (slide 7).</t>
@@ -1311,7 +1314,7 @@
 
       <t>Thanks to Greg Mirsky for the Shepherd review.</t>
 
-      <t>Thanks to Alvaro Retana for the IESG review. </t>
+      <t>Thanks to Alvaro Retana and Lars Eggert for the IESG review.</t>
     </section>
   </middle>
 
