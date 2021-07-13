@@ -955,7 +955,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
       The epoch is 1970-01-01T00:00Z in UTC time.  Note this epoch value
-      is different from the one used in Section 6 of [RFC5905].
+      is different from the one used in Section 6 of [RFC5905]
+      (wraparound 2036).
 
    Leap seconds:
 
@@ -1001,7 +1002,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    be sent to an SFC control element.  Failures of an NSH-aware node to
    validate the integrity of the NSH data MUST cause that packet to be
    discarded while a notification alarm MAY be sent to an SFC control
-   element.  The details of sending notification alarms (i.e., the
 
 
 
@@ -1010,6 +1010,7 @@ Boucadair, et al.       Expires January 14, 2022               [Page 18]
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
+   element.  The details of sending notification alarms (i.e., the
    parameters affecting the transmission of the notification alarms
    depend on the information in the context header such as frequency,
    thresholds, and content in the alarm) SHOULD be configurable.
@@ -1056,8 +1057,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    MAC is decided by the HMAC algorithm adopted for the particular key
    identifier.
 
-   The Message Authentication Code (T) computation process can be
-   illustrated as follows:
+
 
 
 
@@ -1065,6 +1065,9 @@ Boucadair, et al.       Expires January 14, 2022               [Page 19]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   The Message Authentication Code (T) computation process can be
+   illustrated as follows:
 
          T = HMAC-SHA-256-128(MAC_KEY, A)
 
@@ -1112,9 +1115,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    an encrypted Context Header or needs to add a new encrypted Context
    Header MUST also follow the aforementioned behavior.
 
-   An SFF or NSH-aware SF or SFC Proxy that only has access to the
-   MAC_KEY, but not the ENC_KEY, computes the message Authentication Tag
-
 
 
 Boucadair, et al.       Expires January 14, 2022               [Page 20]
@@ -1122,6 +1122,8 @@ Boucadair, et al.       Expires January 14, 2022               [Page 20]
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
+   An SFF or NSH-aware SF or SFC Proxy that only has access to the
+   MAC_KEY, but not the ENC_KEY, computes the message Authentication Tag
    (T) after decrementing the TTL (by the SFF) or SI (by an SF or SFC
    Proxy) and replaces the Authentication Tag in the NSH with the
    computed Authentication Tag. Similarly, an NSH-aware SF (or SFC
@@ -1168,8 +1170,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       number to protect against replay attacks may be considered.  In
       such mode, NSH-aware nodes must discard packets with duplicate
       sequence numbers within the timestamp delta window.  However, in
-      deployments with several instances of the same SF (e.g., cluster
-      or load-balanced SFs), a mechanism to coordinate among those
 
 
 
@@ -1178,6 +1178,8 @@ Boucadair, et al.       Expires January 14, 2022               [Page 21]
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
+      deployments with several instances of the same SF (e.g., cluster
+      or load-balanced SFs), a mechanism to coordinate among those
       instances to discard duplicate sequence numbers is required.
       Because the coordination mechanism to comply with this requirement
       is service-specific, this document does not include this
@@ -1225,14 +1227,14 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    o  Carry metadata such as those defined in Section 5.
 
-   o  Steer the traffic along the SFPs: transport encapsulation.
-
 
 
 Boucadair, et al.       Expires January 14, 2022               [Page 22]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   o  Steer the traffic along the SFPs: transport encapsulation.
 
    This added information increases the size of the packet to be carried
    along an SFP.
@@ -1280,8 +1282,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    that when the secret key is expired, those nodes are prepared with
    the new secret key.  This allows the NSH imposer to switch to the new
    key identifier as soon as necessary.  It is RECOMMENDED that the next
-   key identifier and associated keying material be distributed by the
-   control plane well prior to the secret key expiration time.
 
 
 
@@ -1289,6 +1289,9 @@ Boucadair, et al.       Expires January 14, 2022               [Page 23]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   key identifier and associated keying material be distributed by the
+   control plane well prior to the secret key expiration time.
 
    NSH data are exposed to several threats:
 
@@ -1335,9 +1338,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    misbehavior and to deter misuse are in place.  Compromised nodes can
    thus be withdrawn from active service function chains using
    appropriate control plane mechanisms.
-
-
-
 
 
 
@@ -1417,8 +1417,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Thanks to Greg Mirsky for the Shepherd review.
 
-   Thanks to Alvaro Retana, Lars Eggert, Martin Duke, and Erik Kline for
-   the IESG review.
+   Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline, and
+   Zaheduzzaman Sarker for the IESG review.
 
 12.  References
 

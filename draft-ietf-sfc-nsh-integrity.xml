@@ -170,7 +170,7 @@
       NSH (<xref target="overview"></xref>); integrity protects the packet
       payload and provides replay protection (<xref target="time"></xref>).
       Thus, the NSH does not have to rely upon an underlying transport
-      encapsulation for security and confidentiality. </t>
+      encapsulation for security and confidentiality.</t>
 
       <t>This specification introduces new Variable-Length Context Headers to
       carry fields necessary for integrity-protected NSH headers and encrypted
@@ -881,7 +881,7 @@
       <t>Epoch:<list style="empty">
           <t>The epoch is 1970-01-01T00:00Z in UTC time. Note this epoch value
           is different from the one used in Section 6 of <xref
-          target="RFC5905"></xref>.</t>
+          target="RFC5905"></xref> (wraparound 2036).</t>
         </list></t>
 
       <t>Leap seconds:<list style="empty">
@@ -1315,8 +1315,8 @@
 
       <t>Thanks to Greg Mirsky for the Shepherd review.</t>
 
-      <t>Thanks to Alvaro Retana, Lars Eggert, Martin Duke, and Erik Kline for
-      the IESG review.</t>
+      <t>Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline, and
+      Zaheduzzaman Sarker for the IESG review.</t>
     </section>
   </middle>
 
