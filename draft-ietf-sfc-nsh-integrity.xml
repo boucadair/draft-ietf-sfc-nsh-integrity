@@ -182,8 +182,11 @@
       <t>This specification limits thus access to NSH-supplied information
       along an SFP to entities that have a need to interpret it.</t>
 
+      <t>The mechanism specified in this document does not preclude the use of
+      transport security. Such considerations are deployment-specific. </t>
+
       <t>It is out of the scope of this document to specify an NSH-aware
-      control plane solution.</t>
+      control plane solution. </t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -261,7 +264,7 @@
           NSH on behalf of an NSH-unaware SF.</t>
         </list></t>
 
-      <t>In reference to <xref target="op"></xref>, <list style="symbols">
+      <t>In reference to Table 1, <list style="symbols">
           <t>Classifiers, NSH-aware SFs, and SFC proxies are entitled to
           update the Context Header(s).</t>
 
@@ -289,7 +292,7 @@
           in <xref target="mac1"></xref>.</t>
         </list></t>
 
-      <t><figure align="center" anchor="op" title="Summary of NSH Actions">
+      <t><figure align="center">
           <artwork align="center"><![CDATA[+----------------+-----------------------------+-------------------+
 |                | Insert, remove, or replace  |  Update the NSH   |
 |                |          the NSH            |                   |
@@ -310,7 +313,10 @@
 +----------------+---------+---------+---------+---------+---------+
 |                |    +    |    +    |         |    +    |    +    |
 |   SFC Proxy    |         |         |         |         |         |
-+----------------+---------+---------+---------+---------+---------+]]></artwork>
++----------------+---------+---------+---------+---------+---------+
+
+
+                     Table 1: Summary of NSH Actions]]></artwork>
         </figure></t>
 
       <t></t>
@@ -327,47 +333,23 @@
           <t>The solution allows encrypting all or a subset of NSH Context
           Headers by Classifiers, NSH-aware SFs, and SFC proxies.</t>
 
-          <t>As depicted in <xref target="eroles"></xref>, SFFs are not
-          involved in data encryption.</t>
+          <t>As depicted in Table 2, SFFs are not involved in data
+          encryption.</t>
 
-          <texttable align="center" anchor="eroles"
-                     title="Encryption Function Supported by SFC Data Plane Elements">
-            <ttcol>Data Plane Element</ttcol>
+          <t><figure>
+              <artwork><![CDATA[   +-----------------+------------------------------+------------------+
+   | Data Plane      | Base and Service Headers     | Context Header   |
+   | Element         | Encryption                   | Encryption       |
+   +-----------------+------------------------------+------------------+
+   | Classifier      | No                           | Yes              |
+   | SFF             | No                           | No               |
+   | NSH-aware SF    | No                           | Yes              |
+   | SFC Proxy       | No                           | Yes              |
+   | NSH-unaware SF  | No                           | No               |
+   +-----------------+------------------------------+------------------+
 
-            <ttcol>Base and Service Headers Encryption</ttcol>
-
-            <ttcol>Metadata Encryption</ttcol>
-
-            <c>Classifier</c>
-
-            <c>No</c>
-
-            <c>Yes</c>
-
-            <c>SFF</c>
-
-            <c>No</c>
-
-            <c>No</c>
-
-            <c>NSH-aware SF</c>
-
-            <c>No</c>
-
-            <c>Yes</c>
-
-            <c>SFC Proxy</c>
-
-            <c>No</c>
-
-            <c>Yes</c>
-
-            <c>NSH-unaware SF</c>
-
-            <c>No</c>
-
-            <c>No</c>
-          </texttable>
+     Table 2: Encryption Function Supported by SFC Data Plane Elements]]></artwork>
+            </figure></t>
 
           <t>Classifier(s), NSH-aware SFs, and SFC proxies are instructed with
           the set of Context Headers (privacy-sensitive metadata, typically)
@@ -448,35 +430,22 @@
           the packet on which the NSH is imposed are subject to integrity
           protection.</t>
 
-          <t><xref target="iroles"></xref> lists the roles of SFC data plane
-          elements in providing integrity protection for the NSH.</t>
+          <t>Table 3 lists the roles of SFC data plane elements in providing
+          integrity protection for the NSH.</t>
 
-          <texttable align="center" anchor="iroles"
-                     title="Integrity Protection Supported by SFC Data Plane Elements">
-            <ttcol>Data Plane Element</ttcol>
+          <t><figure>
+              <artwork><![CDATA[         +--------------------+----------------------------------+
+         | Data Plane Element | Integrity Protection             |
+         +--------------------+----------------------------------+
+         | Classifier         | Yes                              |
+         | SFF                | No (first LoA); Yes (second LoA) |
+         | NSH-aware SF       | Yes                              |
+         | SFC Proxy          | Yes                              |
+         | NSH-unaware SF     | No                               |
+         +--------------------+----------------------------------+
 
-            <ttcol>Integrity Protection</ttcol>
-
-            <c>Classifier</c>
-
-            <c>Yes</c>
-
-            <c>SFF</c>
-
-            <c>No (first LoA); Yes (second LoA)</c>
-
-            <c>NSH-aware SF</c>
-
-            <c>Yes</c>
-
-            <c>SFC Proxy</c>
-
-            <c>Yes</c>
-
-            <c>NSH-unaware SF</c>
-
-            <c>No</c>
-          </texttable>
+    Table 3: Integrity Protection Supported by SFC Data Plane Elements]]></artwork>
+            </figure></t>
         </section>
       </section>
 
@@ -659,7 +628,7 @@
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
        |          Metadata Class       |      Type     |U|    Length   |
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-       | Key Length  |         Key Identifier (Variable)               ~ 
+       | Key Id Len  |         Key Identifier (Variable)               ~ 
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
        ~                      Timestamp (8 bytes)                      ~ 
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
@@ -700,7 +669,7 @@
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    |          Metadata Class       |      Type     |U|    Length   |   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-   | Key Length  |         Key Identifier (Variable)               ~   |
+   | Key Id Len  |         Key Identifier (Variable)               ~   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    ~                      Timestamp (8 bytes)                      ~   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
@@ -735,8 +704,8 @@
             <t hangText="Length:">Variable. Padding considerations are
             discussed in Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
 
-            <t hangText="Key Length:">Variable. Carries the length of the key
-            identifier.</t>
+            <t hangText="Key Id Len:">Variable. Carries the length of the key
+            identifier, in octets.</t>
 
             <t hangText="Key Identifier:">Carries a variable-length Key
             Identifier object used to identify and deliver keys to SFC data
@@ -746,8 +715,9 @@
             keying material.</t>
 
             <t hangText="Timestamp:">Carries an unsigned 64-bit integer value
-            that is expressed in seconds relative to 1970-01-01T00:00Z in UTC
-            time. See <xref target="timef"></xref> for more details.</t>
+            that is expressed in seconds and fractions of second relative to
+            1970-01-01T00:00Z in UTC time. See <xref target="timef"></xref>
+            for more details.</t>
 
             <t hangText="IV Length:">Carries the length of the IV (Section 5.2
             of <xref target="RFC7518"></xref>). If encryption is not used, IV
@@ -788,7 +758,7 @@
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    |          Metadata Class       |      Type     |U|    Length   |   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-   | Key Length  |         Key Identifier (Variable)               ~   |
+   | Key Id Len  |         Key Identifier (Variable)               ~   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    ~                      Timestamp (8 bytes)                      ~   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
@@ -823,7 +793,7 @@
             <t hangText="Length:">Variable. Padding considerations are
             discussed in Section 2.5.1 of <xref target="RFC8300"></xref>.</t>
 
-            <t hangText="Key Length:">See <xref target="enc1"></xref>.</t>
+            <t hangText="Key Id Len:">See <xref target="enc1"></xref>.</t>
 
             <t hangText="Key Identifier:">See <xref target="enc1"></xref>.</t>
 
@@ -1315,8 +1285,8 @@
 
       <t>Thanks to Greg Mirsky for the Shepherd review.</t>
 
-      <t>Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline, and
-      Zaheduzzaman Sarker for the IESG review.</t>
+      <t>Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline,
+      Zaheduzzaman Sarker, and &Eacute;ric Vyncke for the IESG review.</t>
     </section>
   </middle>
 
