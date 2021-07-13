@@ -1417,8 +1417,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Thanks to Greg Mirsky for the Shepherd review.
 
-   Thanks to Alvaro Retana, Lars Eggert, and Martin Duke for the IESG
-   review.
+   Thanks to Alvaro Retana, Lars Eggert, Martin Duke, and Erik Kline for
+   the IESG review.
 
 12.  References
 
