@@ -5,10 +5,10 @@
 SFC                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: January 14, 2022                                         McAfee
+Expires: January 15, 2022                                         McAfee
                                                                  D. Wing
                                                                   Citrix
-                                                           July 13, 2021
+                                                           July 14, 2021
 
 
 Integrity Protection for the Network Service Header (NSH) and Encryption
@@ -19,8 +19,8 @@ Abstract
 
    This specification adds integrity protection directly to the Network
    Service Header (NSH) used for Service Function Chaining (SFC).  Also,
-   this specification allows encrypting sensitive metadata that is
-   carried in the NSH.
+   this specification allows for the encryption of sensitive metadata
+   that is carried in the NSH.
 
 Status of This Memo
 
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 14, 2022.
+   This Internet-Draft will expire on January 15, 2022.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 1]
+Boucadair, et al.       Expires January 15, 2022                [Page 1]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -87,18 +87,18 @@ Table of Contents
      7.3.  Encrypted NSH Metadata Generation . . . . . . . . . . . .  20
      7.4.  Timestamp for Replay Attack . . . . . . . . . . . . . . .  21
      7.5.  NSH Data Validation . . . . . . . . . . . . . . . . . . .  22
-     7.6.  Decryption of NSH Metadata  . . . . . . . . . . . . . . .  22
-   8.  MTU Considerations  . . . . . . . . . . . . . . . . . . . . .  22
+     7.6.  Decryption of NSH Metadata  . . . . . . . . . . . . . . .  23
+   8.  MTU Considerations  . . . . . . . . . . . . . . . . . . . . .  23
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
      9.1.  MAC#1 . . . . . . . . . . . . . . . . . . . . . . . . . .  25
      9.2.  MAC#2 . . . . . . . . . . . . . . . . . . . . . . . . . .  25
-     9.3.  Time Synchronization  . . . . . . . . . . . . . . . . . .  25
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
+     9.3.  Time Synchronization  . . . . . . . . . . . . . . . . . .  26
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  26
    11. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  26
    12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  26
-     12.1.  Normative References . . . . . . . . . . . . . . . . . .  26
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .  27
      12.2.  Informative References . . . . . . . . . . . . . . . . .  27
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 2]
+Boucadair, et al.       Expires January 15, 2022                [Page 2]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -140,8 +140,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Service Function Forwarders (SFFs), SFF to SF) and do not provide SF-
    to-SF security of NSH metadata.  For example, if IPsec is used, SFFs
    or SFs within a Service Function Path (SFP) that are not authorized
-   to access the privacy-sensitive metadata will have access to the
-   metadata.  As a reminder, the metadata referred to is an information
+   to access the sensitive metadata (e.g., privacy) will have access to
+   the metadata.  As a reminder, the metadata referred to is information
    that is inserted by Classifiers or intermediate SFs and shared with
    downstream SFs; such information is not visible to the communication
    endpoints (Section 4.9 of [RFC7665]).
@@ -151,31 +151,30 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    [I-D.arkko-farrell-arch-model-t] for a discussion on the need for
    more awareness about attacks from within closed domains.
 
-   This specification fills that gap (that is, define the "NSH Variable
-   Header-Based Integrity" option mentioned in Section 8.2.1 of
+   This specification fills that gap for SFC (that is, define the "NSH
+   Variable Header-Based Integrity" option mentioned in Section 8.2.1 of
    [RFC8300]).  Concretely, this document adds integrity protection and
    optional encryption of sensitive metadata directly to the NSH
    (Section 4); integrity protects the packet payload and provides
    replay protection (Section 7.4).  Thus, the NSH does not have to rely
-   upon an underlying transport encapsulation for security and
-   confidentiality.
+   upon an underlying transport encapsulation for security.
 
    This specification introduces new Variable-Length Context Headers to
    carry fields necessary for integrity-protected NSH headers and
+   encrypted Context Headers (Section 5).  This specification is only
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 3]
+Boucadair, et al.       Expires January 15, 2022                [Page 3]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
-   encrypted Context Headers (Section 5).  This specification is only
    applicable to NSH MD Type 0x02 (Section 2.5 of [RFC8300]).  MTU
    considerations are discussed in Section 8.
 
-   This specification limits thus access to NSH-supplied information
-   along an SFP to entities that have a need to interpret it.
+   This specification limits access to NSH-supplied information along an
+   SFP to entities that have a need to interpret it.
 
    The mechanism specified in this document does not preclude the use of
    transport security.  Such considerations are deployment-specific.
@@ -204,8 +203,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       SFC data plane elements on how to process NSH packets within an
       SFC-enabled domain.
 
-   Key Identifier:  Is used to identify and deliver keys to authorized
-      entities.  See, for example, 'kid' usage in [RFC7635].
+   Key Identifier:  Is used to identify keys to authorized entities.
+      See, for example, 'kid' usage in [RFC7635].
 
    NSH data:  The NSH is composed of a Base Header, a Service Path
       Header, and optional Context Headers.  NSH data refers to all the
@@ -221,7 +220,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 4]
+
+Boucadair, et al.       Expires January 15, 2022                [Page 4]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -277,7 +277,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 5]
+Boucadair, et al.       Expires January 15, 2022                [Page 5]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -333,7 +333,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 6]
+Boucadair, et al.       Expires January 15, 2022                [Page 6]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -389,7 +389,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 7]
+Boucadair, et al.       Expires January 15, 2022                [Page 7]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -397,8 +397,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    The first level of assurance where all NSH data except the Base
    Header are integrity protected (Figure 1).  In this case, the NSH
    imposer may be a Classifier, an NSH-aware SF, or an SFC Proxy.  SFFs
-   are not thus provided with authentication material.  Further details
-   are discussed in Section 5.1.
+   are not provided with authentication material.  Further details are
+   discussed in Section 5.1.
 
          +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
          |                Transport Encapsulation                |
@@ -445,7 +445,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 8]
+Boucadair, et al.       Expires January 15, 2022                [Page 8]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -471,9 +471,9 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 4.2.  One Secret Key, Two Security Services
 
-   The authenticated encryption algorithm defined in [RFC7518] is used
-   to provide NSH data integrity and to encrypt the Context Headers that
-   carry privacy-sensitive metadata.
+   The authenticated encryption algorithm defined in Section 5.2 of
+   [RFC7518] is used to provide NSH data integrity and to encrypt the
+   Context Headers that carry sensitive metadata.
 
    The authenticated encryption algorithm provides a unified encryption
    and authentication operation which turns plaintext into authenticated
@@ -501,7 +501,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022                [Page 9]
+Boucadair, et al.       Expires January 15, 2022                [Page 9]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -557,7 +557,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022               [Page 10]
+Boucadair, et al.       Expires January 15, 2022               [Page 10]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -568,7 +568,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    SFC/SFP and also the need to update keys after encrypting NSH data
    for a certain amount of time, this document uses key identifiers to
    unambiguously identify the appropriate keying material.  Doing so
-   allows addressing the problem of synchronization of keying material.
+   addresses the problem of synchronization of keying material.
 
    Additional information on manual vs. automated key management and
    when one should be used over the other can be found in [RFC4107].
@@ -577,13 +577,12 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    New NSH Variable-Length Context Headers are defined in Section 5 for
    NSH data integrity protection and, optionally, encryption of Context
-   Headers carrying privacy-sensitive metadata.  Concretely, an NSH
-   imposer includes (1) the key identifier to identify the keying
-   material, (2) the timestamp to protect against replay attacks
-   (Section 7.4), and (3) the Message Authentication Code (MAC) for the
-   target NSH data (depending on the integrity protection scope)
-   calculated using the MAC_KEY and optionally Context Headers encrypted
-   using ENC_KEY.
+   Headers carrying sensitive metadata.  Concretely, an NSH imposer
+   includes (1) the key identifier to identify the keying material, (2)
+   the timestamp to protect against replay attacks (Section 7.4), and
+   (3) the Message Authentication Code (MAC) for the target NSH data
+   (depending on the integrity protection scope) calculated using the
+   MAC_KEY and optionally Context Headers encrypted using ENC_KEY.
 
    An SFC data plane element that needs to check the integrity of the
    NSH data uses MAC_KEY and the HMAC algorithm for the key identifier
@@ -597,23 +596,24 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 4.6.  Encapsulation of NSH within NSH
 
-   As discussed in [RFC8459], an SFC-enabled domain (called, upper-level
-   domain) may be decomposed into many sub-domains (called, lower-level
-   domains).  In order to avoid maintaining state to restore back upper-
-   lower NSH information at the boundaries of lower-level domains, two
-   NSH levels are used: an Upper-NSH which is imposed at the boundaries
-   of the upper-level domain and a Lower-NSH that is pushed by the
-   Classifier of a lower-level domain in front of the original NSH
-   (Figure 3).  As such, the Upper-NSH information is carried along the
-   lower-level chain without modification.  The packet is forwarded in
-   the top-level domain according to the Upper-NSH, while it is
-   forwarded according to the Lower-NSH in a lower-level domain.
+   As discussed in Section 3 of [RFC8459], an SFC-enabled domain
+   (called, upper-level domain) may be decomposed into many sub-domains
+   (called, lower-level domains).  In order to avoid maintaining state
+   to restore back upper-lower NSH information at the boundaries of
+   lower-level domains, two NSH levels are used: an Upper-NSH which is
+   imposed at the boundaries of the upper-level domain and a Lower-NSH
+   that is pushed by the Classifier of a lower-level domain in front of
+   the original NSH (Figure 3).  As such, the Upper-NSH information is
+   carried along the lower-level chain without modification.  The packet
+   is forwarded in the top-level domain according to the Upper-NSH,
+   while it is forwarded according to the Lower-NSH in a lower-level
+   domain.
 
 
 
 
 
-Boucadair, et al.       Expires January 14, 2022               [Page 11]
+Boucadair, et al.       Expires January 15, 2022               [Page 11]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -669,7 +669,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022               [Page 12]
+Boucadair, et al.       Expires January 15, 2022               [Page 12]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -725,7 +725,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 14, 2022               [Page 13]
+Boucadair, et al.       Expires January 15, 2022               [Page 13]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -770,22 +770,24 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    U: Unassigned bit (Section 2.5.1 of [RFC8300]).
 
-   Length:  Variable.  Padding considerations are discussed in
-      Section 2.5.1 of [RFC8300].
+   Length:  Indicates the length of the variable-length metadata, in
+      bytes.  Padding considerations are discussed in Section 2.5.1 of
+      [RFC8300].
 
    Key Id Len:  Variable.  Carries the length of the key identifier, in
       octets.
 
-   Key Identifier:  Carries a variable-length Key Identifier object used
-      to identify and deliver keys to SFC data plane elements.  This
 
 
 
-Boucadair, et al.       Expires January 14, 2022               [Page 14]
+
+Boucadair, et al.       Expires January 15, 2022               [Page 14]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
+   Key Identifier:  Carries a variable-length Key Identifier object used
+      to identify and deliver keys to SFC data plane elements.  This
       identifier is helpful to accommodate deployments relying upon
       keying material per SFC/SFP.  The key identifier helps in
       resolving the problem of synchronization of keying material.
@@ -835,9 +837,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 15]
+Boucadair, et al.       Expires January 15, 2022               [Page 15]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -882,21 +882,23 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    U: Unassigned bit (Section 2.5.1 of [RFC8300]).
 
-   Length:  Variable.  Padding considerations are discussed in
-      Section 2.5.1 of [RFC8300].
+   Length:  Indicates the length of the variable-length metadata, in
+      bytes.  Padding considerations are discussed in Section 2.5.1 of
+      [RFC8300].
 
    Key Id Len:  See Section 5.1.
 
    Key Identifier:  See Section 5.1.
 
-   Timestamp:  See Section 6.
 
 
 
-Boucadair, et al.       Expires January 14, 2022               [Page 16]
+Boucadair, et al.       Expires January 15, 2022               [Page 16]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   Timestamp:  See Section 6.
 
    IV Length:  See Section 5.1.
 
@@ -944,15 +946,15 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       + Units: the unit is 2^(-32) seconds, which is roughly equal to
       233 picoseconds.
 
-   Epoch:
 
 
 
-
-Boucadair, et al.       Expires January 14, 2022               [Page 17]
+Boucadair, et al.       Expires January 15, 2022               [Page 17]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   Epoch:
 
       The epoch is 1970-01-01T00:00Z in UTC time.  Note this epoch value
       is different from the one used in Section 6 of [RFC5905]
@@ -993,23 +995,24 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 7.1.  Generic Behavior
 
-   This document adheres to the recommendations in [RFC8300] for
-   handling the Context Headers at both ingress and egress SFC boundary
-   nodes (i.e., to strip the entire NSH, including Context Headers).
+   This document adheres to the recommendations in Section 8.1 of
+   [RFC8300] for handling the Context Headers at both ingress and egress
+   SFC boundary nodes (i.e., to strip the entire NSH, including Context
+   Headers).
 
    Failures of a classifier to inject the Context Headers defined in
    this document SHOULD be logged locally while a notification alarm MAY
-   be sent to an SFC control element.  Failures of an NSH-aware node to
-   validate the integrity of the NSH data MUST cause that packet to be
-   discarded while a notification alarm MAY be sent to an SFC control
 
 
 
-Boucadair, et al.       Expires January 14, 2022               [Page 18]
+Boucadair, et al.       Expires January 15, 2022               [Page 18]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
+   be sent to an SFC control element.  Failures of an NSH-aware node to
+   validate the integrity of the NSH data MUST cause that packet to be
+   discarded while a notification alarm MAY be sent to an SFC control
    element.  The details of sending notification alarms (i.e., the
    parameters affecting the transmission of the notification alarms
    depend on the information in the context header such as frequency,
@@ -1035,11 +1038,12 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Context Header unaltered when forwarding the packet upstream.
 
    Only one instance of "MAC and Encrypted Metadata" Context Header
-   (Section 5) is allowed.  If multiple instances of "MAC and Encrypted
-   Metadata" Context Header are included in an NSH packet, the SFC data
-   plane element MUST process the first instance and ignore subsequent
-   instances, and MAY log or increase a counter for this event as per
-   Section 2.5.1 of [RFC8300].
+   (Section 5) is allowed in an NSH level.  If multiple instances of
+   "MAC and Encrypted Metadata" Context Header are included in an NSH
+   level, the SFC data plane element MUST process the first instance and
+   ignore subsequent instances, and MAY log or increase a counter for
+   this event as per Section 2.5.1 of [RFC8300].  If NSH-in-NSH is used
+   (Section 4.6), distinct LoAs may be used for each NSH level.
 
    MTU and fragmentation considerations are discussed in Section 8.
 
@@ -1050,26 +1054,27 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    data.  An NSH imposer inserts a "MAC and Encrypted Metadata" Context
    Header for integrity protection (Section 5).
 
-   The NSH imposer computes the message integrity for the target NSH
-   data (depending on the integrity protection scope discussed in
-   Section 5) using MAC_KEY and HMAC algorithm.  It inserts the MAC in
-   the "MAC and Encrypted Metadata" Context Header.  The length of the
-   MAC is decided by the HMAC algorithm adopted for the particular key
-   identifier.
+   The NSH imposer sets the MAC field to zero and then computes the
+   message integrity for the target NSH data (depending on the integrity
+   protection scope discussed in Section 5) using MAC_KEY and HMAC
+   algorithm.  It inserts the computed digest in the MAC field of the
 
 
 
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 19]
+Boucadair, et al.       Expires January 15, 2022               [Page 19]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
-   The Message Authentication Code (T) computation process can be
-   illustrated as follows:
+   "MAC and Encrypted Metadata" Context Header.  The length of the MAC
+   is decided by the HMAC algorithm adopted for the particular key
+   identifier.
 
-         T = HMAC-SHA-256-128(MAC_KEY, A)
+   The Message Authentication Code (T) computation process for the
+   target NSH data with HMAC-SHA-256-128() can be illustrated as
+   follows:
+
+         T = HMAC-SHA-256-128(MAC_KEY, target NSH data)
 
    An entity in the SFP that intends to update the NSH MUST follow the
    above behavior to maintain message integrity of the NSH for
@@ -1077,7 +1082,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 7.3.  Encrypted NSH Metadata Generation
 
-   An NSH imposer can encrypt Context Headers carrying privacy-sensitive
+   An NSH imposer can encrypt Context Headers carrying sensitive
    metadata, i.e., encrypted and unencrypted metadata may be carried
    simultaneously in the same NSH packet (Sections 5 and 6).
 
@@ -1089,10 +1094,10 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Using the secret key (K) and authenticated encryption algorithm, the
    NSH imposer encrypts the Context Headers (as set, for example, in
-   Section 3), computes the message integrity for the target NSH data,
-   and inserts the resulting payload in the "MAC and Encrypted Metadata"
-   Context Header (Section 5).  The entire Context Header carrying a
-   privacy-sensitive metadata is encrypted (that is, including the MD
+   Section 3), then computes the message integrity for the target NSH
+   data, and inserts the resulting payload in the "MAC and Encrypted
+   Metadata" Context Header (Section 5).  The entire Context Header
+   carrying a sensitive metadata is encrypted (that is, including the MD
    Class, Type, Length, and associated metadata of each Context Header).
 
    The message Authentication Tag (T) and ciphertext (E) computation
@@ -1107,20 +1112,23 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Note that "||" denotes the concatenation of two values.
 
-   As specified in [RFC7518], the octet string (AL) is equal to the
-   number of bits in the Additional Authenticated Data (A) expressed as
-   a 64-bit unsigned big-endian integer.
+
+
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 20]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
+
+   As specified in Section 5.2.2.1 of [RFC7518], the octet string (AL)
+   is equal to the number of bits in the Additional Authenticated Data
+   (A) expressed as a 64-bit unsigned big-endian integer.
 
    An authorized entity in the SFP that intends to update the content of
    an encrypted Context Header or needs to add a new encrypted Context
    Header MUST also follow the aforementioned behavior.
-
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 20]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
 
    An SFF or NSH-aware SF or SFC Proxy that only has access to the
    MAC_KEY, but not the ENC_KEY, computes the message Authentication Tag
@@ -1162,22 +1170,23 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    NSH data and Original packet (e.g., using SHA2).  Such NSH-aware node
    will detect and reject duplicates.  If for legitimate service
    reasons, some flows have to be duplicated but still share portion of
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 21]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
+
    an SFP with the original flow, legitimate duplicate packets will be
    tagged by NSH-aware nodes involved in that segment as replay packets
-   unless sufficient entropy is added to the duplicate packet.
+   unless sufficient entropy is added to the duplicate packet.  How such
+   an entropy is added is implementation-specific.
 
       Note: Within the timestamp delta window, defining a sequence
       number to protect against replay attacks may be considered.  In
       such mode, NSH-aware nodes must discard packets with duplicate
       sequence numbers within the timestamp delta window.  However, in
-
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 21]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
-
       deployments with several instances of the same SF (e.g., cluster
       or load-balanced SFs), a mechanism to coordinate among those
       instances to discard duplicate sequence numbers is required.
@@ -1190,12 +1199,18 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 7.5.  NSH Data Validation
 
-   When an SFC data plane element receives an NSH packet, it MUST first
-   ensure that a "MAC and Encrypted Metadata" Context Header is
-   included.  It MUST silently discard the message if the timestamp is
-   invalid (Section 7.4).  It MUST log an error at least once per the
-   SPI for which the "MAC and Encrypted Metadata" Context Header is
-   missing.
+   When an SFC data plan element conforms to this specification, it MUST
+   ensure that a "MAC and Encrypted Metadata" Context Header is included
+   in a received NSH packet.  The imposer MUST silently discard the
+   packet and MUST log an error at least once per the SPI if at least
+   one of the following is observed:
+
+   o  the "MAC and Encrypted Metadata" Context Header is missing,
+
+   o  the enclosed key identifier is unknown or invalid (e.g., the
+      corresponding key expired),
+
+   o  the timestamp is invalid (Section 7.4).
 
    If the timestamp check is successfully passed, the SFC data plane
    element proceeds with NSH data integrity validation.  The SFC data
@@ -1206,6 +1221,18 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    in the NSH, the SFC data plane element is certain that the NSH data
    has not been tampered and validation is therefore successful.
    Otherwise, the NSH packet MUST be discarded.
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 22]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
 
 7.6.  Decryption of NSH Metadata
 
@@ -1226,13 +1253,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       Path Header.
 
    o  Carry metadata such as those defined in Section 5.
-
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 22]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
 
    o  Steer the traffic along the SFPs: transport encapsulation.
 
@@ -1262,6 +1282,14 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Data plane SFC-related security considerations, including privacy,
    are discussed in Section 6 of [RFC7665] and Section 8 of [RFC8300].
    In particular, Section 8.2.2 of [RFC8300] states that attached
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 23]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
+
    metadata (i.e., Context Headers) should be limited to that necessary
    for correct operation of the SFP.  Also, that section indicates that
    [RFC8165] discusses metadata considerations that operators can take
@@ -1282,14 +1310,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    that when the secret key is expired, those nodes are prepared with
    the new secret key.  This allows the NSH imposer to switch to the new
    key identifier as soon as necessary.  It is RECOMMENDED that the next
-
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 23]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
-
    key identifier and associated keying material be distributed by the
    control plane well prior to the secret key expiration time.
 
@@ -1317,6 +1337,15 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Considerations specific to each level of assurance are discussed in
    Sections 9.1 and 9.2.
 
+
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 24]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
+
    The attacks discussed in [I-D.nguyen-sfc-security-architecture] are
    handled owing to the solution specified in this document, except for
    attacks dropping packets.  Such attacks can be detected relying upon
@@ -1339,37 +1368,39 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    thus be withdrawn from active service function chains using
    appropriate control plane mechanisms.
 
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 24]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
-
 9.1.  MAC#1
 
    An active attacker can potentially modify the Base header (e.g.,
    decrement the TTL so the next SFF in the SFP discards the NSH
-   packet).  In the meantime, an active attacker can also drop NSH
-   packets.  As such, this attack is not considered an attack against
-   the security mechanism specified in the document.
+   packet).  An active attacker can also drop NSH packets.  As such,
+   this attack is not considered an attack against the security
+   mechanism specified in the document.
 
    No device other than the NSH-aware SFs in the SFC-enabled domain
    should be able to update the integrity protected NSH data.
    Similarly, no device other than the NSH-aware SFs and SFC proxies in
    the SFC-enabled domain should be able to decrypt and update the
-   Context Headers carrying privacy-sensitive metadata.  In other words,
-   if the NSH-aware SFs and SFC proxies in the SFC-enabled domain are
+   Context Headers carrying sensitive metadata.  In other words, if the
+   NSH-aware SFs and SFC proxies in the SFC-enabled domain are
    considered fully trusted to act on the NSH data, only these elements
-   can have access to privacy-sensitive NSH metadata and the keying
-   material used to integrity protect NSH data and encrypt Context
-   Headers.
+   can have access to sensitive NSH metadata and the keying material
+   used to integrity protect NSH data and encrypt Context Headers.
 
 9.2.  MAC#2
 
    SFFs can detect whether an illegitimate node has altered the content
    of the Base header.  Such messages must be discarded with appropriate
    logs and alarms generated (see Section 7.1).
+
+
+
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 25]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
 
 9.3.  Time Synchronization
 
@@ -1395,13 +1426,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
         | TBD2  | MAC and Encrypted Metadata #2 | [ThisDocument] |
         +-------+-------------------------------+----------------+
 
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 25]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
-
 11.  Acknowledgements
 
    This document was edited as a follow-up to the discussion in
@@ -1418,9 +1442,21 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Thanks to Greg Mirsky for the Shepherd review.
 
    Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline,
-   Zaheduzzaman Sarker, and Eric Vyncke for the IESG review.
+   Zaheduzzaman Sarker, Eric Vyncke, and Roman Danyliw for the IESG
+   review.
 
 12.  References
+
+
+
+
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 26]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
 
 12.1.  Normative References
 
@@ -1451,13 +1487,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 26]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
-
    [RFC8300]  Quinn, P., Ed., Elzur, U., Ed., and C. Pignataro, Ed.,
               "Network Service Header (NSH)", RFC 8300,
               DOI 10.17487/RFC8300, January 2018,
@@ -1474,6 +1503,16 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
               Touch, J. and M. Townsley, "IP Tunnels in the Internet
               Architecture", draft-ietf-intarea-tunnels-10 (work in
               progress), September 2019.
+
+
+
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 27]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
 
    [I-D.nguyen-sfc-security-architecture]
               THANG, N. C. and M. Park, "A Security Architecture Against
@@ -1507,13 +1546,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
               DOI 10.17487/RFC7635, August 2015,
               <https://www.rfc-editor.org/info/rfc7635>.
 
-
-
-Boucadair, et al.       Expires January 14, 2022               [Page 27]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
-
    [RFC8165]  Hardie, T., "Design Considerations for Metadata
               Insertion", RFC 8165, DOI 10.17487/RFC8165, May 2017,
               <https://www.rfc-editor.org/info/rfc8165>.
@@ -1527,6 +1559,16 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
               Protocol Best Current Practices", BCP 223, RFC 8633,
               DOI 10.17487/RFC8633, July 2019,
               <https://www.rfc-editor.org/info/rfc8633>.
+
+
+
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 28]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
 
    [RFC8877]  Mizrahi, T., Fabini, J., and A. Morton, "Guidelines for
               Defining Packet Timestamps", RFC 8877,
@@ -1565,4 +1607,18 @@ Authors' Addresses
 
 
 
-Boucadair, et al.       Expires January 14, 2022               [Page 28]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair, et al.       Expires January 15, 2022               [Page 29]
