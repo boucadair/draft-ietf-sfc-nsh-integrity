@@ -111,10 +111,10 @@
     <keyword>Attack mitigation</keyword>
 
     <abstract>
-      <t>This specification adds integrity protection directly to the Network
-      Service Header (NSH) used for Service Function Chaining (SFC). Also,
-      this specification allows for the encryption of sensitive metadata that
-      is carried in the NSH.</t>
+      <t>This specification presents an optional method to add integrity
+      protection directly to the Network Service Header (NSH) used for Service
+      Function Chaining (SFC). Also, this specification allows for the
+      encryption of sensitive metadata that is carried in the NSH.</t>
     </abstract>
   </front>
 

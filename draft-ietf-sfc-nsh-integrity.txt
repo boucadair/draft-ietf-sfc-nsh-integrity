@@ -17,10 +17,10 @@ Integrity Protection for the Network Service Header (NSH) and Encryption
 
 Abstract
 
-   This specification adds integrity protection directly to the Network
-   Service Header (NSH) used for Service Function Chaining (SFC).  Also,
-   this specification allows for the encryption of sensitive metadata
-   that is carried in the NSH.
+   This specification presents an optional method to add integrity
+   protection directly to the Network Service Header (NSH) used for
+   Service Function Chaining (SFC).  Also, this specification allows for
+   the encryption of sensitive metadata that is carried in the NSH.
 
 Status of This Memo
 
