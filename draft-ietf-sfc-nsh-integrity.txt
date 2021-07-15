@@ -91,11 +91,11 @@ Table of Contents
    8.  MTU Considerations  . . . . . . . . . . . . . . . . . . . . .  23
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
      9.1.  MAC#1 . . . . . . . . . . . . . . . . . . . . . . . . . .  25
-     9.2.  MAC#2 . . . . . . . . . . . . . . . . . . . . . . . . . .  25
+     9.2.  MAC#2 . . . . . . . . . . . . . . . . . . . . . . . . . .  26
      9.3.  Time Synchronization  . . . . . . . . . . . . . . . . . .  26
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  26
    11. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  26
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  26
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  27
      12.1.  Normative References . . . . . . . . . . . . . . . . . .  27
      12.2.  Informative References . . . . . . . . . . . . . . . . .  27
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
@@ -118,7 +118,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    of the proliferation of such advanced SFs together with complex
    service deployment constraints that demand more agile service
    delivery procedures, operators need to rationalize their service
-   delivery logics and control their complexity while optimising service
+   delivery logics and control its complexity while optimising service
    activation time cycles.  The overall problem space is described in
    [RFC7498].
 
@@ -154,9 +154,9 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Variable Header-Based Integrity" option mentioned in Section 8.2.1 of
    [RFC8300]).  Concretely, this document adds integrity protection and
    optional encryption of sensitive metadata directly to the NSH
-   (Section 4); integrity protects the packet payload and provides
-   replay protection (Section 7.4).  Thus, the NSH does not have to rely
-   upon an underlying transport encapsulation for security.
+   (Section 4).  The integrity protection covers the packet payload and
+   provides replay protection (Section 7.4).  Thus, the NSH does not
+   have to rely upon an underlying transport encapsulation for security.
 
    This specification introduces new Variable-Length Context Headers to
    carry fields necessary for integrity-protected NSH headers and
@@ -439,7 +439,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
                     Figure 2: Second Level of Assurance
 
    The integrity protection scope is explicitly signaled to NSH-aware
-   SFs and SFC proxies in the NSH by means of a dedicated MD Type
+   SFs, SFFs, and SFC proxies in the NSH by means of a dedicated MD Type
    (Section 5).
 
 
@@ -599,7 +599,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    As discussed in Section 3 of [RFC8459], an SFC-enabled domain
    (called, upper-level domain) may be decomposed into many sub-domains
    (called, lower-level domains).  In order to avoid maintaining state
-   to restore back upper-lower NSH information at the boundaries of
+   to restore back upper-level NSH information at the boundaries of
    lower-level domains, two NSH levels are used: an Upper-NSH which is
    imposed at the boundaries of the upper-level domain and a Lower-NSH
    that is pushed by the Classifier of a lower-level domain in front of
@@ -700,7 +700,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    MAC#1 Context Header is a variable-length Context Header that carries
    the Message Authentication Code (MAC) for the Service Path Header,
    Context Headers, and the inner packet on which NSH is imposed,
-   calculated using MAC_KEY and optionally Context Headers encrypted
+   calculated using MAC_KEY, and optionally Context Headers encrypted
    using ENC_KEY.  The scope of the integrity protection provided by
    this Context Header is depicted in Figure 5.
 
@@ -1014,8 +1014,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    validate the integrity of the NSH data MUST cause that packet to be
    discarded while a notification alarm MAY be sent to an SFC control
    element.  The details of sending notification alarms (i.e., the
-   parameters affecting the transmission of the notification alarms
-   depend on the information in the context header such as frequency,
+   parameters that affect the transmission of the notification alarms
+   depending on the information in the context header such as frequency,
    thresholds, and content in the alarm) SHOULD be configurable.
 
    NSH-aware SFs and SFC proxies MAY be instructed to strip some
@@ -1025,9 +1025,9 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    behavior for intermediary NSH-aware nodes is to maintain such Context
    Headers so that the information can be passed to next NSH-aware hops.
    NSH-aware SFs and SFC proxies MUST re-apply the integrity protection
-   if any modification is made to the Context Headers (strip a Context
-   Header, update the content of an existing Context Header, insert a
-   new Context Header).
+   if any modification is made to the Context Headers (e.g., strip a
+   Context Header, update the content of an existing Context Header,
+   insert a new Context Header).
 
    An NSH-aware SF or SFC Proxy that is not allowed to decrypt any
    Context Headers MUST NOT be given access to the ENC_KEY.
@@ -1301,17 +1301,22 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    The interaction between the SFC data plane elements and a key
    management system MUST NOT be transmitted in clear since this would
    completely destroy the security benefits of the integrity protection
-   solution defined in this document.  The secret key (K) must have an
-   expiration time assigned as the latest point in time before which the
-   key may be used for integrity protection of NSH data and encryption
-   of Context Headers.  Prior to the expiration of the secret key, all
-   participating NSH-aware nodes SHOULD have the control plane
-   distribute a new key identifier and associated keying material so
-   that when the secret key is expired, those nodes are prepared with
-   the new secret key.  This allows the NSH imposer to switch to the new
-   key identifier as soon as necessary.  It is RECOMMENDED that the next
-   key identifier and associated keying material be distributed by the
-   control plane well prior to the secret key expiration time.
+   solution defined in this document.
+
+   The secret key (K) must have an expiration time assigned as the
+   latest point in time before which the key may be used for integrity
+   protection of NSH data and encryption of Context Headers.  Prior to
+   the expiration of the secret key, all participating NSH-aware nodes
+   SHOULD have the control plane distribute a new key identifier and
+   associated keying material so that when the secret key is expired,
+   those nodes are prepared with the new secret key.  This allows the
+   NSH imposer to switch to the new key identifier as soon as necessary.
+   It is RECOMMENDED that the next key identifier and associated keying
+   material be distributed by the control plane well prior to the secret
+   key expiration time.
+
+   The security and integrity of the key-distribution mechanism is vital
+   to the security of the SFC system as a whole.
 
    NSH data are exposed to several threats:
 
@@ -1325,18 +1330,13 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       information to attackers.
 
    o  Attacker replacing the packet on which the NSH is imposed with a
-      bogus packet.
+      modified or bogus packet.
 
    In an SFC-enabled domain where the above attacks are possible, (1)
    NSH data MUST be integrity-protected and replay-protected, and (2)
    privacy-sensitive NSH metadata MUST be encrypted for confidentiality
    preservation purposes.  The Base and Service Path headers are not
    encrypted.
-
-   MACs with two levels of assurance are defined in Section 5.
-   Considerations specific to each level of assurance are discussed in
-   Sections 9.1 and 9.2.
-
 
 
 
@@ -1345,6 +1345,10 @@ Boucadair, et al.       Expires January 16, 2022               [Page 24]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   MACs with two levels of assurance are defined in Section 5.
+   Considerations specific to each level of assurance are discussed in
+   Sections 9.1 and 9.2.
 
    The attacks discussed in [I-D.nguyen-sfc-security-architecture] are
    handled owing to the solution specified in this document, except for
@@ -1386,11 +1390,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    can have access to sensitive NSH metadata and the keying material
    used to integrity protect NSH data and encrypt Context Headers.
 
-9.2.  MAC#2
 
-   SFFs can detect whether an illegitimate node has altered the content
-   of the Base header.  Such messages must be discarded with appropriate
-   logs and alarms generated (see Section 7.1).
 
 
 
@@ -1401,6 +1401,12 @@ Boucadair, et al.       Expires January 16, 2022               [Page 25]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+9.2.  MAC#2
+
+   SFFs can detect whether an illegitimate node has altered the content
+   of the Base header.  Such messages must be discarded with appropriate
+   logs and alarms generated (see Section 7.1).
 
 9.3.  Time Synchronization
 
@@ -1445,18 +1451,14 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Zaheduzzaman Sarker, Eric Vyncke, Roman Danyliw, and Murray Kucherawy
    for the IESG review.
 
-12.  References
-
-
-
-
-
 
 
 Boucadair, et al.       Expires January 16, 2022               [Page 26]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+12.  References
 
 12.1.  Normative References
 
@@ -1503,8 +1505,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
               Touch, J. and M. Townsley, "IP Tunnels in the Internet
               Architecture", draft-ietf-intarea-tunnels-10 (work in
               progress), September 2019.
-
-
 
 
 

@@ -128,7 +128,7 @@
       proliferation of such advanced SFs together with complex service
       deployment constraints that demand more agile service delivery
       procedures, operators need to rationalize their service delivery logics
-      and control their complexity while optimising service activation time
+      and control its complexity while optimising service activation time
       cycles. The overall problem space is described in <xref
       target="RFC7498"></xref>.</t>
 
@@ -165,10 +165,10 @@
       Variable Header-Based Integrity" option mentioned in Section 8.2.1 of
       <xref target="RFC8300"></xref>). Concretely, this document adds
       integrity protection and optional encryption of sensitive metadata
-      directly to the NSH (<xref target="overview"></xref>); integrity
-      protects the packet payload and provides replay protection (<xref
-      target="time"></xref>). Thus, the NSH does not have to rely upon an
-      underlying transport encapsulation for security.</t>
+      directly to the NSH (<xref target="overview"></xref>). The integrity
+      protection covers the packet payload and provides replay protection
+      (<xref target="time"></xref>). Thus, the NSH does not have to rely upon
+      an underlying transport encapsulation for security.</t>
 
       <t>This specification introduces new Variable-Length Context Headers to
       carry fields necessary for integrity-protected NSH headers and encrypted
@@ -420,8 +420,8 @@
             </figure></t>
 
           <t>The integrity protection scope is explicitly signaled to
-          NSH-aware SFs and SFC proxies in the NSH by means of a dedicated MD
-          Type (<xref target="new"></xref>).</t>
+          NSH-aware SFs, SFFs, and SFC proxies in the NSH by means of a
+          dedicated MD Type (<xref target="new"></xref>).</t>
 
           <t>In both levels of assurance, the unencrypted Context Headers and
           the packet on which the NSH is imposed are subject to integrity
@@ -514,7 +514,7 @@
           </list></t>
       </section>
 
-      <section title="Key Management">
+      <section anchor="kms" title="Key Management">
         <t>The procedure for the allocation/provisioning of secret keys (K)
         and authenticated encryption algorithm or MAC_KEY and HMAC algorithm
         is outside the scope of this specification. As such, this
@@ -570,7 +570,7 @@
         <t>As discussed in Section 3 of <xref target="RFC8459"></xref>, an
         SFC-enabled domain (called, upper-level domain) may be decomposed into
         many sub-domains (called, lower-level domains). In order to avoid
-        maintaining state to restore back upper-lower NSH information at the
+        maintaining state to restore back upper-level NSH information at the
         boundaries of lower-level domains, two NSH levels are used: an
         Upper-NSH which is imposed at the boundaries of the upper-level domain
         and a Lower-NSH that is pushed by the Classifier of a lower-level
@@ -644,7 +644,7 @@
         <t>MAC#1 Context Header is a variable-length Context Header that
         carries the Message Authentication Code (MAC) for the Service Path
         Header, Context Headers, and the inner packet on which NSH is imposed,
-        calculated using MAC_KEY and optionally Context Headers encrypted
+        calculated using MAC_KEY, and optionally Context Headers encrypted
         using ENC_KEY. The scope of the integrity protection provided by this
         Context Header is depicted in <xref target="scope1"></xref>.</t>
 
@@ -896,8 +896,8 @@
         validate the integrity of the NSH data MUST cause that packet to be
         discarded while a notification alarm MAY be sent to an SFC control
         element. The details of sending notification alarms (i.e., the
-        parameters affecting the transmission of the notification alarms
-        depend on the information in the context header such as frequency,
+        parameters that affect the transmission of the notification alarms
+        depending on the information in the context header such as frequency,
         thresholds, and content in the alarm) SHOULD be configurable.</t>
 
         <t>NSH-aware SFs and SFC proxies MAY be instructed to strip some
@@ -907,9 +907,9 @@
         behavior for intermediary NSH-aware nodes is to maintain such Context
         Headers so that the information can be passed to next NSH-aware hops.
         NSH-aware SFs and SFC proxies MUST re-apply the integrity protection
-        if any modification is made to the Context Headers (strip a Context
-        Header, update the content of an existing Context Header, insert a new
-        Context Header).</t>
+        if any modification is made to the Context Headers (e.g., strip a
+        Context Header, update the content of an existing Context Header,
+        insert a new Context Header).</t>
 
         <t>An NSH-aware SF or SFC Proxy that is not allowed to decrypt any
         Context Headers MUST NOT be given access to the ENC_KEY.</t>
@@ -1169,17 +1169,21 @@
       <t>The interaction between the SFC data plane elements and a key
       management system MUST NOT be transmitted in clear since this would
       completely destroy the security benefits of the integrity protection
-      solution defined in this document. The secret key (K) must have an
-      expiration time assigned as the latest point in time before which the
-      key may be used for integrity protection of NSH data and encryption of
-      Context Headers. Prior to the expiration of the secret key, all
-      participating NSH-aware nodes SHOULD have the control plane distribute a
-      new key identifier and associated keying material so that when the
-      secret key is expired, those nodes are prepared with the new secret key.
-      This allows the NSH imposer to switch to the new key identifier as soon
-      as necessary. It is RECOMMENDED that the next key identifier and
-      associated keying material be distributed by the control plane well
-      prior to the secret key expiration time.</t>
+      solution defined in this document. </t>
+
+      <t>The secret key (K) must have an expiration time assigned as the
+      latest point in time before which the key may be used for integrity
+      protection of NSH data and encryption of Context Headers. Prior to the
+      expiration of the secret key, all participating NSH-aware nodes SHOULD
+      have the control plane distribute a new key identifier and associated
+      keying material so that when the secret key is expired, those nodes are
+      prepared with the new secret key. This allows the NSH imposer to switch
+      to the new key identifier as soon as necessary. It is RECOMMENDED that
+      the next key identifier and associated keying material be distributed by
+      the control plane well prior to the secret key expiration time.</t>
+
+      <t>The security and integrity of the key-distribution mechanism is vital
+      to the security of the SFC system as a whole. </t>
 
       <t>NSH data are exposed to several threats:</t>
 
@@ -1194,7 +1198,7 @@
           information to attackers.</t>
 
           <t>Attacker replacing the packet on which the NSH is imposed with a
-          bogus packet.</t>
+          modified or bogus packet.</t>
         </list></t>
 
       <t>In an SFC-enabled domain where the above attacks are possible, (1)
