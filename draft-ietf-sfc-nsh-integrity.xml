@@ -149,13 +149,11 @@
       (e.g., IPsec) only provide hop-by-hop security between two SFC data
       plane elements (e.g., two Service Function Forwarders (SFFs), SFF to SF)
       and do not provide SF-to-SF security of NSH metadata. For example, if
-      IPsec is used, SFFs or SFs within a Service Function Path (SFP) that are
-      not authorized to access the sensitive metadata (e.g., privacy) will
-      have access to the metadata. As a reminder, the metadata referred to is
-      information that is inserted by Classifiers or intermediate SFs and
-      shared with downstream SFs; such information is not visible to the
-      communication endpoints (Section 4.9 of <xref
-      target="RFC7665"></xref>).</t>
+      IPsec is used, sensitive metadata (e.g., privacy) will have access to
+      the metadata. As a reminder, the metadata referred to is information
+      that is inserted by Classifiers or intermediate SFs and shared with
+      downstream SFs; such information is not visible to the communication
+      endpoints (Section 4.9 of <xref target="RFC7665"></xref>).</t>
 
       <t>The lack of such capability was reported during the development of
       <xref target="RFC8300"></xref> and <xref target="RFC8459"></xref>. The
@@ -374,10 +372,10 @@
           <t>The solution provides integrity protection for the NSH data. Two
           levels of assurance (LoAs) are supported.</t>
 
-          <t>The first level of assurance where all NSH data except the Base
-          Header are integrity protected (<xref target="first"></xref>). In
-          this case, the NSH imposer may be a Classifier, an NSH-aware SF, or
-          an SFC Proxy. SFFs are not provided with authentication material.
+          <t>The first level of assurance is where all NSH data except the
+          Base Header are integrity protected (<xref target="first"></xref>).
+          In this case, the NSH imposer may be a Classifier, an NSH-aware SF,
+          or an SFC Proxy. SFFs are not provided with authentication material.
           Further details are discussed in <xref target="enc1"></xref>.<figure
               align="center" anchor="first" title="First Level of Assurance">
               <artwork align="center"><![CDATA[   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
@@ -396,11 +394,11 @@
 ]]></artwork>
             </figure></t>
 
-          <t>The second level of assurance where all NSH data, including the
-          Base Header, are integrity protected (<xref target="sec"></xref>).
-          In this case, the NSH imposer may be a Classifier, an NSH-aware SF,
-          an SFF, or an SFC Proxy. Further details are provided in <xref
-          target="enc2"></xref>.</t>
+          <t>The second level of assurance is where all NSH data, including
+          the Base Header, are integrity protected (<xref
+          target="sec"></xref>). In this case, the NSH imposer may be a
+          Classifier, an NSH-aware SF, an SFF, or an SFC Proxy. Further
+          details are provided in <xref target="enc2"></xref>.</t>
 
           <t><figure align="center" anchor="sec"
               title="Second Level of Assurance">
@@ -484,7 +482,7 @@
         control plane. Mandatory to implement authenticated encryption and
         HMAC algorithms are listed in <xref target="mti"></xref>.</t>
 
-        <t>The authenticated encryption process takes as input four-octet
+        <t>The authenticated encryption process takes as input four octet
         strings: a secret key (K), a plaintext (P), Additional Authenticated
         Data (A) (which contains the data to be authenticated, but not
         encrypted), and an Initialization Vector (IV). The ciphertext value
@@ -807,7 +805,7 @@
             <t hangText="Encrypted Context Headers:">Carries the optional
             encrypted Context Headers.</t>
 
-            <t hangText="Message Authentication Code:">Coves the entire NSH
+            <t hangText="Message Authentication Code:">Covers the entire NSH
             data. The Additional Authenticated Data (defined in <xref
             target="RFC7518"></xref>) MUST be the entire NSH data (i.e.,
             including the Base Header) excluding the Context Headers to be
@@ -1299,8 +1297,8 @@
       <t>Thanks to Greg Mirsky for the Shepherd review.</t>
 
       <t>Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline,
-      Zaheduzzaman Sarker, &Eacute;ric Vyncke, and Roman Danyliw for the IESG
-      review.</t>
+      Zaheduzzaman Sarker, &Eacute;ric Vyncke, Roman Danyliw, and Murray
+      Kucherawy for the IESG review.</t>
     </section>
   </middle>
 
