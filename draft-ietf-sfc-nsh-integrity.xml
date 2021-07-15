@@ -711,10 +711,8 @@
             identifier helps in resolving the problem of synchronization of
             keying material.</t>
 
-            <t hangText="Timestamp:">Carries an unsigned 64-bit integer value
-            that is expressed in seconds and fractions of second relative to
-            1970-01-01T00:00Z in UTC time. See <xref target="timef"></xref>
-            for more details.</t>
+            <t hangText="Timestamp:">Refer to <xref target="timef"></xref> for
+            more details about the structure of this field.</t>
 
             <t hangText="IV Length:">Carries the length of the IV (Section 5.2
             of <xref target="RFC7518"></xref>). If encryption is not used, IV
@@ -847,7 +845,7 @@
         </list></t>
 
       <t>Epoch:<list style="empty">
-          <t>The epoch is 1970-01-01T00:00Z in UTC time. Note this epoch value
+          <t>The epoch is 1970-01-01T00:00 in UTC time. Note this epoch value
           is different from the one used in Section 6 of <xref
           target="RFC5905"></xref> (wraparound 2036).</t>
         </list></t>

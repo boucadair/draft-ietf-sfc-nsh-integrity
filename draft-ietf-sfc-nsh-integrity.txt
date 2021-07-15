@@ -792,9 +792,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       keying material per SFC/SFP.  The key identifier helps in
       resolving the problem of synchronization of keying material.
 
-   Timestamp:  Carries an unsigned 64-bit integer value that is
-      expressed in seconds and fractions of second relative to
-      1970-01-01T00:00Z in UTC time.  See Section 6 for more details.
+   Timestamp:  Refer to Section 6 for more details about the structure
+      of this field.
 
    IV Length:  Carries the length of the IV (Section 5.2 of [RFC7518]).
       If encryption is not used, IV length is set to zero (that is, no
@@ -818,6 +817,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    optionally Context Headers encrypted using ENC_KEY.  The scope of the
    integrity protection provided by this Context Header is depicted in
    Figure 6.
+
 
 
 
@@ -956,7 +956,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Epoch:
 
-      The epoch is 1970-01-01T00:00Z in UTC time.  Note this epoch value
+      The epoch is 1970-01-01T00:00 in UTC time.  Note this epoch value
       is different from the one used in Section 6 of [RFC5905]
       (wraparound 2036).
 
