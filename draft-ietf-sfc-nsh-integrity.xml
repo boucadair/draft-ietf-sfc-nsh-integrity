@@ -279,7 +279,7 @@
           encrypt and decrypt a given Context Header.</t>
 
           <t>Both encrypted and unencrypted Context Headers may be included in
-          the same NSH. </t>
+          the same NSH.</t>
 
           <t>The solution must provide integrity protection for the Service
           Path Header.</t>
@@ -712,7 +712,8 @@
             plane elements. This identifier is helpful to accommodate
             deployments relying upon keying material per SFC/SFP. The key
             identifier helps in resolving the problem of synchronization of
-            keying material.</t>
+            keying material. A single key identifier is used to lookup both
+            the ENC_KEY and the MAC_KEY associated with a key. </t>
 
             <t hangText="Timestamp:">Refer to <xref target="timef"></xref> for
             more details about the structure of this field.</t>
@@ -928,7 +929,7 @@
         counter for this event as per Section 2.5.1 of <xref
         target="RFC8300"></xref>. If NSH-in-NSH is used (<xref
         target="nsh-in-nsh"></xref>), distinct LoAs may be used for each NSH
-        level. </t>
+        level.</t>
 
         <t>MTU and fragmentation considerations are discussed in <xref
         target="MTU"></xref>.</t>
@@ -1253,7 +1254,7 @@
         proxies in the SFC-enabled domain are considered fully trusted to act
         on the NSH data, only these elements can have access to sensitive NSH
         metadata and the keying material used to integrity protect NSH data
-        and encrypt Context Headers. </t>
+        and encrypt Context Headers.</t>
       </section>
 
       <section anchor="mac2" title="MAC#2">

@@ -790,7 +790,9 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       to identify and deliver keys to SFC data plane elements.  This
       identifier is helpful to accommodate deployments relying upon
       keying material per SFC/SFP.  The key identifier helps in
-      resolving the problem of synchronization of keying material.
+      resolving the problem of synchronization of keying material.  A
+      single key identifier is used to lookup both the ENC_KEY and the
+      MAC_KEY associated with a key.
 
    Timestamp:  Refer to Section 6 for more details about the structure
       of this field.
@@ -817,8 +819,6 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    optionally Context Headers encrypted using ENC_KEY.  The scope of the
    integrity protection provided by this Context Header is depicted in
    Figure 6.
-
-
 
 
 
