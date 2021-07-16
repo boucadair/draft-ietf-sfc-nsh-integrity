@@ -279,8 +279,7 @@
           encrypt and decrypt a given Context Header.</t>
 
           <t>Both encrypted and unencrypted Context Headers may be included in
-          the same NSH. That is, some Context Headers may be protected while
-          others do not need to be protected.</t>
+          the same NSH. </t>
 
           <t>The solution must provide integrity protection for the Service
           Path Header.</t>
@@ -541,6 +540,10 @@
         <t>Additional information on manual vs. automated key management and
         when one should be used over the other can be found in <xref
         target="RFC4107"></xref>.</t>
+
+        <t>The risk involved in using a group-shared symmetric key increases
+        with the size of the group to which it is shared. Additional security
+        issues are discussed in <xref target="Security"></xref>.</t>
       </section>
 
       <section title="New NSH Variable-Length Context Headers">
@@ -925,7 +928,7 @@
         counter for this event as per Section 2.5.1 of <xref
         target="RFC8300"></xref>. If NSH-in-NSH is used (<xref
         target="nsh-in-nsh"></xref>), distinct LoAs may be used for each NSH
-        level.</t>
+        level. </t>
 
         <t>MTU and fragmentation considerations are discussed in <xref
         target="MTU"></xref>.</t>
@@ -957,8 +960,8 @@
 
         <t></t>
 
-        <t>An entity in the SFP that intends to update the NSH MUST follow the
-        above behavior to maintain message integrity of the NSH for subsequent
+        <t>An entity in the SFP that updates the NSH MUST follow the above
+        behavior to maintain message integrity of the NSH for subsequent
         validations.</t>
       </section>
 
@@ -1029,7 +1032,7 @@
           </figure></t>
       </section>
 
-      <section anchor="time" title="Timestamp for Replay Attack">
+      <section anchor="time" title="Timestamp for Replay Attack Prevention">
         <t>The Timestamp imposed by an initial Classifier is left untouched
         along an SFP. However, it can be updated when reclassification occurs
         (Section 4.8 of <xref target="RFC7665"></xref>). The same
@@ -1167,7 +1170,7 @@
       <t>The interaction between the SFC data plane elements and a key
       management system MUST NOT be transmitted in clear since this would
       completely destroy the security benefits of the integrity protection
-      solution defined in this document. </t>
+      solution defined in this document.</t>
 
       <t>The secret key (K) must have an expiration time assigned as the
       latest point in time before which the key may be used for integrity
@@ -1181,7 +1184,7 @@
       the control plane well prior to the secret key expiration time.</t>
 
       <t>The security and integrity of the key-distribution mechanism is vital
-      to the security of the SFC system as a whole. </t>
+      to the security of the SFC system as a whole.</t>
 
       <t>NSH data are exposed to several threats:</t>
 
@@ -1239,15 +1242,16 @@
         not considered an attack against the security mechanism specified in
         the document.</t>
 
-        <t>No device other than the NSH-aware SFs in the SFC-enabled domain
-        should be able to update the integrity protected NSH data. Similarly,
-        no device other than the NSH-aware SFs and SFC proxies in the
-        SFC-enabled domain should be able to decrypt and update the Context
-        Headers carrying sensitive metadata. In other words, if the NSH-aware
-        SFs and SFC proxies in the SFC-enabled domain are considered fully
-        trusted to act on the NSH data, only these elements can have access to
-        sensitive NSH metadata and the keying material used to integrity
-        protect NSH data and encrypt Context Headers.</t>
+        <t>No device other than the classifiers (when reclassifying),
+        NSH-aware SFs and SFC proxies in the SFC-enabled domain should be able
+        to update the integrity protected NSH data. Similarly, no device other
+        than the NSH-aware SFs and SFC proxies in the SFC-enabled domain
+        should be able to decrypt and update the Context Headers carrying
+        sensitive metadata. In other words, if the NSH-aware SFs and SFC
+        proxies in the SFC-enabled domain are considered fully trusted to act
+        on the NSH data, only these elements can have access to sensitive NSH
+        metadata and the keying material used to integrity protect NSH data
+        and encrypt Context Headers.</t>
       </section>
 
       <section anchor="mac2" title="MAC#2">
@@ -1255,6 +1259,11 @@
         content of the Base header. Such messages must be discarded with
         appropriate logs and alarms generated (see <xref
         target="gen"></xref>).</t>
+
+        <t>Similar to <xref target="mac1"></xref>, no device other than the
+        NSH-aware SFs and SFC proxies in the SFC-enabled domain should be able
+        to decrypt and update the Context Headers carrying sensitive
+        metadata.</t>
       </section>
 
       <section title="Time Synchronization">

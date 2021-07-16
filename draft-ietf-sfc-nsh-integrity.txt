@@ -5,10 +5,10 @@
 SFC                                                         M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                                T. Reddy
-Expires: January 16, 2022                                         McAfee
+Expires: January 17, 2022                                         McAfee
                                                                  D. Wing
                                                                   Citrix
-                                                           July 15, 2021
+                                                           July 16, 2021
 
 
 Integrity Protection for the Network Service Header (NSH) and Encryption
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 16, 2022.
+   This Internet-Draft will expire on January 17, 2022.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 1]
+Boucadair, et al.       Expires January 17, 2022                [Page 1]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -85,7 +85,7 @@ Table of Contents
      7.1.  Generic Behavior  . . . . . . . . . . . . . . . . . . . .  18
      7.2.  MAC NSH Data Generation . . . . . . . . . . . . . . . . .  19
      7.3.  Encrypted NSH Metadata Generation . . . . . . . . . . . .  20
-     7.4.  Timestamp for Replay Attack . . . . . . . . . . . . . . .  21
+     7.4.  Timestamp for Replay Attack Prevention  . . . . . . . . .  21
      7.5.  NSH Data Validation . . . . . . . . . . . . . . . . . . .  22
      7.6.  Decryption of NSH Metadata  . . . . . . . . . . . . . . .  23
    8.  MTU Considerations  . . . . . . . . . . . . . . . . . . . . .  23
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 2]
+Boucadair, et al.       Expires January 17, 2022                [Page 2]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -165,7 +165,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 3]
+Boucadair, et al.       Expires January 17, 2022                [Page 3]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -221,7 +221,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 4]
+Boucadair, et al.       Expires January 17, 2022                [Page 4]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -277,7 +277,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 5]
+Boucadair, et al.       Expires January 17, 2022                [Page 5]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -292,8 +292,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       encrypt and decrypt a given Context Header.
 
    o  Both encrypted and unencrypted Context Headers may be included in
-      the same NSH.  That is, some Context Headers may be protected
-      while others do not need to be protected.
+      the same NSH.
 
    o  The solution must provide integrity protection for the Service
       Path Header.
@@ -333,7 +332,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 6]
+
+Boucadair, et al.       Expires January 17, 2022                [Page 6]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -389,7 +389,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 7]
+Boucadair, et al.       Expires January 17, 2022                [Page 7]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -445,7 +445,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 8]
+Boucadair, et al.       Expires January 17, 2022                [Page 8]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -501,7 +501,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022                [Page 9]
+Boucadair, et al.       Expires January 17, 2022                [Page 9]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -557,7 +557,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 10]
+Boucadair, et al.       Expires January 17, 2022               [Page 10]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -572,6 +572,10 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Additional information on manual vs. automated key management and
    when one should be used over the other can be found in [RFC4107].
+
+   The risk involved in using a group-shared symmetric key increases
+   with the size of the group to which it is shared.  Additional
+   security issues are discussed in Section 9.
 
 4.5.  New NSH Variable-Length Context Headers
 
@@ -606,17 +610,16 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    the original NSH (Figure 3).  As such, the Upper-NSH information is
    carried along the lower-level chain without modification.  The packet
    is forwarded in the top-level domain according to the Upper-NSH,
-   while it is forwarded according to the Lower-NSH in a lower-level
-   domain.
 
 
 
-
-
-Boucadair, et al.       Expires January 16, 2022               [Page 11]
+Boucadair, et al.       Expires January 17, 2022               [Page 11]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   while it is forwarded according to the Lower-NSH in a lower-level
+   domain.
 
                      +---------------------------------+
                      |     Transport Encapsulation     |
@@ -666,10 +669,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-
-
-
-Boucadair, et al.       Expires January 16, 2022               [Page 12]
+Boucadair, et al.       Expires January 17, 2022               [Page 12]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -725,7 +725,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 13]
+Boucadair, et al.       Expires January 17, 2022               [Page 13]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -781,7 +781,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 14]
+Boucadair, et al.       Expires January 17, 2022               [Page 14]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -837,7 +837,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 15]
+Boucadair, et al.       Expires January 17, 2022               [Page 15]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -893,7 +893,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 16]
+Boucadair, et al.       Expires January 17, 2022               [Page 16]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -949,7 +949,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 17]
+Boucadair, et al.       Expires January 17, 2022               [Page 17]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1005,7 +1005,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 18]
+Boucadair, et al.       Expires January 17, 2022               [Page 18]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1061,7 +1061,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 19]
+Boucadair, et al.       Expires January 17, 2022               [Page 19]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1076,9 +1076,9 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
          T = HMAC-SHA-256-128(MAC_KEY, target NSH data)
 
-   An entity in the SFP that intends to update the NSH MUST follow the
-   above behavior to maintain message integrity of the NSH for
-   subsequent validations.
+   An entity in the SFP that updates the NSH MUST follow the above
+   behavior to maintain message integrity of the NSH for subsequent
+   validations.
 
 7.3.  Encrypted NSH Metadata Generation
 
@@ -1117,7 +1117,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 20]
+Boucadair, et al.       Expires January 17, 2022               [Page 20]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1144,7 +1144,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
          M = MAC(MAC_KEY, A || IV || E || AL),
          T = initial T_LEN octets of M.
 
-7.4.  Timestamp for Replay Attack
+7.4.  Timestamp for Replay Attack Prevention
 
    The Timestamp imposed by an initial Classifier is left untouched
    along an SFP.  However, it can be updated when reclassification
@@ -1173,7 +1173,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 21]
+Boucadair, et al.       Expires January 17, 2022               [Page 21]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1229,7 +1229,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 22]
+Boucadair, et al.       Expires January 17, 2022               [Page 22]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1285,7 +1285,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 23]
+Boucadair, et al.       Expires January 17, 2022               [Page 23]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1341,7 +1341,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-Boucadair, et al.       Expires January 16, 2022               [Page 24]
+Boucadair, et al.       Expires January 17, 2022               [Page 24]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1380,15 +1380,16 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    this attack is not considered an attack against the security
    mechanism specified in the document.
 
-   No device other than the NSH-aware SFs in the SFC-enabled domain
-   should be able to update the integrity protected NSH data.
-   Similarly, no device other than the NSH-aware SFs and SFC proxies in
-   the SFC-enabled domain should be able to decrypt and update the
-   Context Headers carrying sensitive metadata.  In other words, if the
-   NSH-aware SFs and SFC proxies in the SFC-enabled domain are
-   considered fully trusted to act on the NSH data, only these elements
-   can have access to sensitive NSH metadata and the keying material
-   used to integrity protect NSH data and encrypt Context Headers.
+   No device other than the classifiers (when reclassifying), NSH-aware
+   SFs and SFC proxies in the SFC-enabled domain should be able to
+   update the integrity protected NSH data.  Similarly, no device other
+   than the NSH-aware SFs and SFC proxies in the SFC-enabled domain
+   should be able to decrypt and update the Context Headers carrying
+   sensitive metadata.  In other words, if the NSH-aware SFs and SFC
+   proxies in the SFC-enabled domain are considered fully trusted to act
+   on the NSH data, only these elements can have access to sensitive NSH
+   metadata and the keying material used to integrity protect NSH data
+   and encrypt Context Headers.
 
 
 
@@ -1396,8 +1397,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
 
-
-Boucadair, et al.       Expires January 16, 2022               [Page 25]
+Boucadair, et al.       Expires January 17, 2022               [Page 25]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
@@ -1407,6 +1407,10 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    SFFs can detect whether an illegitimate node has altered the content
    of the Base header.  Such messages must be discarded with appropriate
    logs and alarms generated (see Section 7.1).
+
+   Similar to Section 9.1, no device other than the NSH-aware SFs and
+   SFC proxies in the SFC-enabled domain should be able to decrypt and
+   update the Context Headers carrying sensitive metadata.
 
 9.3.  Time Synchronization
 
@@ -1447,16 +1451,16 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
    Thanks to Greg Mirsky for the Shepherd review.
 
-   Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline,
-   Zaheduzzaman Sarker, Eric Vyncke, Roman Danyliw, and Murray Kucherawy
-   for the IESG review.
 
 
-
-Boucadair, et al.       Expires January 16, 2022               [Page 26]
+Boucadair, et al.       Expires January 17, 2022               [Page 26]
 
 Internet-Draft      Integrity Protection for the NSH           July 2021
 
+
+   Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline,
+   Zaheduzzaman Sarker, Eric Vyncke, Roman Danyliw, and Murray Kucherawy
+   for the IESG review.
 
 12.  References
 
@@ -1501,18 +1505,19 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
               Internet Threat Model", draft-arkko-farrell-arch-model-
               t-04 (work in progress), July 2020.
 
+
+
+
+
+Boucadair, et al.       Expires January 17, 2022               [Page 27]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
+
    [I-D.ietf-intarea-tunnels]
               Touch, J. and M. Townsley, "IP Tunnels in the Internet
               Architecture", draft-ietf-intarea-tunnels-10 (work in
               progress), September 2019.
-
-
-
-
-Boucadair, et al.       Expires January 16, 2022               [Page 27]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
 
    [I-D.nguyen-sfc-security-architecture]
               THANG, N. C. and M. Park, "A Security Architecture Against
@@ -1555,20 +1560,20 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
               DOI 10.17487/RFC8459, September 2018,
               <https://www.rfc-editor.org/info/rfc8459>.
 
+
+
+
+
+
+Boucadair, et al.       Expires January 17, 2022               [Page 28]
+
+Internet-Draft      Integrity Protection for the NSH           July 2021
+
+
    [RFC8633]  Reilly, D., Stenn, H., and D. Sibold, "Network Time
               Protocol Best Current Practices", BCP 223, RFC 8633,
               DOI 10.17487/RFC8633, July 2019,
               <https://www.rfc-editor.org/info/rfc8633>.
-
-
-
-
-
-
-Boucadair, et al.       Expires January 16, 2022               [Page 28]
-
-Internet-Draft      Integrity Protection for the NSH           July 2021
-
 
    [RFC8877]  Mizrahi, T., Fabini, J., and A. Morton, "Guidelines for
               Defining Packet Timestamps", RFC 8877,
@@ -1616,9 +1621,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-Boucadair, et al.       Expires January 16, 2022               [Page 29]
+Boucadair, et al.       Expires January 17, 2022               [Page 29]
