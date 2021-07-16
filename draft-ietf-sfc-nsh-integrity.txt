@@ -1380,17 +1380,17 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    this attack is not considered an attack against the security
    mechanism specified in the document.
 
-   No device other than the classifiers (when reclassifying), NSH-aware
-   SFs and SFC proxies in the SFC-enabled domain should be able to
-   update the integrity protected NSH data.  Similarly, no device other
-   than the NSH-aware SFs and SFC proxies in the SFC-enabled domain
-   should be able to decrypt and update the Context Headers carrying
-   sensitive metadata.  In other words, if the NSH-aware SFs and SFC
-   proxies in the SFC-enabled domain are considered fully trusted to act
-   on the NSH data, only these elements can have access to sensitive NSH
-   metadata and the keying material used to integrity protect NSH data
-   and encrypt Context Headers.
-
+   It is expected that specific devices in the SFC-enabled domain will
+   be configured such that no device other than the classifiers (when
+   reclassification is enabled), NSH-aware SFs, and SFC proxies will be
+   able to update the integrity protected NSH data (Section 7.1), and
+   also such that no device other than the NSH-aware SFs and SFC proxies
+   will be able to decrypt and update the Context Headers carrying
+   sensitive metadata (Section 7.1).  In other words, if the NSH-aware
+   SFs and SFC proxies in the SFC-enabled domain are considered fully
+   trusted to act on the NSH data, only these elements can have access
+   to sensitive NSH metadata and the keying material used to integrity
+   protect NSH data and encrypt Context Headers.
 
 
 
@@ -1459,8 +1459,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
 
 
    Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline,
-   Zaheduzzaman Sarker, Eric Vyncke, Roman Danyliw, and Murray Kucherawy
-   for the IESG review.
+   Zaheduzzaman Sarker, Eric Vyncke, Roman Danyliw, Murray Kucherawy,
+   John Scudder, and Benjamin Kaduk for the IESG review.
 
 12.  References
 

@@ -1242,16 +1242,18 @@
         not considered an attack against the security mechanism specified in
         the document.</t>
 
-        <t>No device other than the classifiers (when reclassifying),
-        NSH-aware SFs and SFC proxies in the SFC-enabled domain should be able
-        to update the integrity protected NSH data. Similarly, no device other
-        than the NSH-aware SFs and SFC proxies in the SFC-enabled domain
-        should be able to decrypt and update the Context Headers carrying
-        sensitive metadata. In other words, if the NSH-aware SFs and SFC
+        <t>It is expected that specific devices in the SFC-enabled domain will
+        be configured such that no device other than the classifiers (when
+        reclassification is enabled), NSH-aware SFs, and SFC proxies will be
+        able to update the integrity protected NSH data (<xref
+        target="gen"></xref>), and also such that no device other than the
+        NSH-aware SFs and SFC proxies will be able to decrypt and update the
+        Context Headers carrying sensitive metadata (<xref
+        target="gen"></xref>). In other words, if the NSH-aware SFs and SFC
         proxies in the SFC-enabled domain are considered fully trusted to act
         on the NSH data, only these elements can have access to sensitive NSH
         metadata and the keying material used to integrity protect NSH data
-        and encrypt Context Headers.</t>
+        and encrypt Context Headers. </t>
       </section>
 
       <section anchor="mac2" title="MAC#2">
@@ -1308,8 +1310,8 @@
       <t>Thanks to Greg Mirsky for the Shepherd review.</t>
 
       <t>Thanks to Alvaro Retana, Lars Eggert, Martin Duke, Erik Kline,
-      Zaheduzzaman Sarker, &Eacute;ric Vyncke, Roman Danyliw, and Murray
-      Kucherawy for the IESG review.</t>
+      Zaheduzzaman Sarker, &Eacute;ric Vyncke, Roman Danyliw, Murray
+      Kucherawy, John Scudder, and Benjamin Kaduk for the IESG review.</t>
     </section>
   </middle>
 
