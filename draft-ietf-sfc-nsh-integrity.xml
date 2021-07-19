@@ -150,10 +150,10 @@
       plane elements (e.g., two Service Function Forwarders (SFFs), SFF to SF)
       and do not provide SF-to-SF security of NSH metadata. For example, if
       IPsec is used, SFFs or SFs within a Service Function Path (SFP) that are
-      not authorized to access the privacy-sensitive metadata (e.g., privacy)
-      will have access to the metadata. As a reminder, the metadata referred
-      to is information that is inserted by Classifiers or intermediate SFs
-      and shared with downstream SFs; such information is not visible to the
+      not authorized to access the sensitive metadata (e.g., privacy) will
+      have access to the metadata. As a reminder, the metadata referred to is
+      information that is inserted by Classifiers or intermediate SFs and
+      shared with downstream SFs; such information is not visible to the
       communication endpoints (Section 4.9 of <xref
       target="RFC7665"></xref>).</t>
 

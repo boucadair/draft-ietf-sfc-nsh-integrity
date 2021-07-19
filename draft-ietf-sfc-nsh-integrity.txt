@@ -140,11 +140,11 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Service Function Forwarders (SFFs), SFF to SF) and do not provide SF-
    to-SF security of NSH metadata.  For example, if IPsec is used, SFFs
    or SFs within a Service Function Path (SFP) that are not authorized
-   to access the privacy-sensitive metadata (e.g., privacy) will have
-   access to the metadata.  As a reminder, the metadata referred to is
-   information that is inserted by Classifiers or intermediate SFs and
-   shared with downstream SFs; such information is not visible to the
-   communication endpoints (Section 4.9 of [RFC7665]).
+   to access the sensitive metadata (e.g., privacy) will have access to
+   the metadata.  As a reminder, the metadata referred to is information
+   that is inserted by Classifiers or intermediate SFs and shared with
+   downstream SFs; such information is not visible to the communication
+   endpoints (Section 4.9 of [RFC7665]).
 
    The lack of such capability was reported during the development of
    [RFC8300] and [RFC8459].  The reader may refer to Section 3.2.1 of
