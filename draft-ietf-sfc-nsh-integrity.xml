@@ -445,9 +445,9 @@
         </section>
       </section>
 
-      <section title="One Secret Key, Two Security Services">
-        <t>The authenticated encryption algorithm defined in Section 5.2 of
-        <xref target="RFC7518"></xref> is used to provide NSH data integrity
+      <section title="One Single Key, Two Security Services">
+        <t>The authenticated encryption algorithm defined in Section 5 of
+        <xref target="RFC5116"></xref> is used to provide NSH data integrity
         and to encrypt the Context Headers that carry sensitive metadata.</t>
 
         <t>The authenticated encryption algorithm provides a unified
@@ -456,14 +456,14 @@
         keys MAC_KEY and ENC_KEY from the secret key (K) is discussed in
         Section 5.2.2.1 of <xref target="RFC7518"></xref>: <list
             style="symbols">
-            <t>The ENC_KEY is used for encrypting the Context Headers and the
-            message integrity of the NSH data is calculated using the
-            MAC_KEY.</t>
+            <t>The secret key (K) is used for both encrypting the Context
+            Headers and calculating the message integrity of the NSH data is
+            calculated.</t>
 
             <t>If the Context Headers are not encrypted, the Hashed Message
             Authentication Mode (HMAC) algorithm discussed in <xref
             target="RFC4868"></xref> is used to protect the integrity of the
-            NSH data.</t>
+            NSH data with MAC_KEY.</t>
           </list></t>
 
         <t>The advantage of using the authenticated encryption algorithm is
@@ -481,35 +481,42 @@
         control plane. Mandatory to implement authenticated encryption and
         HMAC algorithms are listed in <xref target="mti"></xref>.</t>
 
-        <t>The authenticated encryption process takes as input four octet
-        strings: a secret key (K), a plaintext (P), Additional Authenticated
-        Data (A) (which contains the data to be authenticated, but not
-        encrypted), and an Initialization Vector (IV). The ciphertext value
-        (E) and the Authentication Tag value (T) are provided as outputs.</t>
+        <t>The authenticated encryption process takes four inputs, each of
+        which is an octet string: a secret key (K), a plaintext (P),
+        associated data (A) (which contains the data to be authenticated, but
+        not encrypted), and an Initialization Vector (IV). A ciphertext (C) is
+        generated as an output as discussed in Section 2.1 of <xref
+        target="RFC5116"></xref>. </t>
 
-        <t>In order to decrypt and verify, the cipher takes as input K, IV, A,
-        T, and E. The output is either the plaintext or an error indicating
-        that the decryption failed as described in Section 5.2.2.2 of <xref
-        target="RFC7518"></xref>.</t>
+        <t>In order to decrypt and verify, the cipher takes as input K, N, A,
+        and C. The output is either the plaintext or an error indicating that
+        the decryption failed as described in Section 2.2 of <xref
+        target="RFC5116"></xref>.</t>
       </section>
 
       <section anchor="mti"
                title="Mandatory-to-Implement Authenticated Encryption and HMAC Algorithms">
         <t>Classifiers, NSH-aware SFs, and SFC proxies MUST implement the
-        AES_128_CBC_HMAC_SHA_256 algorithm and SHOULD implement the
-        AES_192_CBC_HMAC_SHA_384 and AES_256_CBC_HMAC_SHA_512 algorithms.</t>
+        AES_128_GCM <xref target="GCM"></xref><xref target="RFC5116"></xref>
+        algorithm and SHOULD implement the AES_192_GCM and AES_256_GCM
+        algorithms. </t>
 
         <t>Classifiers, NSH-aware SFs, and SFC proxies MUST implement the
-        HMAC-SHA-256-128 algorithm and SHOULD implement the HMAC-SHA-384-192
-        and HMAC-SHA-512-256 algorithms.</t>
+        HMAC- SHA-256-128 algorithm and SHOULD implement the HMAC-SHA-384-192
+        and HMAC-SHA-512-256 algorithms. </t>
 
         <t>SFFs MAY implement the aforementioned cipher suites and HMAC
-        algorithms.</t>
+        algorithms. </t>
 
-        <t><list style="empty">
-            <t>Note: The use of Advanced Encryption Standard (AES) in
-            Galois/Counter Mode (GCM) + HMAC may have CPU and packet size
-            implications (need for a second 128-bit authentication tag).</t>
+        <t><list style="hanging">
+            <t hangText="Note:">The use of AES_128_CBC_HMAC_SHA_256 algorithm
+            would have avoided the need for a second 128-bit authentication
+            tag, but due to the nature of how Cipher Block Chaining (CBC) mode
+            operates, AES_128_CBC_HMAC_SHA_256 allows for malleability of
+            plaintexts. This malleability allows for attackers to make changes
+            in the ciphertext and, if parts of the plaintext are known, create
+            arbitrary blocks of plaintext. This specification mandates the use
+            of AES-GCM to prevent this type of attack.</t>
           </list></t>
       </section>
 
@@ -555,14 +562,14 @@
         attacks (<xref target="time"></xref>), and (3) the Message
         Authentication Code (MAC) for the target NSH data (depending on the
         integrity protection scope) calculated using the MAC_KEY and
-        optionally Context Headers encrypted using ENC_KEY.</t>
+        optionally Context Headers encrypted using the secret key.</t>
 
         <t>An SFC data plane element that needs to check the integrity of the
         NSH data uses MAC_KEY and the HMAC algorithm for the key identifier
         being carried in the NSH.</t>
 
         <t>An NSH-aware SF or SFC Proxy that needs to decrypt some Context
-        Headers uses ENC_Key and the decryption algorithm for the key
+        Headers uses the secret key and the decryption algorithm for the key
         identifier being carried in the NSH.</t>
 
         <t><xref target="prorules"></xref> specifies the detailed
@@ -632,8 +639,8 @@
        ~                      Timestamp (8 bytes)                      ~ 
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
        | IV Length     |     Initialization Vector  (Variable)         ~
-       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-       |     Message Authentication Code and optional Encrypted        |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   
+       |     Message Authentication Code(s) and optional Encrypted     |
        ~                  Context Headers (Variable)                   ~
        |                                                               |
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+]]></artwork>
@@ -648,8 +655,9 @@
         carries the Message Authentication Code (MAC) for the Service Path
         Header, Context Headers, and the inner packet on which NSH is imposed,
         calculated using MAC_KEY, and optionally Context Headers encrypted
-        using ENC_KEY. The scope of the integrity protection provided by this
-        Context Header is depicted in <xref target="scope1"></xref>.</t>
+        using the secret key. The scope of the integrity protection provided
+        by this Context Header is depicted in <xref
+        target="scope1"></xref>.</t>
 
         <t>This MAC scheme does not require sharing MAC_KEY with SFFs. It does
         not require to re-compute the MAC by each SFF because of TTL
@@ -676,8 +684,10 @@
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
 |  ~                Encrypted Context Headers (opt.)               ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  ~                 Message Authentication Code                   ~   |
-|  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
+|  ~                Authentication Tag (16 bytes) (opt.)           ~   |
+|  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ /
+|  ~                 Message Authentication Code                   ~   
+|  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
 |  |                                                               |   |
@@ -713,37 +723,39 @@
             deployments relying upon keying material per SFC/SFP. The key
             identifier helps in resolving the problem of synchronization of
             keying material. A single key identifier is used to lookup both
-            the ENC_KEY and the MAC_KEY associated with a key. </t>
+            the ENC_KEY and the MAC_KEY associated with a key.</t>
 
             <t hangText="Timestamp:">Refer to <xref target="timef"></xref> for
             more details about the structure of this field.</t>
 
             <t hangText="IV Length:">Carries the length of the IV (Section 5.2
             of <xref target="RFC7518"></xref>). If encryption is not used, IV
-            length is set to zero (that is, no "Initialization Vector" is
-            included).</t>
+            length is set to zero (that is, no "Initialization Vector" and
+            "Authentication Tag" are included).</t>
 
-            <t hangText="Initialization Vector:">Carries the IV for
-            authenticated encryption algorithm as discussed in Section 5.2 of
-            <xref target="RFC7518"></xref>.</t>
+            <t hangText="Initialization Vector:">Carries the IV for the key
+            encryption operation.</t>
 
             <t hangText="Encrypted Context Headers:">Carries the optional
             encrypted Context Headers.</t>
 
+            <t hangText="Authentication Tag:">Carries the base64url-encoded
+            representation of the 128-bit Authentication Tag value resulting
+            from the key encryption operation.</t>
+
             <t hangText="Message Authentication Code: ">Covers the entire NSH
-            data, excluding the Base header. The Additional Authenticated Data
-            (defined in <xref target="RFC7518"></xref>) MUST be the Service
-            Path header, the unencrypted Context headers, and the inner packet
-            on which the NSH is imposed.</t>
+            data, excluding the Base header. The associated data MUST be the
+            Service Path header, the unencrypted Context headers, and the
+            inner packet on which the NSH is imposed.</t>
           </list></t>
       </section>
 
       <section anchor="enc2" title="MAC#2 Context Header">
         <t>MAC#2 Context Header is a variable-length Context Header that
         carries the MAC for the entire NSH data calculated using MAC_KEY and
-        optionally Context Headers encrypted using ENC_KEY. The scope of the
-        integrity protection provided by this Context Header is depicted in
-        <xref target="scope2"></xref>.</t>
+        optionally Context Headers encrypted using the secret key. The scope
+        of the integrity protection provided by this Context Header is
+        depicted in <xref target="scope2"></xref>.</t>
 
         <figure align="center" anchor="scope2" title="Scope of MAC#2">
           <artwork align="center"><![CDATA[    0                   1                   2                   3
@@ -762,11 +774,15 @@
    ~                      Timestamp (8 bytes)                      ~   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
    | IV Length     |     Initialization Vector  (Variable)         ~   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
+   ~                  Authentication Tag (16 bytes)                ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
 |  ~                Encrypted Context Headers (opt.)               ~   |
 +->+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
-|  ~                 Message Authentication Code                   ~   |
-|  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+   |
+|  ~                Authentication Tag (16 bytes) (opt.)           ~   |
+|  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ /
+|  ~                 Message Authentication Code                   ~   
+|  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ \
 |  |                                                               |   |
 |  ~               Inner Packet on which NSH is imposed            ~   |
 |  |                                                               |   |
@@ -807,9 +823,11 @@
             <t hangText="Encrypted Context Headers:">Carries the optional
             encrypted Context Headers.</t>
 
+            <t hangText="Authentication Tag:">See <xref
+            target="enc1"></xref>.</t>
+
             <t hangText="Message Authentication Code:">Covers the entire NSH
-            data. The Additional Authenticated Data (defined in <xref
-            target="RFC7518"></xref>) MUST be the entire NSH data (i.e.,
+            data. The associated data MUST be the entire NSH data (i.e.,
             including the Base Header) excluding the Context Headers to be
             encrypted.</t>
           </list></t>
@@ -989,48 +1007,19 @@
         is, including the MD Class, Type, Length, and associated metadata of
         each Context Header).</t>
 
-        <t>The message Authentication Tag (T) and ciphertext (E) computation
-        process can be illustrated as follows:</t>
-
-        <figure>
-          <artwork><![CDATA[      MAC_KEY = initial MAC_KEY_LEN octets of K,
-      ENC_KEY = final ENC_KEY_LEN octets of K,
-      E = CBC-PKCS7-ENC(ENC_KEY, P),
-      M = MAC(MAC_KEY, A || IV || E || AL),
-      T = initial T_LEN octets of M. 
-      MAC and Encrypted Metadata = E || T  
-]]></artwork>
-        </figure>
-
-        <t></t>
-
-        <t>Note that "||" denotes the concatenation of two values.</t>
-
-        <t>As specified in Section 5.2.2.1 of <xref target="RFC7518"></xref>,
-        the octet string (AL) is equal to the number of bits in the Additional
-        Authenticated Data (A) expressed as a 64-bit unsigned big-endian
-        integer.</t>
+        <t>More details about the exact encryption procedure are provided in
+        Section 2.1 of <xref target="RFC5116"></xref>. </t>
 
         <t>An authorized entity in the SFP that intends to update the content
         of an encrypted Context Header or needs to add a new encrypted Context
         Header MUST also follow the aforementioned behavior.</t>
 
         <t>An SFF or NSH-aware SF or SFC Proxy that only has access to the
-        MAC_KEY, but not the ENC_KEY, computes the message Authentication Tag
-        (T) after decrementing the TTL (by the SFF) or SI (by an SF or SFC
-        Proxy) and replaces the Authentication Tag in the NSH with the
-        computed Authentication Tag. Similarly, an NSH-aware SF (or SFC Proxy)
-        that does not modify the encrypted Context headers also follows the
-        aforementioned behavior.</t>
-
-        <t>The message Authentication Tag (T) computation process can be
-        illustrated as follows:</t>
-
-        <t><figure>
-            <artwork><![CDATA[      M = MAC(MAC_KEY, A || IV || E || AL), 
-      T = initial T_LEN octets of M. 
-]]></artwork>
-          </figure></t>
+        MAC_KEY, but not the ENC_KEY, computes the MAC after decrementing the
+        TTL (by the SFF) or SI (by an SF or SFC Proxy) and replaces the MAC in
+        the NSH with the computed MAC. Similarly, an NSH-aware SF (or SFC
+        Proxy) that does not modify the encrypted Context headers also follows
+        the aforementioned behavior.</t>
       </section>
 
       <section anchor="time" title="Timestamp for Replay Attack Prevention">
@@ -1099,14 +1088,18 @@
           </list></t>
 
         <t>If the timestamp check is successfully passed, the SFC data plane
-        element proceeds with NSH data integrity validation. The SFC data
-        plane element computes the message integrity for the target NSH data
-        (depending on the integrity protection scope discussed in <xref
-        target="new"></xref>) using the MAC_KEY and HMAC algorithm for the key
-        identifier. If the value of the newly generated digest is identical to
-        the one enclosed in the NSH, the SFC data plane element is certain
-        that the NSH data has not been tampered and validation is therefore
-        successful. Otherwise, the NSH packet MUST be discarded.</t>
+        element proceeds with NSH data integrity validation. After storing the
+        value of the MAC field in the "MAC and Encrypted Metadata" Context
+        Header, the SFC data plane element fills the MAC field with zeros.
+        Then, the SFC data plane element generates the message integrity for
+        the target NSH data (depending on the integrity protection scope
+        discussed in <xref target="new"></xref>) using MAC_KEY and HMAC
+        algorithm. If the value of the newly generated digest is identical to
+        the stored one, the SFC data plane element is certain that the NSH
+        data has not been tampered and validation is therefore successful.
+        Otherwise, the NSH packet MUST be discarded. The comparison of the
+        computed HMAC value to the store value MUST be done in a constant-time
+        manner to thwart timing attacks. </t>
       </section>
 
       <section title="Decryption of NSH Metadata">
@@ -1116,8 +1109,7 @@
 
         <t>Authenticated encryption algorithm has only a single output, either
         a plaintext or a special symbol (FAIL) that indicates that the inputs
-        are not authentic (Section 5.2.2.2 of <xref
-        target="RFC7518"></xref>).</t>
+        are not authentic (Section 2.2 of <xref target="RFC5116"></xref>).</t>
       </section>
     </section>
 
@@ -1332,7 +1324,24 @@
 
       <?rfc include='reference.RFC.7518'?>
 
+      <?rfc include='reference.RFC.5116'?>
+
       <?rfc include='reference.RFC.4107'?>
+
+      <reference anchor="GCM">
+        <front>
+          <title>Recommendation for Block Cipher Modes of Operation:
+          Galois/Counter Mode (GCM) and GMAC</title>
+
+          <author initials="M." surname="Dworkin">
+            <organization></organization>
+          </author>
+
+          <date month="November" year="2007" />
+        </front>
+
+        <seriesInfo name="NIST" value="Special Publication 800-38D" />
+      </reference>
     </references>
 
     <references title="Informative References">
