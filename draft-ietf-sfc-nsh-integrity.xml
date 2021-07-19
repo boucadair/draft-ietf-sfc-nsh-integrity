@@ -149,11 +149,13 @@
       (e.g., IPsec) only provide hop-by-hop security between two SFC data
       plane elements (e.g., two Service Function Forwarders (SFFs), SFF to SF)
       and do not provide SF-to-SF security of NSH metadata. For example, if
-      IPsec is used, sensitive metadata (e.g., privacy) will have access to
-      the metadata. As a reminder, the metadata referred to is information
-      that is inserted by Classifiers or intermediate SFs and shared with
-      downstream SFs; such information is not visible to the communication
-      endpoints (Section 4.9 of <xref target="RFC7665"></xref>).</t>
+      IPsec is used, SFFs or SFs within a Service Function Path (SFP) that are
+      not authorized to access the privacy-sensitive metadata (e.g., privacy)
+      will have access to the metadata. As a reminder, the metadata referred
+      to is information that is inserted by Classifiers or intermediate SFs
+      and shared with downstream SFs; such information is not visible to the
+      communication endpoints (Section 4.9 of <xref
+      target="RFC7665"></xref>).</t>
 
       <t>The lack of such capability was reported during the development of
       <xref target="RFC8300"></xref> and <xref target="RFC8459"></xref>. The
@@ -449,23 +451,23 @@
         <t>The Authenticated Encryption with Associated Data (AEAD) defined in
         Section 5 of <xref target="RFC5116"></xref> is used to encrypt the
         Context Headers that carry sensitive metadata and to provide integrity
-        for the Context Headers. </t>
+        for the Context Headers.</t>
 
         <t>The secondary keys MAC_KEY and ENC_KEY are generated from the input
         secret key (K) as follows, each of these two keys is an octet
         string:<list style="hanging">
             <t hangText="MAC_KEY:">consists of the initial MAC_KEY_LEN octets
             of K, in order. The MAC_KEY is used for calculating the message
-            integrity of the NSH data. </t>
+            integrity of the NSH data.</t>
 
             <t hangText="ENC_KEY:">consists of the final ENC_KEY_LEN octets of
             K, in order. The ENC_KEY is used as the symmetric encryption key
-            for encrypting the Context Headers. </t>
+            for encrypting the Context Headers.</t>
           </list></t>
 
         <t>The Hashed Message Authentication Mode (HMAC) algorithm discussed
         in <xref target="RFC4868"></xref> is used to protect the integrity of
-        the NSH data. </t>
+        the NSH data.</t>
 
         <t>The advantage of using both AEAD and HMAC algorithms is that
         NSH-aware SFs and SFC proxies only need to re-compute the message
@@ -487,7 +489,7 @@
         <xref target="RFC5116"></xref>), a plaintext (P), associated data (A)
         (which contains the data to be authenticated, but not encrypted), and
         a nonce (N). A ciphertext (C) is generated as an output as discussed
-        in Section 2.1 of <xref target="RFC5116"></xref>.</t>
+        in Section 2.1 of <xref target="RFC5116"></xref>. </t>
 
         <t>In order to decrypt and verify, the cipher takes as input ENC_KEY,
         N, A, and C. The output is either the plaintext or an error indicating
@@ -738,9 +740,7 @@
             encrypted Context Headers.</t>
 
             <t hangText="Message Authentication Code: ">Covers the entire NSH
-            data, excluding the Base header. The associated data MUST be the
-            Service Path header, the unencrypted Context headers, and the
-            inner packet on which the NSH is imposed.</t>
+            data, excluding the Base header. </t>
           </list></t>
       </section>
 
@@ -813,9 +813,7 @@
             encrypted Context Headers.</t>
 
             <t hangText="Message Authentication Code:">Covers the entire NSH
-            data. The associated data MUST be the entire NSH data (i.e.,
-            including the Base Header) excluding the Context Headers to be
-            encrypted.</t>
+            data. </t>
           </list></t>
       </section>
     </section>
@@ -993,7 +991,8 @@
         and associated metadata of each Context Header).</t>
 
         <t>More details about the exact encryption procedure are provided in
-        Section 2.1 of <xref target="RFC5116"></xref>.</t>
+        Section 2.1 of <xref target="RFC5116"></xref>. Note that the
+        associated data (A) input is zero for AES-GCM.</t>
 
         <t>An authorized entity in the SFP that updates the content of an
         encrypted Context Header or needs to add a new encrypted Context
