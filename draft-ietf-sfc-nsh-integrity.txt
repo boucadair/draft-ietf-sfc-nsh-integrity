@@ -546,7 +546,7 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
       This malleability allows for attackers to make changes in the
       ciphertext and, if parts of the plaintext are known, create
       arbitrary blocks of plaintext.  This specification mandates the
-      use of AES-GCM to prevent this type of attack.
+      use of AES-GCM to prevent this type of attacks.
 
 4.4.  Key Management
 
@@ -1085,11 +1085,11 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    metadata, i.e., encrypted and unencrypted metadata may be carried
    simultaneously in the same NSH packet (Sections 5 and 6).
 
-   In an SFC-enabled domain where pervasive monitoring [RFC7258] is
-   possible, all Context Headers carrying privacy-sensitive metadata
-   MUST be encrypted; doing so, privacy-sensitive metadata is not
-   revealed to attackers.  Privacy specific threats are discussed in
-   Section 5.2 of [RFC6973].
+   In order to prevent pervasive monitoring [RFC7258], it is RECOMMENDED
+   to encrypt all Context Headers.  All Context Headers carrying
+   privacy-sensitive metadata MUST be encrypted; doing so, privacy-
+   sensitive metadata is not revealed to attackers.  Privacy specific
+   threats are discussed in Section 5.2 of [RFC6973].
 
    Using the secret key (ENC_KEY) and authenticated encryption
    algorithm, the NSH imposer encrypts the Context Headers (as set, for

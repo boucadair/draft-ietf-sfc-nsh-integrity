@@ -519,7 +519,7 @@
             plaintexts. This malleability allows for attackers to make changes
             in the ciphertext and, if parts of the plaintext are known, create
             arbitrary blocks of plaintext. This specification mandates the use
-            of AES-GCM to prevent this type of attack.</t>
+            of AES-GCM to prevent this type of attacks.</t>
           </list></t>
       </section>
 
@@ -975,12 +975,12 @@
         target="scope1"></xref> and <xref format="counter"
         target="scope2"></xref>).</t>
 
-        <t>In an SFC-enabled domain where pervasive monitoring <xref
-        target="RFC7258"></xref> is possible, all Context Headers carrying
-        privacy-sensitive metadata MUST be encrypted; doing so,
-        privacy-sensitive metadata is not revealed to attackers. Privacy
-        specific threats are discussed in Section 5.2 of <xref
-        target="RFC6973"></xref>.</t>
+        <t>In order to prevent pervasive monitoring <xref
+        target="RFC7258"></xref>, it is RECOMMENDED to encrypt all Context
+        Headers. All Context Headers carrying privacy-sensitive metadata MUST
+        be encrypted; doing so, privacy-sensitive metadata is not revealed to
+        attackers. Privacy specific threats are discussed in Section 5.2 of
+        <xref target="RFC6973"></xref>.</t>
 
         <t>Using the secret key (ENC_KEY) and authenticated encryption
         algorithm, the NSH imposer encrypts the Context Headers (as set, for
