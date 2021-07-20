@@ -1100,8 +1100,8 @@ Internet-Draft      Integrity Protection for the NSH           July 2021
    Context Header).
 
    More details about the exact encryption procedure are provided in
-   Section 2.1 of [RFC5116].  Note that the associated data (A) input is
-   zero for AES-GCM.
+   Section 2.1 of [RFC5116].  In this case, the associated data (A)
+   input is zero for AES-GCM.
 
    An authorized entity in the SFP that updates the content of an
    encrypted Context Header or needs to add a new encrypted Context

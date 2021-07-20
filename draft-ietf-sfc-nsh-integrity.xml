@@ -489,7 +489,7 @@
         <xref target="RFC5116"></xref>), a plaintext (P), associated data (A)
         (which contains the data to be authenticated, but not encrypted), and
         a nonce (N). A ciphertext (C) is generated as an output as discussed
-        in Section 2.1 of <xref target="RFC5116"></xref>. </t>
+        in Section 2.1 of <xref target="RFC5116"></xref>.</t>
 
         <t>In order to decrypt and verify, the cipher takes as input ENC_KEY,
         N, A, and C. The output is either the plaintext or an error indicating
@@ -740,7 +740,7 @@
             encrypted Context Headers.</t>
 
             <t hangText="Message Authentication Code: ">Covers the entire NSH
-            data, excluding the Base header. </t>
+            data, excluding the Base header.</t>
           </list></t>
       </section>
 
@@ -813,7 +813,7 @@
             encrypted Context Headers.</t>
 
             <t hangText="Message Authentication Code:">Covers the entire NSH
-            data. </t>
+            data.</t>
           </list></t>
       </section>
     </section>
@@ -991,7 +991,7 @@
         and associated metadata of each Context Header).</t>
 
         <t>More details about the exact encryption procedure are provided in
-        Section 2.1 of <xref target="RFC5116"></xref>. Note that the
+        Section 2.1 of <xref target="RFC5116"></xref>. In this case, the
         associated data (A) input is zero for AES-GCM.</t>
 
         <t>An authorized entity in the SFP that updates the content of an
