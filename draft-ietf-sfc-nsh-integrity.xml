@@ -562,7 +562,8 @@
         <t>In order to accommodate deployments relying upon keying material
         per SFC/SFP and also the need to update keys after encrypting NSH data
         for a certain amount of time, this document uses key identifiers to
-        unambiguously identify the appropriate keying material. Doing so
+        unambiguously identify the appropriate keying material and associated
+        algorithms for MAC and encryption. This use of in-band identifiers
         addresses the problem of synchronization of keying material.</t>
 
         <t>Additional information on manual vs. automated key management and
@@ -742,7 +743,8 @@
             deployments relying upon keying material per SFC/SFP. The key
             identifier helps in resolving the problem of synchronization of
             keying material. A single key identifier is used to lookup both
-            the ENC_KEY and the MAC_KEY associated with a key.</t>
+            the ENC_KEY and the MAC_KEY associated with a key, and the
+            corresponding encryption and MAC algorithms used with those keys.</t>
 
             <t hangText="Timestamp:">Refer to <xref target="timef"></xref> for
             more details about the structure of this field.</t>
