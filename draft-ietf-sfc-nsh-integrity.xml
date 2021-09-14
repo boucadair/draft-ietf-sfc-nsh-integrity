@@ -749,9 +749,7 @@
 
             <t hangText="Nonce Length:">Carries the length of the Nonce. If
             the Context Headers are only integrity protected, "Nonce Length"
-            is set to zero (that is, no "Nonce" is included). The "Nonce
-            Length" can be set to zero depending on the encryption algorithm
-            used to encrypt the Context Headers.</t>
+            is set to zero (that is, no "Nonce" is included).</t>
 
             <t hangText="Nonce:">Carries the Nonce for the authenticated
             encryption operation (Section 3.1 of <xref
