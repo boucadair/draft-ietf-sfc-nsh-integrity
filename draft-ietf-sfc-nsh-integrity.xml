@@ -127,7 +127,7 @@
       infrastructures against them, network slicing, etc. Because of the
       proliferation of such advanced SFs together with complex service
       deployment constraints that demand more agile service delivery
-      procedures, operators need to rationalize their service delivery logics
+      procedures, operators need to rationalize their service delivery logic
       and control its complexity while optimising service activation time
       cycles. The overall problem space is described in <xref
       target="RFC7498"></xref>.</t>
@@ -152,7 +152,8 @@
       Service Function Forwarders (SFFs), SFF to SF) and do not provide
       SF-to-SF security of NSH metadata. For example, if IPsec is used, SFFs
       or SFs within a Service Function Path (SFP) that are not authorized to
-      access the sensitive metadata (e.g., privacy) will have access to the
+      access the sensitive metadata (e.g., privacy-sensitive information) will
+      have access to the
       metadata. As a reminder, the metadata referred to is information that is
       inserted by Classifiers or intermediate SFs and shared with downstream
       SFs; such information is not visible to the communication endpoints
@@ -164,7 +165,7 @@
       target="I-D.arkko-farrell-arch-model-t"></xref> for a discussion on the
       need for more awareness about attacks from within closed domains.</t>
 
-      <t>This specification fills that gap for SFC (that is, define the "NSH
+      <t>This specification fills that gap for SFC (that is, it defines the "NSH
       Variable Header-Based Integrity" option mentioned in Section 8.2.1 of
       <xref target="RFC8300"></xref>). Concretely, this document adds
       integrity protection and optional encryption of sensitive metadata
@@ -179,8 +180,9 @@
       applicable to NSH MD Type 0x02 (Section 2.5 of <xref
       target="RFC8300"></xref>). MTU considerations are discussed in <xref
       target="MTU"></xref>. This specification is not applicable to NSH MD
-      Type 0x01 (Section TBD of RFC8300) because it only allows a Fixed-Length
-      Context Header whose size is 16-bytes and is not sufficient to
+      Type 0x01 (Section TBD of RFC8300) because that MD Type only allows a
+      Fixed-Length
+      Context Header whose size is 16-bytes; that is not sufficient to
       accommodate both the metadata and message integrity of the NSH data.</t>
 
       <t>This specification limits access to NSH-supplied information along an
@@ -432,12 +434,13 @@
           NSH-aware SFs, SFFs, and SFC proxies in the NSH by means of a
           dedicated MD Type (<xref target="new"></xref>).</t>
 
-          <t>In both levels of assurance, the unencrypted Context Headers and
+          <t>In both levels of assurance, the Context Headers and
           the packet on which the NSH is imposed are subject to integrity
           protection.</t>
 
-          <t>Table 3 lists the roles of SFC data plane elements in providing
-          integrity protection for the NSH.</t>
+          <t>Table 3 classifies the data plane elements as being
+          involved in providing
+          integrity protection for the NSH or not.</t>
 
           <t><figure>
               <artwork><![CDATA[         +--------------------+----------------------------------+
@@ -456,13 +459,13 @@
       </section>
 
       <section title="One Secret Key, Two Security Services">
-        <t>The Authenticated Encryption with Associated Data (AEAD) defined in
+        <t>The Authenticated Encryption with Associated Data (AEAD) interface defined in
         Section 5 of <xref target="RFC5116"></xref> is used to encrypt the
         Context Headers that carry sensitive metadata and to provide integrity
-        for the Context Headers.</t>
+        protection for the encrypted Context Headers.</t>
 
         <t>The secondary keys MAC_KEY and ENC_KEY are generated from the input
-        secret key (K) as follows, each of these two keys is an octet
+        secret key (K) as follows; each of these two keys is an octet
         string:<list style="hanging">
             <t hangText="MAC_KEY:">consists of the initial MAC_KEY_LEN octets
             of K, in order. The MAC_KEY is used for calculating the message
@@ -481,13 +484,14 @@
         the NSH data. The algorithm for implementing and validating HMACs is
         provided in <xref target="RFC2104"></xref>.</t>
 
-        <t>The advantage of using both AEAD and HMAC algorithms is that
+        <t>The advantage of using both AEAD and HMAC algorithms (instead of
+        just AEAD) is that
         NSH-aware SFs and SFC proxies only need to re-compute the message
         integrity of the NSH data after decrementing the Service Index (SI)
         and do not have to re-compute the ciphertext. The other advantage is
         that SFFs do not have access to the ENC_KEY and cannot act on the
-        encrypted Context Headers and, only in case of the second level of
-        assurance, SFFs do have access to the MAC_KEY. Similarly, an NSH-aware
+        encrypted Context Headers and (in the case of the second level of
+        assurance) SFFs do have access to the MAC_KEY. Similarly, an NSH-aware
         SF or SFC Proxy not allowed to decrypt the Context Headers will not
         have access to the ENC_KEY.</t>
 
@@ -528,10 +532,12 @@
             would have avoided the need for a second 128-bit authentication
             tag, but due to the nature of how Cipher Block Chaining (CBC) mode
             operates, AES_128_CBC_HMAC_SHA_256 allows for malleability of
-            plaintexts. This malleability allows for attackers to make changes
+            plaintexts. This malleability allows for attackers that know the
+            MAC key but not the encryption key to make changes
             in the ciphertext and, if parts of the plaintext are known, create
             arbitrary blocks of plaintext. This specification mandates the use
-            of AES-GCM to prevent this type of attack.</t>
+            of separate AEAD and MAC protections to prevent this type of
+            attack.</t>
           </list></t>
       </section>
 
@@ -747,7 +753,7 @@
             Length" can be set to zero depending on the encryption algorithm
             used to encrypt the Context Headers.</t>
 
-            <t hangText="Nonce:">Carries the Nonce for the authentication
+            <t hangText="Nonce:">Carries the Nonce for the authenticated
             encryption operation (Section 3.1 of <xref
             target="RFC5116"></xref>).</t>
 
@@ -868,7 +874,7 @@
       <t>Epoch:<list style="empty">
           <t>The epoch is 1970-01-01T00:00 in UTC time. Note this epoch value
           is different from the one used in Section 6 of <xref
-          target="RFC5905"></xref> (wraparound 2036).</t>
+          target="RFC5905"></xref> (which will wrap around in 2036).</t>
         </list></t>
 
       <t>Leap seconds:<list style="empty">
@@ -892,8 +898,9 @@
           NTP <xref target="RFC5905"></xref> for synchronization. Thus, the
           timestamp may be derived from the NTP-synchronized clock, allowing
           the timestamp to be measured with respect to the clock of an NTP
-          server. Since the NTP time format is affected by leap seconds, the
-          current timestamp format is similarly affected. Therefore, the value
+          server. Since this time format is specified in terms of UTC, it
+          is affected by leap seconds (in a manner analogous to the NTP
+          time format, which is similar).  Therefore, the value
           of a timestamp during or slightly after a leap second may be
           temporarily inaccurate.</t>
         </list></t>
@@ -953,7 +960,7 @@
       </section>
 
       <section title="MAC NSH Data Generation">
-        <t>If the Context Headers are not encrypted, the HMAC algorithm
+        <t>After performing any Context Header encryption, the HMAC algorithm
         discussed in <xref target="RFC4868"></xref> is used to integrity
         protect the target NSH data. An NSH imposer inserts a "MAC and
         Encrypted Metadata" Context Header for integrity protection (<xref
@@ -993,7 +1000,7 @@
         <t>In order to prevent pervasive monitoring <xref
         target="RFC7258"></xref>, it is RECOMMENDED to encrypt all Context
         Headers. All Context Headers carrying privacy-sensitive metadata MUST
-        be encrypted; doing so, privacy-sensitive metadata is not revealed to
+        be encrypted; by doing so, privacy-sensitive metadata is not revealed to
         attackers. Privacy specific threats are discussed in Section 5.2 of
         <xref target="RFC6973"></xref>.</t>
 
@@ -1007,7 +1014,7 @@
 
         <t>More details about the exact encryption procedure are provided in
         Section 2.1 of <xref target="RFC5116"></xref>. In this case, the
-        associated data (A) input is zero for AES-GCM.</t>
+        associated data (A) input is zero-length for AES-GCM.</t>
 
         <t>An authorized entity in the SFP that updates the content of an
         encrypted Context Header or needs to add a new encrypted Context
@@ -1039,8 +1046,8 @@
         message.</t>
 
         <t>Replay attacks within the Delta window may be detected by an
-        NSH-aware node by recording a unique value derived, for example, to
-        record a unique value derived from the MAC field value. Such an
+        NSH-aware node by recording a unique value derived from the packet,
+        for example, a unique value from the MAC field value. Such an
         NSH-aware node will detect and reject duplicates. If for legitimate
         service reasons, some flows have to be duplicated but still share
         portion of an SFP with the original flow, legitimate duplicate packets
@@ -1225,7 +1232,7 @@
       <section anchor="mac1" title="MAC#1">
         <t>An active attacker can potentially modify the Base header (e.g.,
         decrement the TTL so the next SFF in the SFP discards the NSH packet).
-        An active attacker can also drop NSH packets. As such, this attack is
+        An active attacker can typically also drop NSH packets. As such, this attack is
         not considered an attack against the security mechanism specified in
         the document.</t>
 
@@ -1238,7 +1245,7 @@
         Context Headers carrying sensitive metadata (<xref
         target="gen"></xref>). In other words, if the NSH-aware SFs and SFC
         proxies in the SFC-enabled domain are considered fully trusted to act
-        on the NSH data, only these elements can have access to sensitive NSH
+        on the NSH data. Only these elements can have access to sensitive NSH
         metadata and the keying material used to integrity protect NSH data
         and encrypt Context Headers.</t>
       </section>
