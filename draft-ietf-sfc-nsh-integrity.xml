@@ -1008,7 +1008,9 @@
         algorithm, the NSH imposer encrypts the Context Headers (as set, for
         example, in <xref target="req"></xref>) and inserts the resulting
         payload in the "MAC and Encrypted Metadata" Context Header (<xref
-        target="new"></xref>). The entire Context Header carrying a sensitive
+        target="new"></xref>). The additional authenticated data input to
+        the AEAD function is a zero-length byte string.
+        The entire Context Header carrying a sensitive
         metadata is encrypted (that is, including the MD Class, Type, Length,
         and associated metadata of each Context Header).</t>
 
