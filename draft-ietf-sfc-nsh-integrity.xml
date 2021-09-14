@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-07"
+<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-08"
      ipr="trust200902">
   <front>
     <title abbrev="Integrity Protection for the NSH">Integrity Protection for
@@ -57,7 +57,7 @@
     </author>
 
     <author fullname="Tirumaleswar Reddy" initials="T." surname="Reddy">
-      <organization abbrev="McAfee">McAfee, Inc.</organization>
+      <organization>Akamai</organization>
 
       <address>
         <postal>
@@ -72,7 +72,7 @@
           <country>India</country>
         </postal>
 
-        <email>TirumaleswarReddy_Konda@McAfee.com</email>
+        <email>kondtir@gmail.com</email>
       </address>
     </author>
 
@@ -145,17 +145,18 @@
       <t>The NSH data is unauthenticated and unencrypted, forcing a service
       topology that requires security and privacy to use a transport
       encapsulation that supports such features (Section 8.2 of <xref
-      target="RFC8300"></xref>). Note that some transport encapsulations
-      (e.g., IPsec) only provide hop-by-hop security between two SFC data
-      plane elements (e.g., two Service Function Forwarders (SFFs), SFF to SF)
-      and do not provide SF-to-SF security of NSH metadata. For example, if
-      IPsec is used, SFFs or SFs within a Service Function Path (SFP) that are
-      not authorized to access the sensitive metadata (e.g., privacy) will
-      have access to the metadata. As a reminder, the metadata referred to is
-      information that is inserted by Classifiers or intermediate SFs and
-      shared with downstream SFs; such information is not visible to the
-      communication endpoints (Section 4.9 of <xref
-      target="RFC7665"></xref>).</t>
+      target="RFC8300"></xref>).</t>
+
+      <t>Note that some transport encapsulations (e.g., IPsec) only provide
+      hop-by-hop security between two SFC data plane elements (e.g., two
+      Service Function Forwarders (SFFs), SFF to SF) and do not provide
+      SF-to-SF security of NSH metadata. For example, if IPsec is used, SFFs
+      or SFs within a Service Function Path (SFP) that are not authorized to
+      access the sensitive metadata (e.g., privacy) will have access to the
+      metadata. As a reminder, the metadata referred to is information that is
+      inserted by Classifiers or intermediate SFs and shared with downstream
+      SFs; such information is not visible to the communication endpoints
+      (Section 4.9 of <xref target="RFC7665"></xref>).</t>
 
       <t>The lack of such capability was reported during the development of
       <xref target="RFC8300"></xref> and <xref target="RFC8459"></xref>. The
@@ -177,7 +178,10 @@
       Context Headers (<xref target="new"></xref>). This specification is only
       applicable to NSH MD Type 0x02 (Section 2.5 of <xref
       target="RFC8300"></xref>). MTU considerations are discussed in <xref
-      target="MTU"></xref>.</t>
+      target="MTU"></xref>. This specification is not applicable to NSH MD
+      Type 0x01 (Section TBD of RFC8300) because it only allows a Fixed-Length
+      Context Header whose size is 16-bytes and is not sufficient to
+      accommodate both the metadata and message integrity of the NSH data.</t>
 
       <t>This specification limits access to NSH-supplied information along an
       SFP to entities that have a need to interpret it.</t>
@@ -197,7 +201,10 @@
       only when, they appear in all capitals, as shown here.</t>
 
       <t>This document makes use of the terms defined in <xref
-      target="RFC7665"></xref> and <xref target="RFC8300"></xref>.</t>
+      target="RFC7665"></xref> and <xref target="RFC8300"></xref>. The term
+      &ldquo;transport encapsulation&rdquo; used in this document refers to
+      the encapsulation in tunneling mechanisms (e.g., GRE, IPSec, VXLAN-gpe
+      etc.) that transit IP packets.</t>
 
       <t>The document defines the following terms:<list style="hanging">
           <t hangText="SFC data plane element:">Refers to NSH-aware SF, SFF,
@@ -273,7 +280,8 @@
 
           <t>SFFs are entitled to modify the Base Header (TTL value, for
           example). Nevertheless, SFFs are not supposed to act on the Context
-          Headers or look into the content of the Context Headers.</t>
+          Headers or look into the content of the Context Headers (Section 4.3
+          of <xref target="RFC7665"></xref>).</t>
         </list></t>
 
       <t>Thus, the following requirements:<list style="symbols">
@@ -337,8 +345,8 @@
 
           <t><figure>
               <artwork><![CDATA[   +-----------------+------------------------------+------------------+
-   | Data Plane      | Base and Service Headers     | Context Header   |
-   | Element         | Encryption                   | Encryption       |
+   | Data Plane      | Base and Service Path        | Context Header   |
+   | Element         | Headers Encryption           | Encryption       |
    +-----------------+------------------------------+------------------+
    | Classifier      | No                           | Yes              |
    | SFF             | No                           | No               |
@@ -458,7 +466,10 @@
         string:<list style="hanging">
             <t hangText="MAC_KEY:">consists of the initial MAC_KEY_LEN octets
             of K, in order. The MAC_KEY is used for calculating the message
-            integrity of the NSH data.</t>
+            integrity of the NSH data. In other words, the integrity
+            protection provided by the cryptographic mechanism is extended to
+            also provide protection for the unencrypted Context Headers and
+            the packet on which the NSH is imposed.</t>
 
             <t hangText="ENC_KEY:">consists of the final ENC_KEY_LEN octets of
             K, in order. The ENC_KEY is used as the symmetric encryption key
@@ -467,7 +478,8 @@
 
         <t>The Hashed Message Authentication Mode (HMAC) algorithm discussed
         in <xref target="RFC4868"></xref> is used to protect the integrity of
-        the NSH data.</t>
+        the NSH data. The algorithm for implementing and validating HMACs is
+        provided in <xref target="RFC2104"></xref>.</t>
 
         <t>The advantage of using both AEAD and HMAC algorithms is that
         NSH-aware SFs and SFC proxies only need to re-compute the message
@@ -519,7 +531,7 @@
             plaintexts. This malleability allows for attackers to make changes
             in the ciphertext and, if parts of the plaintext are known, create
             arbitrary blocks of plaintext. This specification mandates the use
-            of AES-GCM to prevent this type of attacks.</t>
+            of AES-GCM to prevent this type of attack.</t>
           </list></t>
       </section>
 
@@ -651,7 +663,8 @@
 
       <t>The "MAC and Encrypted Metadata" Context Headers are padded out to a
       multiple of 4 bytes as per Section 2.2 of <xref
-      target="RFC8300"></xref>.</t>
+      target="RFC8300"></xref>. The "MAC and Encrypted Metadata" Context
+      Header, if included, MUST always be the last Context Header.</t>
 
       <section anchor="enc1" title="MAC#1 Context Header">
         <t>MAC#1 Context Header is a variable-length Context Header that
@@ -729,8 +742,10 @@
             more details about the structure of this field.</t>
 
             <t hangText="Nonce Length:">Carries the length of the Nonce. If
-            encryption is not used, "Nonce Length" is set to zero (that is, no
-            "Nonce" is included).</t>
+            the Context Headers are only integrity protected, "Nonce Length"
+            is set to zero (that is, no "Nonce" is included). The "Nonce
+            Length" can be set to zero depending on the encryption algorithm
+            used to encrypt the Context Headers.</t>
 
             <t hangText="Nonce:">Carries the Nonce for the authentication
             encryption operation (Section 3.1 of <xref
@@ -1024,14 +1039,14 @@
         message.</t>
 
         <t>Replay attacks within the Delta window may be detected by an
-        NSH-aware node by recording a unique value derived, for example, from
-        the NSH data and Original packet (e.g., using SHA2). Such NSH-aware
-        node will detect and reject duplicates. If for legitimate service
-        reasons, some flows have to be duplicated but still share portion of
-        an SFP with the original flow, legitimate duplicate packets will be
-        tagged by NSH-aware nodes involved in that segment as replay packets
-        unless sufficient entropy is added to the duplicate packet. How such
-        an entropy is added is implementation-specific.</t>
+        NSH-aware node by recording a unique value derived, for example, to
+        record a unique value derived from the MAC field value. Such an
+        NSH-aware node will detect and reject duplicates. If for legitimate
+        service reasons, some flows have to be duplicated but still share
+        portion of an SFP with the original flow, legitimate duplicate packets
+        will be tagged by NSH-aware nodes involved in that segment as replay
+        packets unless sufficient entropy is added to the duplicate packet.
+        How such an entropy is added is implementation-specific.</t>
 
         <t><list style="empty">
             <t>Note: Within the timestamp delta window, defining a sequence
@@ -1051,7 +1066,7 @@
       </section>
 
       <section title="NSH Data Validation">
-        <t>When an SFC data plan element conforms to this specification, it
+        <t>When an SFC data plane element conforms to this specification, it
         MUST ensure that a "MAC and Encrypted Metadata" Context Header is
         included in a received NSH packet. The imposer MUST silently discard
         the packet and MUST log an error at least once per the SPI if at least
@@ -1075,8 +1090,8 @@
         the stored one, the SFC data plane element is certain that the NSH
         data has not been tampered and validation is therefore successful.
         Otherwise, the NSH packet MUST be discarded. The comparison of the
-        computed HMAC value to the store value MUST be done in a constant-time
-        manner to thwart timing attacks.</t>
+        computed HMAC value to the stored value MUST be done in a
+        constant-time manner to thwart timing attacks.</t>
       </section>
 
       <section title="Decryption of NSH Metadata">
@@ -1120,8 +1135,8 @@
       operators (Section 5.6 of <xref target="RFC7665"></xref>).</t>
 
       <t>When dealing with MTU issues, network operators should consider the
-      limitations of various transport encapsulations such as those discussed
-      in <xref target="I-D.ietf-intarea-tunnels"></xref>.</t>
+      limitations of various tunnel mechanisms such as those discussed in
+      <xref target="I-D.ietf-intarea-tunnels"></xref>.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -1135,7 +1150,9 @@
       operators can take into account when using NSH.</t>
 
       <t>The guidelines for cryptographic key management are discussed in
-      <xref target="RFC4107"></xref>.</t>
+      <xref target="RFC4107"></xref>. The group key management protocol
+      related security considerations discussed in Section 8 of <xref
+      target="RFC4046"></xref> needs to be taken into consideration.</t>
 
       <t>The interaction between the SFC data plane elements and a key
       management system MUST NOT be transmitted in clear since this would
@@ -1239,9 +1256,9 @@
       </section>
 
       <section title="Time Synchronization">
-        <t>Section 5.6 of <xref target="RFC8633"></xref> describes best
-        current practices to be considered in deployments where SFC data plane
-        elements use NTP for time synchronization purposes.</t>
+        <t><xref target="RFC8633"></xref> describes best current practices to
+        be considered in deployments where SFC data plane elements use NTP for
+        time synchronization purposes.</t>
 
         <t>Also, a mechanism to provide cryptographic security for NTP is
         specified in <xref target="RFC8915"></xref>.</t>
@@ -1303,6 +1320,8 @@
 
       <?rfc include='reference.RFC.4107'?>
 
+      <?rfc include='reference.RFC.2104'?>
+
       <reference anchor="GCM">
         <front>
           <title>Recommendation for Block Cipher Modes of Operation:
@@ -1345,6 +1364,8 @@
       <?rfc include='reference.RFC.8915'?>
 
       <?rfc include='reference.RFC.8633'?>
+
+      <?rfc include='reference.RFC.4046'?>
 
       <!---->
     </references>
