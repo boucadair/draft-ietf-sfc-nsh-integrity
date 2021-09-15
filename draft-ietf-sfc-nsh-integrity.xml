@@ -31,7 +31,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-08"
+<rfc category="std" docName="draft-ietf-sfc-nsh-integrity-latest"
      ipr="trust200902">
   <front>
     <title abbrev="Integrity Protection for the NSH">Integrity Protection for
@@ -154,6 +154,7 @@
       or SFs within a Service Function Path (SFP) that are not authorized to
       access the sensitive metadata (e.g., privacy-sensitive information) will
       have access to the
+
       metadata. As a reminder, the metadata referred to is information that is
       inserted by Classifiers or intermediate SFs and shared with downstream
       SFs; such information is not visible to the communication endpoints
@@ -204,9 +205,11 @@
 
       <t>This document makes use of the terms defined in <xref
       target="RFC7665"></xref> and <xref target="RFC8300"></xref>. The term
-      &ldquo;transport encapsulation&rdquo; used in this document refers to
-      the encapsulation in tunneling mechanisms (e.g., GRE, IPSec, VXLAN-gpe
-      etc.) that transit IP packets.</t>
+      "transport encapsulation" used in this document refers to the outer
+      encapsulation (e.g., Generic Routing Encapsulation (GRE), IPsec, Generic
+      Protocol Extension for VXLAN (VXLAN-GPE)) that is used to carry
+      NSH-encapsulated packets as per Section 4 of <xref
+      target="RFC8300"></xref>. </t>
 
       <t>The document defines the following terms:<list style="hanging">
           <t hangText="SFC data plane element:">Refers to NSH-aware SF, SFF,
@@ -538,6 +541,7 @@
             arbitrary blocks of plaintext. This specification mandates the use
             of separate AEAD and MAC protections to prevent this type of
             attack.</t>
+
           </list></t>
       </section>
 
