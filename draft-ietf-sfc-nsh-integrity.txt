@@ -175,8 +175,8 @@ Internet-Draft      Integrity Protection for the NSH      September 2021
    encrypted Context Headers (Section 5).  This specification is only
    applicable to NSH MD Type 0x02 (Section 2.5 of [RFC8300]).  MTU
    considerations are discussed in Section 8.  This specification is not
-   applicable to NSH MD Type 0x01 (Section TBD of RFC8300) because that
-   MD Type only allows a Fixed-Length Context Header whose size is
+   applicable to NSH MD Type 0x01 (Section 2.4 of [RFC8300]) because
+   that MD Type only allows a Fixed-Length Context Header whose size is
    16-bytes; that is not sufficient to accommodate both the metadata and
    message integrity of the NSH data.
 
@@ -1336,8 +1336,8 @@ Internet-Draft      Integrity Protection for the NSH      September 2021
    NSH imposer to switch to the new key identifier as soon as necessary.
    It is RECOMMENDED that the next key identifier and associated keying
    material be distributed by the control plane well prior to the secret
-   key expiration time.
-
+   key expiration time.  Additional guidance for users of AEAD functions
+   about rekeying can be found in [I-D.irtf-cfrg-aead-limits].
 
 
 
@@ -1549,16 +1549,16 @@ Internet-Draft      Integrity Protection for the NSH      September 2021
               Architecture", draft-ietf-intarea-tunnels-10 (work in
               progress), September 2019.
 
+   [I-D.irtf-cfrg-aead-limits]
+              Guenther, F., Thomson, M., and C. A. Wood, "Usage Limits
+              on AEAD Algorithms", draft-irtf-cfrg-aead-limits-03 (work
+              in progress), July 2021.
+
    [I-D.nguyen-sfc-security-architecture]
               THANG, N. C. and M. Park, "A Security Architecture Against
               Service Function Chaining Threats", draft-nguyen-sfc-
               security-architecture-00 (work in progress), November
               2019.
-
-   [RFC4046]  Baugher, M., Canetti, R., Dondeti, L., and F. Lindholm,
-              "Multicast Security (MSEC) Group Key Management
-              Architecture", RFC 4046, DOI 10.17487/RFC4046, April 2005,
-              <https://www.rfc-editor.org/info/rfc4046>.
 
 
 
@@ -1569,6 +1569,11 @@ Boucadair, et al.        Expires March 19, 2022                [Page 28]
 
 Internet-Draft      Integrity Protection for the NSH      September 2021
 
+
+   [RFC4046]  Baugher, M., Canetti, R., Dondeti, L., and F. Lindholm,
+              "Multicast Security (MSEC) Group Key Management
+              Architecture", RFC 4046, DOI 10.17487/RFC4046, April 2005,
+              <https://www.rfc-editor.org/info/rfc4046>.
 
    [RFC5905]  Mills, D., Martin, J., Ed., Burbank, J., and W. Kasch,
               "Network Time Protocol Version 4: Protocol and Algorithms
@@ -1610,11 +1615,6 @@ Internet-Draft      Integrity Protection for the NSH      September 2021
               DOI 10.17487/RFC8633, July 2019,
               <https://www.rfc-editor.org/info/rfc8633>.
 
-   [RFC8877]  Mizrahi, T., Fabini, J., and A. Morton, "Guidelines for
-              Defining Packet Timestamps", RFC 8877,
-              DOI 10.17487/RFC8877, September 2020,
-              <https://www.rfc-editor.org/info/rfc8877>.
-
 
 
 
@@ -1625,6 +1625,11 @@ Boucadair, et al.        Expires March 19, 2022                [Page 29]
 
 Internet-Draft      Integrity Protection for the NSH      September 2021
 
+
+   [RFC8877]  Mizrahi, T., Fabini, J., and A. Morton, "Guidelines for
+              Defining Packet Timestamps", RFC 8877,
+              DOI 10.17487/RFC8877, September 2020,
+              <https://www.rfc-editor.org/info/rfc8877>.
 
    [RFC8915]  Franke, D., Sibold, D., Teichel, K., Dansarie, M., and R.
               Sundblad, "Network Time Security for the Network Time
@@ -1655,11 +1660,6 @@ Authors' Addresses
    USA
 
    Email: dwing-ietf@fuggles.com
-
-
-
-
-
 
 
 
