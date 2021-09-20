@@ -574,7 +574,7 @@
         issues are discussed in <xref target="Security"></xref>.</t>
       </section>
 
-      <section title="New NSH Variable-Length Context Headers">
+      <section anchor="newch" title="New NSH Variable-Length Context Headers">
         <t>New NSH Variable-Length Context Headers are defined in <xref
         target="new"></xref> for NSH data integrity protection and,
         optionally, encryption of Context Headers carrying sensitive metadata.
@@ -1075,11 +1075,12 @@
       </section>
 
       <section title="NSH Data Validation">
-        <t>When an SFC data plane element conforms to this specification, it
-        MUST ensure that a "MAC and Encrypted Metadata" Context Header is
-        included in a received NSH packet. The imposer MUST silently discard
-        the packet and MUST log an error at least once per the SPI if at least
-        one of the following is observed:<list style="symbols">
+        <t>When an SFC data plane element that conforms to this specification
+        needs to check the validity of the NSH data, it MUST ensure that a
+        "MAC and Encrypted Metadata" Context Header is included in a received
+        NSH packet. The imposer MUST silently discard the packet and MUST log
+        an error at least once per the SPI if at least one of the following is
+        observed:<list style="symbols">
             <t>the "MAC and Encrypted Metadata" Context Header is missing,</t>
 
             <t>the enclosed key identifier is unknown or invalid (e.g., the
